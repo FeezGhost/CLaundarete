@@ -1,0 +1,111 @@
+{%  extends 'frontend/partialview/base_template.html' %}
+{% load static %}
+
+{% block content %}
+
+   
+    <div class="page">
+      <!-- navbar-->
+      <header class="header">
+        <nav class="navbar">
+          <div class="container-fluid">
+            <div class="navbar-holder d-flex align-items-center justify-content-between">
+              <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="{% url 'dashboard' %}" class="navbar-brand">
+                  <div class="brand-text d-none d-md-inline-block"><span>CL </span><strong class="text-primary">Dashboard</strong></div></a></div>
+              <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                <!-- Notifications dropdown-->
+                <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-bell"></i><span class="badge badge-warning">12</span></a>
+                  <ul aria-labelledby="notifications" class="dropdown-menu">
+                    <li><a rel="nofollow" href="#" class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-envelope"></i>You have 6 new messages </div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-twitter"></i>You have 2 followers</div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-upload"></i>Server Rebooted</div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-twitter"></i>You have 2 followers</div>
+                          <div class="notification-time"><small>10 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-bell"></i>view all notifications                                            </strong></a></li>
+                  </ul>
+                </li>
+                <!-- Log out-->
+                <li class="nav-item"><a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline-block">Logout</span><i class="fa fa-sign-out"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+      
+      
+      <!-- Breadcrumb-->
+      <div class="breadcrumb-holder">
+        <div class="container-fluid">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item "><a >Launderete</a></li>
+            <li class="breadcrumb-item active"><a >Reviews</a></li>
+          </ul>
+        </div>
+      </div>
+
+
+      <h1 class="h3 display-3 text-primary m-4 text-center">Launderete   Reviews         </h1>
+     
+     <section class="my-4">
+        <div class="container">
+        <table class="table text-center">
+        
+            <thead>
+                <tr>
+                    <th>By</th>
+                    <th>Rating</th>
+                    <th>Review</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="bg-light">
+                    <th scope="row">Usman</th>
+                    <td>4.6</td>
+                    <td> <i class="fas fa-rocket"></i> {% lorem 1 b random %}</td>
+                    <td><a class="btn  btn-outline-primary   text-center" href="{% url 'laundaretteReviewDetail' %}">Check</a></td>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Anwar</th>
+                    <td>4</td>
+                    <td> <i class="fas fa-rocket"></i> {% lorem 1 b random %}</td>
+                    <td><a class="btn  btn-outline-primary   text-center" href="{% url 'laundaretteReviewDetail' %}">Check</a></td>
+                </tr>
+                <tr class="bg-light">
+                    <th scope="row">Yasir</th>
+                    <td>5</td>
+                    <td> <i class="fas fa-rocket"></i> {% lorem 1 b random %}</td>
+                    <td><a class="btn  btn-outline-primary   text-center" href="{% url 'laundaretteReviewDetail' %}">Check</a></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        
+    </section>
+
+
+
+      <footer class="main-footer">
+        {% include 'frontend/partialView/footer_navbar.html' %}
+      </footer>
+    </div>
+ 
+
+{% endblock content %}

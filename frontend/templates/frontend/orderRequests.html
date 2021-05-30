@@ -1,0 +1,170 @@
+{%  extends 'frontend/partialview/base_template.html' %}
+{% load static %}
+
+{% block content %}
+
+   
+    <div class="page">
+      <!-- navbar-->
+      <header class="header">
+        <nav class="navbar">
+          <div class="container-fluid">
+            <div class="navbar-holder d-flex align-items-center justify-content-between">
+              <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="{% url 'dashboard' %}" class="navbar-brand">
+                  <div class="brand-text d-none d-md-inline-block"><span>CL </span><strong class="text-primary">Dashboard</strong></div></a></div>
+              <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                <!-- Notifications dropdown-->
+                <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-bell"></i><span class="badge badge-warning">12</span></a>
+                  <ul aria-labelledby="notifications" class="dropdown-menu">
+                    <li><a rel="nofollow" href="#" class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-envelope"></i>You have 6 new messages </div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-twitter"></i>You have 2 followers</div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-upload"></i>Server Rebooted</div>
+                          <div class="notification-time"><small>4 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item"> 
+                        <div class="notification d-flex justify-content-between">
+                          <div class="notification-content"><i class="fa fa-twitter"></i>You have 2 followers</div>
+                          <div class="notification-time"><small>10 minutes ago</small></div>
+                        </div></a></li>
+                    <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-bell"></i>view all notifications                                            </strong></a></li>
+                  </ul>
+                </li>
+                <!-- Log out-->
+                <li class="nav-item"><a href="login.html" class="nav-link logout"> <span class="d-none d-sm-inline-block">Logout</span><i class="fa fa-sign-out"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Breadcrumb-->
+      <div class="breadcrumb-holder">
+        <div class="container-fluid">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active"><a >Orders</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <h1 class="display-3 text-center m-4">Orders Request</h1>
+      <hr>
+      <section class="statistics">
+        <div class="container-fluid">
+          <div class="row d-flex">
+            <div class="col-lg-4">
+              <!-- Monthly Usage-->
+              <div class="card data-usage">
+                <h2 class="display h4 text-primary">Usman</h2>
+                    <p class="text-primary">Description:</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+                    <p class="text-primary">Amount</p>
+                    <p class="">10</p>
+                    <p class="text-primary">Services</p>
+                    <ul class="list-group">
+                        <li class="list-group-item">Dry Cleaning</li>
+                        <li class="list-group-item">Ironing</li>
+                        <li class="list-group-item">Washing</li>
+                    </ul>
+                    <p class="text-primary">Date:</p>
+                    <p class="">2021/4/12</p>
+                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'editServices' %}">Accept Order</a>
+                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="">Decline Order</a>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <!-- Monthly Usage-->
+              <div class="card data-usage">
+                <h2 class="display h4 text-primary">Yasir</h2>
+                    <p class="text-primary">Description:</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+                    <p class="text-primary">Amount</p>
+                    <p class="">10</p>
+                    <p class="text-primary">Services</p>
+                    <ul class="list-group">
+                        <li class="list-group-item">Dry Cleaning</li>
+                        <li class="list-group-item">Ironing</li>
+                        <li class="list-group-item">Washing</li>
+                    </ul>
+                    <p class="text-primary">Date:</p>
+                    <p class="">2021/4/12</p>
+                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'editServices' %}">Accept Order</a>
+                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="">Decline Order</a>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <!-- Monthly Usage-->
+              <div class="card data-usage">
+                <h2 class="display h4 text-primary">Anwar</h2>
+                    <p class="text-primary">Description:</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+                    <p class="text-primary">Amount</p>
+                    <p class="">10</p>
+                    <p class="text-primary">Services</p>
+                    <ul class="list-group">
+                        <li class="list-group-item">Dry Cleaning</li>
+                        <li class="list-group-item">Ironing</li>
+                        <li class="list-group-item">Washing</li>
+                    </ul>
+                    <p class="text-primary">Date:</p>
+                    <p class="">2021/4/12</p>
+                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" data-toggle="modal" data-target="#orderModel" href=''>Accept Order</a>
+                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="">Decline Order</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <div id="orderModel" class="modal fade" role="dialog">
+        <div class="modal-dialog ">
+            <div class="modal-content bg-dark text-white text-center">
+                <div class="modal-header">
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data" method="POST", action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label>Price</label>
+                      <input type="text" class="form-control" id="usr">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Start Date</label>
+                      <input type="datetime-local" id="birthdaytime" name="birthdaytime">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>End Date</label>
+                      <input type="datetime-local" id="birthdaytime" name="birthdaytime">
+                    </div>
+                    
+
+                    <div class="form-group mt-4">       
+                      <input type="submit" value="Confirm Order" class="btn btn-primary">
+                    </div>
+                  </form>
+                </div>
+                
+            </div>
+        </div>
+      </div>
+
+      <footer class="main-footer">
+        {% include 'frontend/partialView/footer_navbar.html' %}
+      </footer>
+    </div>
+ 
+
+{% endblock content %}

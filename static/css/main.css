@@ -1,0 +1,114 @@
+body{
+    background-color: #f5f5f5;
+    font-family: "Oswald", sans-serif;
+}
+
+.header_img{
+    
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    width: 100% !important;
+    
+    padding-top: 4% !important;
+    padding-bottom: 4% !important;
+}
+.startstaking{
+    background-color: #2E7B8C !important;
+    color: #F2F2F2 !important;
+    border-color: #2E7B8C !important;
+    padding: 2% 5% !important;
+}
+.signup{
+    color: #F2F2F2 !important;
+    border-color: #F24E29 !important;
+}
+.login{
+    color: #F2F2F2 !important;
+    border-color: #2E7B8C !important;
+}
+.login2{
+    color: #2E7B8C !important;
+    border-color: #2E7B8C !important;
+}
+.bg-mydark{
+    background-color: #373740;
+}
+
+.text-mylight{
+    
+    color: #f5f5f5 !important;
+}
+.btn-month{
+    
+    color: #2E7B8C !important;
+    border-color: #2E7B8C !important;
+}
+table {
+    border-collapse:separate !important; 
+    border-spacing: 0 0.5em !important;
+  }
+.profile-img{
+    width: 30px !important;
+}
+.pkg-box{
+    background-color: white;
+}
+.pkg-bg{
+    background-color: #F2F2F2;
+}
+.pkg-price{
+    border: 2px solid #F2F2F2;
+}
+summary{
+    outline: none;
+}
+
+
+.popup-wrapper{
+    background-color: rgb(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+.popup-content{
+    background-color: #373740 !important;
+    text-align: center;
+    font-family: Arial;
+    margin: 10% auto;
+    background-color: white;
+    width: 100%;
+    max-width: 300px;
+    position: relative;
+}
+.popup-close{
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    cursor: pointer;
+    color: crimson;
+}
+
+.startstaking:hover{
+    color: #2E7B8C !important;
+    border-color: #2E7B8C !important;
+    background-color: transparent !important;
+}
+.login,.login2:hover{
+    background-color: #2E7B8C !important;
+    color: #F2F2F2 !important;
+    border-color: #2E7B8C !important;
+}
+
+.signup:hover{
+    background-color: #D94A3D !important;
+    color: #F2F2F2 !important;
+    border-color: #F24E29 !important;
+}
+.btn-month:hover{
+    background-color: #2E7B8C !important;
+    color: #F2F2F2 !important;
+}

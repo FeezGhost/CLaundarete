@@ -1,0 +1,19 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.loginView, name="loginPage"),
+    path('register/', views.RegisterView, name="registerPage"),
+    path('dashboard/', views.DashboardView, name="dashboard"),
+    path('dashboard/orders/ongoing/', views.OngoingOrder, name="ongoingOrders"),
+    path('dashboard/orders/history/', views.ordersHistory, name="ordersHistory"),
+    path('dashboard/orders/requests/', views.ordersRequests, name="ordersRequest"),
+    path('dashboard/services/', views.services, name="services"),
+    path('dashboard/services/edit/', views.servicesEdit, name="editServices"),
+    path('dashboard/services/new/', views.servicesNew, name="newService"),
+    path('dashboard/launderette/', views.launderette, name="launderette"),
+    path('dashboard/launderette/edit', views.launderetteEdit, name="editlaunderette"),
+    path('dashboard/launderette/reviews', views.launderetteReviews, name="laundaretteReviews"),
+    path('dashboard/launderette/reviews/detail', views.launderetteReviewDetail, name="laundaretteReviewDetail"),
+    path('dashboard/account/', views.laundererAccount, name="myAccount"),
+]
