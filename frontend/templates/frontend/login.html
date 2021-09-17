@@ -35,19 +35,20 @@
           <div class="form-inner">
             <div class="logo text-uppercase"><span>Cloud Laundarete</span><strong class="text-primary">Dashboard</strong></div>
             <p>Double check your username and password.</p>
-            <form method="get" class="text-left form-validate">
+            <form method="POST" class="text-left form-validate">
+              {% csrf_token %}
               <div class="form-group-material">
               <p class="text-muted">Username</p>
-                <input id="login-username" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material">
+                <input id="login-username" type="text" name="username" required data-msg="Please enter your username" class="input-material">
                 <label for="login-username" class="label-material"></label>
               </div>
               <div class="form-group-material">
               <p class="text-muted">Password</p>
-                <input id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
+                <input id="login-password" type="password" name="password" required data-msg="Please enter your password" class="input-material">
                 <label for="login-password" class="label-material"></label>
               </div>
-              <div class="form-group text-center"><a id="login" href="{% url 'dashboard' %}" class="btn btn-primary">Login</a>
-                <!-- This should be submit button but I replaced it with <a> for demo purposes-->
+              <div class="form-group text-center">
+                <input id="register" type="submit" value="Login" class="btn btn-primary text-white">
               </div>
             </form><a href="#" class="forgot-pass">Forgot Password?</a><small>Do not have an account? </small><a href="{% url 'registerPage' %}" class="signup">Signup</a>
           </div>

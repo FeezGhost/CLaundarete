@@ -9,13 +9,9 @@ class DateInput(forms.DateInput):
 
 class CreatUserForm(UserCreationForm):
     name = forms.CharField(max_length=30, required=True, help_text='Full Name.', label='Full Name')
-    bio = forms.CharField(max_length=500, required=False, help_text='Bio.' ,label='Your Bio')
-    isPlayer = forms.BooleanField(required=False )
-
-		
     class Meta:
         model =  User
-        fields =  ['username', 'name', 'email', 'bio', 'isPlayer','password1', 'password2']
+        fields =  ['username', 'name', 'email','password1', 'password2']
 
 class ServicesForm(ModelForm):
     t_details=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))
@@ -27,20 +23,21 @@ class ServicesForm(ModelForm):
         fields = '__all__'
 
 
-class ClientForm(ModelForm):
+class LaundererForm(ModelForm):
     
     class Meta:
-        model = Client
+        model = Launderer
         fields = '__all__'
         exclude = ['user']
 
-class ClientProfilePicForm(ModelForm):
+class LaundererProfilePicForm(ModelForm):
     
     class Meta:
-        model = Client
+        model = Launderer
         fields = ['profile_pic']
 
-class ClientEmailForm(ModelForm):
+
+class LaundererEmailForm(ModelForm):
     
     class Meta:
         model = User

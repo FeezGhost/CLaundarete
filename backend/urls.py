@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.loginView, name="loginPage"),
+    path('', views.logoutView, name="logout"),
     path('register/', views.RegisterView, name="registerPage"),
     path('dashboard/', views.DashboardView, name="dashboard"),
     path('dashboard/orders/ongoing/', views.OngoingOrder, name="ongoingOrders"),
@@ -15,5 +16,11 @@ urlpatterns = [
     path('dashboard/launderette/edit', views.launderetteEdit, name="editlaunderette"),
     path('dashboard/launderette/reviews', views.launderetteReviews, name="laundaretteReviews"),
     path('dashboard/launderette/reviews/detail', views.launderetteReviewDetail, name="laundaretteReviewDetail"),
+
     path('dashboard/account/', views.laundererAccount, name="myAccount"),
+    path('changeemail/', views.changeEmail, name="changeEmail"),
+    path('generalinfo/', views.changeGeneralInfo, name="generalInfo"),
+    path('profilepic/', views.changeProfilepic, name="profilepic"),
+    path('changepass/', views.changePassword, name="changepass"),
+
 ]
