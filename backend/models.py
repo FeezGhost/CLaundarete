@@ -31,9 +31,8 @@ class Payment(models.Model):
 class Launderette(models.Model):
     launderer = models.ForeignKey(Launderer, null=True, on_delete= models.SET_NULL)
     name = models.CharField(max_length=200, null=True)
-    description = models.CharField(max_length=500, null=True, blank=True)
     available_time = models.CharField(max_length=500, null=True, blank=True)
-    cover_photo = models.ImageField(null=True, blank=True, default="default-profile.png")
+    cover_photo = models.ImageField(null=True, blank=True, default="0_GettyImages-1068728612.jpg")
     location = models.CharField(max_length=200, null=True)
     
     def __str__(self):
@@ -41,9 +40,8 @@ class Launderette(models.Model):
 
 class Services(models.Model):
     launderette = models.ForeignKey(Launderette, null=True, on_delete= models.SET_NULL)
-    title = models.CharField(max_length=200, null=True)
-    description = models.CharField(max_length=500, null=True, blank=True)
-    price = models.ImageField(null=True, blank=True, default="default-profile.png")
+    title = models.CharField(max_length=200, null=True, unique=True)
+    price = models.FloatField(default=0)
     
     def __str__(self):
         return str(self.title)

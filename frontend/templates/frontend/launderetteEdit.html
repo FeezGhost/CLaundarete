@@ -69,29 +69,29 @@
                 </div>
                 <div class="card-body">
                   <p>You can update your Launderete information here</p>
-                  <form>
+                  <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
                     <div class="form-group">
                       <label>Name</label>
-                      <input type="email" placeholder="Email Address" class="form-control">
+                      {{form.name}}
                     </div>
-                    
-                    <div class="form-group">
-                      <label>Description</label>
-                      <input type="email" placeholder="Email Address" class="form-control">
-                    </div>
-                    
                     <div class="form-group">
                       <label>Location</label>
-                      <input type="email" placeholder="Email Address" class="form-control">
+                      {{form.location}}
                     </div>
 
                     <div class="form-group">
                       <label>Available Time:</label>
-                      <input type="email" placeholder="Email Address" class="form-control">
+                      {{form.available_time}}
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Cover Photo</label>
+                      {{form.cover_photo}}
                     </div>
 
                     <div class="form-group">       
-                      <input type="submit" value="Update" class="btn btn-primary">
+                      <input type="submit" value="Update" class="btn btn-primary text-white">
                     </div>
                   </form>
                 </div>
@@ -104,5 +104,14 @@
       </footer>
     </div>
  
+     <script>
+
+      //Query All input fields
+      var form_fields = document.getElementsByTagName('input')
+      for (var field in form_fields){
+        form_fields[field].className += ' form-control'
+      }
+    </script>
+
 
 {% endblock content %}

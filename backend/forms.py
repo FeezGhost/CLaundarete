@@ -14,13 +14,14 @@ class CreatUserForm(UserCreationForm):
         fields =  ['username', 'name', 'email','password1', 'password2']
 
 class ServicesForm(ModelForm):
-    t_details=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))
-    des=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))
-    e_date=forms.DateField(widget=DateInput, required=False)
+    # t_details=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))
+    # des=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))
+    # e_date=forms.DateField(widget=DateInput, required=False)
     
     class Meta:
         model = Services
         fields = '__all__'
+        exclude = ['launderette']
 
 
 class LaundererForm(ModelForm):
@@ -29,6 +30,14 @@ class LaundererForm(ModelForm):
         model = Launderer
         fields = '__all__'
         exclude = ['user']
+
+
+class LaunderetteForm(ModelForm):
+    
+    class Meta:
+        model = Launderette
+        fields = '__all__'
+        exclude = ['launderer']
 
 class LaundererProfilePicForm(ModelForm):
     

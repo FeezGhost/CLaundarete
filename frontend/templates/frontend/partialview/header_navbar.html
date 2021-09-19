@@ -34,7 +34,9 @@
           <ul id="side-admin-menu" class="side-menu list-unstyled"> 
             <li> <a href="{% url 'launderette' %}"> <i class="icon-screen"> </i>Launderete</a></li>
             <li> <a href="{% url 'laundaretteReviews' %}"> <i class="icon-flask"> </i>Launderete Reviews</a></li>
-            <li> <a href="{% url 'services' %}"> <i class="icon-screen"> </i>Services</a></li>
+            {% if totalLaunderette != 0 %}
+              <li> <a href="{% url 'services' %}"> <i class="icon-screen"> </i>Services</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
