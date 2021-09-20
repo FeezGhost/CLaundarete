@@ -1,0 +1,72 @@
+{%  extends 'frontend/admin/partialview/base_template.html' %}
+{% load static %}
+
+{% block content %}
+
+   
+    <div class="page">
+      
+    {% include 'frontend/admin/partialview/top_navbar.html' %}
+
+      <!-- Breadcrumb-->
+      <div class="breadcrumb-holder">
+        <div class="container-fluid">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active"><a >Launderettes</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <h1 class="display-3 text-center m-4">Launderettes</h1>
+      <hr>
+      <section class="statistics">
+        <div class="container-fluid">
+          <div class="row d-flex">
+            {% for launderette in launderettes %}
+              <div class="col-lg-4">
+                <div class="card data-usage">
+                    <div class="card-header d-flex align-items-center">
+                        <div class="container px-4 pb-4">
+                                <img src="{{launderette.cover_photo.url}}" alt="person" class="img-fluid rounded-circle">  
+                        </div>
+                    </div>
+                  {% comment %} <h2 class="display h4 text-primary">{{launderette.user.username}}</h2> {% endcomment %}
+                      <p class="text-primary">Name:</p>
+                      <p>{{launderette.name}}</p>
+                      <p class="text-primary">Available Time</p>
+                      <p class="">{{launderette.available_time}}</p>
+                      <p class="text-primary">Address:</p>
+                      <p class="">{{launderette.location}}</p>
+                      {% comment %} <form enctype="multipart/form-data" method="POST" action = "{% url 'orderRequestProcess' orderRequest.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                 <input type="hidden" id="statusField1" name="statusField" value="accept">   
+                            </div>
+                            <div class="form-group mt-4">       
+                            <input type="submit" value="Accept Order" class="btn btn-md btn-outline-primary px-4">
+                            </div>
+                    </form>
+                      <form enctype="multipart/form-data" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                 <input type="hidden" id="statusField1" name="statusField" value="decline">   
+                            </div>
+                            <div class="form-group mt-4">       
+                            <input type="submit" value="Decline Order" class="btn btn-md px-4 btn-outline-danger">
+                            </div>
+                      </form> {% endcomment %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+      <footer class="main-footer">
+        {% include 'frontend/partialView/footer_navbar.html' %}
+      </footer>
+    </div>
+ 
+
+{% endblock content %}

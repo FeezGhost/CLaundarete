@@ -271,3 +271,40 @@ def changeEmail(request):
                 
     return redirect("myAccount")
 
+
+# Admin Dashboard
+
+def adminDashboardView(request):
+    admin = request.user
+    context = {"admin": admin}
+    return render(request,"frontend/admin/dashboard.html",context)
+
+def adminLaunderersView(request):
+    admin = request.user
+    launderers = Launderer.objects.all()
+    context = {"admin": admin,'launderers': launderers}
+    return render(request,"frontend/admin/launderers.html",context)
+
+def adminLaunderettesView(request):
+    admin = request.user
+    launderettes = Launderette.objects.all()
+    context = {"admin": admin,'launderettes': launderettes}
+    return render(request,"frontend/admin/launderettes.html",context)
+
+def adminClientsView(request):
+    admin = request.user
+    clients = Client.objects.all()
+    context = {"admin": admin,'clients': clients}
+    return render(request,"frontend/admin/clients.html",context)
+
+def adminReviewsView(request):
+    admin = request.user
+    reviews = Review.objects.all()
+    context = {"admin": admin,'reviews': reviews}
+    return render(request,"frontend/admin/reviews.html",context)
+
+def adminOrdersView(request):
+    admin = request.user
+    orders = Order.objects.all()
+    context = {"admin": admin,'orders': orders}
+    return render(request,"frontend/admin/orders.html",context)

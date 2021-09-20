@@ -39,6 +39,13 @@ class LaunderetteForm(ModelForm):
         fields = '__all__'
         exclude = ['launderer']
 
+class ReviewCommentForm(ModelForm):
+    
+    class Meta:
+        model = Launderer
+        fields = '__all__'
+        exclude = ['client', 'launderette', 'review']
+
 class LaundererProfilePicForm(ModelForm):
     
     class Meta:

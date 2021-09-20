@@ -107,6 +107,15 @@ class Review(models.Model):
     def __str__(self):
         return str(self.client.name)
 
+class ReviewComment(models.Model):
+    review = models.ForeignKey(Review, null=True, on_delete= models.SET_NULL)
+    client = models.ForeignKey(Client, null=True, blank=True, on_delete= models.SET_NULL)
+    launderette = models.ForeignKey(Launderette, null=True, blank=True, on_delete= models.SET_NULL)
+    comment = models.CharField(max_length=500, null=True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    
+    def __str__(self):
+        return str(self.client.name)
 
 class Complaint(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)

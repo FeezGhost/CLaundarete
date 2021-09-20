@@ -1,0 +1,83 @@
+{%  extends 'frontend/admin/partialview/base_template.html' %}
+{% load static %}
+
+{% block content %}
+
+   
+    <div class="page">
+      
+    {% include 'frontend/admin/partialview/top_navbar.html' %}
+
+      <!-- Breadcrumb-->
+      <div class="breadcrumb-holder">
+        <div class="container-fluid">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item "><a >Orders</a></li>
+            <li class="breadcrumb-item active">Orders       </li>
+          </ul>
+        </div>
+      </div>
+      <section class="charts">
+        <div class="container-fluid">
+          <!-- Page Header-->
+          <header> 
+            <h1 class="h3 display">Orders            </h1>
+          </header>
+          
+        <div class="card">
+        
+                        <div class="card-header">
+                        
+                            Ongoing Orders
+                        
+                        </div>
+                    
+                        
+                        <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                <th>Date & Time Started</th>
+                                <th>Client</th>
+                                <th>Launderette</th>
+                                <th>Status</th>
+                                <th>Price</th>
+                                <th>Amount</th>
+                                <th>Delivery Time</th>
+                                <th>Change status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for orders in orders %}
+                                    <tr>
+                                        <td>{{orders.date_started}}</td>
+                                        <td>{{orders.client}}</td>
+                                        <td>{{orders.launderette}}</td>
+                                        <td>{{orders.status}}</td>
+                                        <td>{{orders.price}}</td>
+                                        <td>{{orders.amount}}</td>
+                                        <td>{{orders.date_end}}</td>
+                                        {% comment %} <td><a class="btn btn-md btn-outline-primary" href= "{% url 'orderDetail' onGoingOrder.id %}">Details</a></td> {% endcomment %}
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                            </table>
+                        </div>
+            </div>
+      </div>
+        
+       
+        
+        </div>
+      </section>
+      
+      <footer class="main-footer">
+        {% include 'frontend/partialView/footer_navbar.html' %}
+      </footer>
+    </div>
+ 
+
+{% endblock content %}
