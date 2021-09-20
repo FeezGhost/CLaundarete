@@ -57,13 +57,13 @@ class StatusChoice1(models.TextChoices):
 class Order(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)
     launderette = models.ForeignKey(Launderette, null=True, on_delete= models.SET_NULL)
-    price = models.IntegerField(default=0)
-    amount = models.IntegerField(default=0)
+    description = models.CharField(max_length=200, null=True)
+    price = models.FloatField(default=0)
+    amount = models.FloatField(default=0)
     status =models.CharField(max_length=50, blank=True, null=True,choices=StatusChoice1.choices,default=StatusChoice1.PENDING)
-    date_started = models.DateTimeField(auto_now_add=True, null=True)
+    date_started = models.DateTimeField(null=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
     date_end = models.DateTimeField(null=True)
-    services = models.ForeignKey(Services, null=True, on_delete= models.SET_NULL)
-    
     def __str__(self):
         return str(self.client.name)
 

@@ -22,7 +22,8 @@
             <li class=""><a > <i class="fa fa-bar-chart"></i>Performance Report                              </a></li>
             <li><a href="#exampledropdownDropdown2" aria-expanded="false" data-toggle="collapse"> <i class="icon-home"></i>Order </a>
               <ul id="exampledropdownDropdown2" class="collapse list-unstyled ">
-                <li><a href="{% url 'ongoingOrders' %}">Ongoing Ordera</a></li>
+                <li><a href="{% url 'ordersRequest' %}">Order Requests</a></li>
+                <li><a href="{% url 'ongoingOrders' %}">Ongoing Orders</a></li>
                 <li><a href="{% url 'ordersHistory' %}">Orders History</a></li>
               </ul>
             </li>
@@ -33,8 +34,8 @@
           <h5 class="sidenav-heading">Launderete Menu</h5>
           <ul id="side-admin-menu" class="side-menu list-unstyled"> 
             <li> <a href="{% url 'launderette' %}"> <i class="icon-screen"> </i>Launderete</a></li>
-            <li> <a href="{% url 'laundaretteReviews' %}"> <i class="icon-flask"> </i>Launderete Reviews</a></li>
             {% if totalLaunderette != 0 %}
+              <li> <a href="{% url 'laundaretteReviews' %}"> <i class="icon-flask"> </i>Launderete Reviews</a></li>
               <li> <a href="{% url 'services' %}"> <i class="icon-screen"> </i>Services</a></li>
             {% endif %}
           </ul>

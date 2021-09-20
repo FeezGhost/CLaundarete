@@ -85,47 +85,25 @@
                             <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                <th>#</th>
-                                <th>Date Started</th>
+                                <th>Date & Time Started</th>
                                 <th>Client</th>
-                                <th>Services</th>
                                 <th>Price</th>
                                 <th>Amount</th>
-                                <th>End Date</th>
+                                <th>Delivery Time</th>
                                 <th>Reviews</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                <th scope="row">1</th>
-                                <td>2020/3/1</td>
-                                <td>Yasir</td>
-                                <td>2</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>2020/3/4</td>
-                                <td><a class="btn btn-md btn-outline-primary ">Check Review </a></td>
-                                </tr>
-                                <tr>
-                                <th scope="row">2</th>
-                                <td>2020/2/1</td>
-                                <td>Sikandar</td>
-                                <td>3</td>
-                                <td>300</td>
-                                <td>20</td>
-                                <td>2020/2/7</td>
-                                <td><a class="btn btn-md btn-outline-primary ">Check Review </a></td>
-                                </tr>
-                                <tr>
-                                <th scope="row">3</th>
-                                <td>2020/2/1</td>
-                                <td>Saad</td>
-                                <td>3</td>
-                                <td>300</td>
-                                <td>20</td>
-                                <td>2020/2/7</td>
-                                <td><a class="btn btn-md btn-outline-primary ">Check Review </a></td>
-                                </tr>
+                                {% for finished in finisheds %}
+                                    <tr>
+                                        <td>{{finished.date_started}}</td>
+                                        <td>{{finished.client}}</td>
+                                        <td>{{finished.price}}</td>
+                                        <td>{{finished.amount}}</td>
+                                        <td>{{finished.date_end}}</td>
+                                        <td><a class="btn btn-md btn-outline-primary "  href = "{% url 'orderDetail' finished.id %}">Details</a></td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                             </table>
                         </div>

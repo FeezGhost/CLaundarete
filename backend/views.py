@@ -58,17 +58,46 @@ def DashboardView(request):
 
 
 def OngoingOrder(request):
-    context = {}
+    launder = request.user.launderer
+    tLaunderette = launder.launderette_set.all()
+    orders = tLaunderette[0].order_set.all().order_by('-date_started')
+    onGoing = orders.filter(status='ongoing')
+    context = {"launderer": launder, 'onGoingOrders' : onGoing}
     return render(request,"frontend/ongoingOrders.html",context)
 
 def ordersHistory(request):
-    context = {}
+    launder = request.user.launderer
+    tLaunderette = launder.launderette_set.all()
+    orders = tLaunderette[0].order_set.all().order_by('-date_started')
+    finished = orders.filter(status='finished')
+    context = {"launderer": launder, 'finisheds' : finished}
     return render(request,"frontend/ordersHistory.html",context)
 
 
 def ordersRequests(request):
-    context = {}
+    launder = request.user.launderer
+    tLaunderette = launder.launderette_set.all()
+    orders = tLaunderette[0].order_set.all().order_by('-date_started')
+    orderequests = orders.filter(status='pending')
+    context = {"launderer": launder, 'orderRequests' : orderequests}
     return render(request,"frontend/orderRequests.html",context)
+
+def orderDetails(request, pk_id):
+    launder = request.user.launderer
+    tLaunderette = launder.launderette_set.all()
+    order = Order.objects.get(id = pk_id)
+    if request.method == 'POST' :
+        req_status = request.POST.get('statusField')
+        if req_status == 'finished':
+            order.status='finished'
+            orderObj = order.save()
+            return redirect('dashboard')
+        else:
+            order.status='cancel'
+            orderObj = order.save()
+            return redirect('dashboard')
+    context = {"launderer": launder, 'order' : order}
+    return render(request,"frontend/orderDetail.html",context)
 
 
 def services(request):

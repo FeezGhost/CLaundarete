@@ -62,66 +62,27 @@
       <section class="statistics">
         <div class="container-fluid">
           <div class="row d-flex">
-            <div class="col-lg-4">
-              <!-- Monthly Usage-->
-              <div class="card data-usage">
-                <h2 class="display h4 text-primary">Usman</h2>
-                    <p class="text-primary">Description:</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                    <p class="text-primary">Amount</p>
-                    <p class="">10</p>
-                    <p class="text-primary">Services</p>
-                    <ul class="list-group">
-                        <li class="list-group-item">Dry Cleaning</li>
-                        <li class="list-group-item">Ironing</li>
-                        <li class="list-group-item">Washing</li>
-                    </ul>
-                    <p class="text-primary">Date:</p>
-                    <p class="">2021/4/12</p>
-                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'editServices' %}">Accept Order</a>
-                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="">Decline Order</a>
+            {% for orderRequest in orderRequests %}
+              <div class="col-lg-4">
+                <div class="card data-usage">
+                  <h2 class="display h4 text-primary">{{orderRequest.client}}</h2>
+                      <p class="text-primary">Description:</p>
+                      <p>{{orderRequest.description}}</p>
+                      <p class="text-primary">Amount</p>
+                      <p class="">{{orderRequest.amount}}</p>
+                      <p class="text-primary">Services</p>
+                      <ul class="list-group">
+                          <li class="list-group-item">Dry Cleaning</li>
+                          <li class="list-group-item">Ironing</li>
+                          <li class="list-group-item">Washing</li>
+                      </ul>
+                      <p class="text-primary">Date:</p>
+                      <p class="">{{orderRequest.date_started}}</p>
+                      <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="">Accept Order</a>
+                      <a class="btn btn-md btn-outline-danger  mx-4 mb-2 mt-4" href="">Decline Order</a>
+                </div>
               </div>
-            </div>
-            <div class="col-lg-4">
-              <!-- Monthly Usage-->
-              <div class="card data-usage">
-                <h2 class="display h4 text-primary">Yasir</h2>
-                    <p class="text-primary">Description:</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                    <p class="text-primary">Amount</p>
-                    <p class="">10</p>
-                    <p class="text-primary">Services</p>
-                    <ul class="list-group">
-                        <li class="list-group-item">Dry Cleaning</li>
-                        <li class="list-group-item">Ironing</li>
-                        <li class="list-group-item">Washing</li>
-                    </ul>
-                    <p class="text-primary">Date:</p>
-                    <p class="">2021/4/12</p>
-                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'editServices' %}">Accept Order</a>
-                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="">Decline Order</a>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <!-- Monthly Usage-->
-              <div class="card data-usage">
-                <h2 class="display h4 text-primary">Anwar</h2>
-                    <p class="text-primary">Description:</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-                    <p class="text-primary">Amount</p>
-                    <p class="">10</p>
-                    <p class="text-primary">Services</p>
-                    <ul class="list-group">
-                        <li class="list-group-item">Dry Cleaning</li>
-                        <li class="list-group-item">Ironing</li>
-                        <li class="list-group-item">Washing</li>
-                    </ul>
-                    <p class="text-primary">Date:</p>
-                    <p class="">2021/4/12</p>
-                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" data-toggle="modal" data-target="#orderModel" href=''>Accept Order</a>
-                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="">Decline Order</a>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </div>
       </section>
