@@ -76,24 +76,14 @@
             </thead>
 
             <tbody>
+              {% for review in reviews %}
                 <tr class="bg-light">
-                    <th scope="row">Usman</th>
-                    <td>4.6</td>
-                    <td> <i class="fas fa-rocket"></i> {% lorem 1 b random %}</td>
-                    <td><a class="btn  btn-outline-primary   text-center" href="{% url 'laundaretteReviewDetail' %}">Check</a></td>
+                      <th scope="row">{{review.client}}</th>
+                      <td>{{review.rating}}</td>
+                      <td> {{review.review}}</td>
+                      <td><a class="btn  btn-outline-primary   text-center" href="{% url 'laundaretteReviewDetail' review.id %}">Check</a></td>
                 </tr>
-                <tr class="bg-light">
-                    <th scope="row">Anwar</th>
-                    <td>4</td>
-                    <td> <i class="fas fa-rocket"></i> {% lorem 1 b random %}</td>
-                    <td><a class="btn  btn-outline-primary   text-center" href="{% url 'laundaretteReviewDetail' %}">Check</a></td>
-                </tr>
-                <tr class="bg-light">
-                    <th scope="row">Yasir</th>
-                    <td>5</td>
-                    <td> <i class="fas fa-rocket"></i> {% lorem 1 b random %}</td>
-                    <td><a class="btn  btn-outline-primary   text-center" href="{% url 'laundaretteReviewDetail' %}">Check</a></td>
-                </tr>
+              {% endfor %}
             </tbody>
         </table>
         </div>

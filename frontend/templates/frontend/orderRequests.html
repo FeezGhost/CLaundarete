@@ -78,49 +78,30 @@
                       </ul>
                       <p class="text-primary">Date:</p>
                       <p class="">{{orderRequest.date_started}}</p>
-                      <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="">Accept Order</a>
-                      <a class="btn btn-md btn-outline-danger  mx-4 mb-2 mt-4" href="">Decline Order</a>
+                      <form enctype="multipart/form-data" method="POST" action = "{% url 'orderRequestProcess' orderRequest.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                 <input type="hidden" id="statusField1" name="statusField" value="accept">   
+                            </div>
+                            <div class="form-group mt-4">       
+                            <input type="submit" value="Accept Order" class="btn btn-md btn-outline-primary px-4">
+                            </div>
+                    </form>
+                      <form enctype="multipart/form-data" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                 <input type="hidden" id="statusField1" name="statusField" value="decline">   
+                            </div>
+                            <div class="form-group mt-4">       
+                            <input type="submit" value="Decline Order" class="btn btn-md px-4 btn-outline-danger">
+                            </div>
+                      </form>
                 </div>
               </div>
             {% endfor %}
           </div>
         </div>
       </section>
-      
-      <div id="orderModel" class="modal fade" role="dialog">
-        <div class="modal-dialog ">
-            <div class="modal-content bg-dark text-white text-center">
-                <div class="modal-header">
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form enctype="multipart/form-data" method="POST", action="">
-                    {% csrf_token %}
-                    <div class="form-group">
-                      <label>Price</label>
-                      <input type="text" class="form-control" id="usr">
-                    </div>
-                    
-                    <div class="form-group">
-                      <label>Start Date</label>
-                      <input type="datetime-local" id="birthdaytime" name="birthdaytime">
-                    </div>
-                    
-                    <div class="form-group">
-                      <label>End Date</label>
-                      <input type="datetime-local" id="birthdaytime" name="birthdaytime">
-                    </div>
-                    
-
-                    <div class="form-group mt-4">       
-                      <input type="submit" value="Confirm Order" class="btn btn-primary">
-                    </div>
-                  </form>
-                </div>
-                
-            </div>
-        </div>
-      </div>
 
       <footer class="main-footer">
         {% include 'frontend/partialView/footer_navbar.html' %}

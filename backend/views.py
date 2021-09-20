@@ -82,6 +82,19 @@ def ordersRequests(request):
     context = {"launderer": launder, 'orderRequests' : orderequests}
     return render(request,"frontend/orderRequests.html",context)
 
+def orderRequestProcess(request, pk_id):
+    order = Order.objects.get(id = pk_id)
+    if request.method == 'POST' :
+        req_status = request.POST.get('statusField')
+        if req_status == 'accept':
+            order.status='ongoing'
+            orderObj = order.save()
+            return redirect('ordersRequest')
+        else:
+            order.status='declined'
+            orderObj = order.save()
+            return redirect('ordersRequest')
+
 def orderDetails(request, pk_id):
     launder = request.user.launderer
     tLaunderette = launder.launderette_set.all()
@@ -190,11 +203,17 @@ def launderetteEdit(request):
     return render(request,"frontend/launderetteEdit.html",context)
 
 def launderetteReviews(request):
-    context = {}
+    launderer = request.user.launderer
+    launderette = launderer.launderette_set.all()
+    reviews = launderette[0].review_set.all()
+    print(reviews)
+    context = {'launderer':launderer, 'reviews':reviews}
     return render(request,"frontend/launderetteReviews.html",context)
 
-def launderetteReviewDetail(request):
-    context = {}
+def launderetteReviewDetail(request, pk_id):
+    launderer = request.user.launderer
+    review = Review.objects.get(id=pk_id)
+    context = {'launderer':launderer, 'review':review}
     return render(request,"frontend/launderetteReviewDetail.html",context)
 
 def laundererAccount(request):

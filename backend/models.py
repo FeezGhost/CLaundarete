@@ -99,6 +99,8 @@ class Transactions(models.Model):
 class Review(models.Model):
     launderette = models.ForeignKey(Launderette, null=True, on_delete= models.SET_NULL)
     client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)
+    order = models.ForeignKey(Order, null=True, on_delete= models.SET_NULL)
+    rating = models.FloatField(null=True, blank= True)
     review = models.CharField(max_length=500, null=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
     

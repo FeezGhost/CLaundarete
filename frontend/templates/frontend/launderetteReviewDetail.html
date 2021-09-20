@@ -73,22 +73,22 @@
                 <div class="card-body">
                     
                     <p class="lead text-primary">By:</p>
-                    <p class="lead ">Usman</p>
+                    <p class="lead ">{{review.client}}</p>
 
                     <p class="lead text-primary">Review:</p>
-                    <p class="lead">{% lorem 1 b random %}</p>
+                    <p class="lead">{{review.review}}</p>
 
                     
                     <div class="row">
                         <div class="col-6">
                             <p class="lead text-primary">Rating:</p>
-                            <p class="lead ">4.6</p>
+                            <p class="lead ">{{review.rating}}</p>
                         </div>
                         <div class="col-6">
                             
                         <div class="col-6">
                             <p class="lead text-primary">Sent Time:</p>
-                            <p class="lead ">09/06/2021 9 am</p>
+                            <p class="lead ">{{review.date}}</p>
                         </div>
                         </div>
                     </div>
