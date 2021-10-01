@@ -44,7 +44,7 @@
                       <td> {{review.launderette}}</td>
                       <td>{{review.rating}}</td>
                       <td> {{review.review}}</td>
-                      {% comment %} <td><a class="btn  btn-outline-primary   text-center" href="{% url 'laundaretteReviewDetail' review.id %}">Check</a></td> {% endcomment %}
+                      <td><a class="btn  btn-outline-primary   text-center" href="{% url 'adminReviewDetail' review.id %}">Check</a></td>
                 </tr>
               {% endfor %}
             </tbody>

@@ -1,3 +1,4 @@
+from django.http.request import QueryDict
 from django.shortcuts import render,redirect
 from .forms import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
@@ -7,6 +8,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from .filters import *
+from django.core.paginator import Paginator, EmptyPage
 # from .decorators import  unauthenticated_user, allowed_users,admin_only
 
 # Create your views here.
@@ -52,8 +55,44 @@ def RegisterView(request):
 
 def DashboardView(request):
     launderer = request.user.launderer
+
+    launderette = launderer.launderette_set.all()[0]
     totalLaunderette = launderer.launderette_set.all().count()
-    context = {"launderer": launderer, 'totalLaunderette': totalLaunderette}
+
+    reviews = launderette.review_set.all()
+    positiveReviews = reviews.filter(rating__gte=2.5).count()
+    negativeReviews = reviews.filter(rating__lt=2.5).count()
+    totalreviews = reviews.count()
+    reviewsRatio = float((positiveReviews/totalreviews)*100)
+    
+    orders = launderette.order_set.all()
+    totalOrders = orders.count()
+    newOrders = orders.filter(status = 'pending')
+    totalNewOrders = newOrders.count()
+    ongoingOrders = orders.filter(status = 'ongoing').order_by('-date_started') 
+    finishedOrders = orders.filter(status = 'finished').order_by('-date_end')
+    totalOngoingOrders = ongoingOrders.count()
+    canceledOrders = orders.filter(status = 'declined')
+    acceptedOrders = orders.exclude(status = 'declined').count()
+    totalCanceledOrders = canceledOrders.count()
+    acceptedOrdersRatio = 100 - float((totalCanceledOrders/totalOrders)*100)
+
+    context = {
+        "launderer" : launderer, 
+        'totalLaunderette' : totalLaunderette,
+        'totalreviews' : totalreviews,
+        'positiveReviews' : positiveReviews,
+        'negativeReviews' : negativeReviews,
+        'newOrders' : totalNewOrders,
+        'totalOrders' : totalOrders,
+        'totalOngoingOrders' : totalOngoingOrders,
+        'ongoingOrders' : ongoingOrders,
+        'finishedOrders' : finishedOrders,
+        'acceptedOrdersRatio' : acceptedOrdersRatio,
+        'acceptedOrders' : acceptedOrders,
+        'totalCanceledOrders' : totalCanceledOrders,
+        'reviewsRatio' : reviewsRatio
+        }
     return render(request,"frontend/dashboardIndex.html",context)
 
 
@@ -62,30 +101,53 @@ def OngoingOrder(request):
     tLaunderette = launder.launderette_set.all()
     orders = tLaunderette[0].order_set.all().order_by('-date_started')
     onGoing = orders.filter(status='ongoing')
-    context = {"launderer": launder, 'onGoingOrders' : onGoing}
+    ordersfliter = OrderFilter(request.GET, queryset=orders)
+    onGoing = ordersfliter.qs
+    p  = Paginator(onGoing, 20)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {"launderer": launder, 'onGoingOrders' : page, 'ordersfilter':ordersfliter}
     return render(request,"frontend/ongoingOrders.html",context)
 
 def ordersHistory(request):
     launder = request.user.launderer
     tLaunderette = launder.launderette_set.all()
     orders = tLaunderette[0].order_set.all().order_by('-date_started')
-    finished = orders.filter(status='finished')
-    context = {"launderer": launder, 'finisheds' : finished}
+    finished = orders.exclude(status='ongoing').exclude(status='pending')
+    ordersfliter = OrderFilter2(request.GET, queryset=orders)
+    finished = ordersfliter.qs
+    p  = Paginator(finished, 20)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {"launderer": launder, 'finisheds' : page, 'ordersfliter': ordersfliter}
     return render(request,"frontend/ordersHistory.html",context)
-
 
 def ordersRequests(request):
     launder = request.user.launderer
     tLaunderette = launder.launderette_set.all()
     orders = tLaunderette[0].order_set.all().order_by('-date_started')
     orderequests = orders.filter(status='pending')
-    context = {"launderer": launder, 'orderRequests' : orderequests}
+    p  = Paginator(orderequests, 10)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {"launderer": launder, 'orderRequests' : page}
     return render(request,"frontend/orderRequests.html",context)
 
 def orderRequestProcess(request, pk_id):
     order = Order.objects.get(id = pk_id)
+    print(11)
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
+        print(req_status)
         if req_status == 'accept':
             order.status='ongoing'
             orderObj = order.save()
@@ -206,15 +268,42 @@ def launderetteReviews(request):
     launderer = request.user.launderer
     launderette = launderer.launderette_set.all()
     reviews = launderette[0].review_set.all()
-    print(reviews)
-    context = {'launderer':launderer, 'reviews':reviews}
+    reviewsFilters = ReviewFilter(request.GET, queryset=reviews)
+    reviews = reviewsFilters.qs
+    p  = Paginator(reviews, 20)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {'launderer':launderer, 'reviews':page, 'reviewsFilters': reviewsFilters}
     return render(request,"frontend/launderetteReviews.html",context)
 
 def launderetteReviewDetail(request, pk_id):
     launderer = request.user.launderer
     review = Review.objects.get(id=pk_id)
-    context = {'launderer':launderer, 'review':review}
+    launderette = launderer.launderette_set.all()
+    comments = review.reviewcomment_set.all()
+    commentForm = ReviewCommentForm()
+    if request.method == "POST":
+        commentForm = ReviewCommentForm(request.POST)
+        if commentForm.is_valid():
+            com = commentForm.cleaned_data.get('comment')
+            reviewCommentObject = ReviewComment.objects.create(
+                comment = com,
+                review = review,
+                launderette = launderette[0]
+            )
+    context = {'launderer':launderer, 'review':review, 'comments': comments, 'commentForm': commentForm }
     return render(request,"frontend/launderetteReviewDetail.html",context)
+
+def deleteComment(request, pk_id):
+    reviewComment = ReviewComment.objects.get(id=pk_id)
+    if request.method == 'POST':
+        reviewComment.delete()
+        return redirect('laundaretteReviewDetail', reviewComment.review.id)
+    else:
+        return redirect('laundaretteReviewDetail', reviewComment.review.id)
 
 def laundererAccount(request):
     launderer = request.user.launderer
@@ -246,7 +335,6 @@ def changeProfilepic(request):
             form.save()
                 
     return redirect("myAccount")
-
 
 @login_required(login_url="login")
 def changePassword(request):
@@ -285,11 +373,56 @@ def adminLaunderersView(request):
     context = {"admin": admin,'launderers': launderers}
     return render(request,"frontend/admin/launderers.html",context)
 
+def adminLaundererDetailView(request, pk_id):
+    admin = request.user
+    launderer = Launderer.objects.get(id = pk_id)
+    launderette = launderer.launderette_set.all()[0]
+    context = {"admin": admin,'launderer': launderer, 'launderette': launderette }
+    return render(request,"frontend/admin/laundererDetail.html",context)
+
+def laundererRequestProcess(request, pk_id):
+    launderer = Launderer.objects.get(id = pk_id)
+    if request.method == 'POST' :
+        req_status = request.POST.get('statusField')
+        print(req_status)
+        if req_status == 'block':
+            launderer.isBlocked = True
+            laundererObj = launderer.save()
+            return redirect('adminLaunderers')
+        else:
+            launderer.isBlocked= False
+            laundererObj = launderer.save()
+            return redirect('adminLaunderers')
+
+
 def adminLaunderettesView(request):
     admin = request.user
     launderettes = Launderette.objects.all()
     context = {"admin": admin,'launderettes': launderettes}
     return render(request,"frontend/admin/launderettes.html",context)
+
+def launderetteRequestProcess(request, pk_id):
+    launderette = Launderette.objects.get(id = pk_id)
+    if request.method == 'POST' :
+        req_status = request.POST.get('statusField')
+        print(req_status)
+        if req_status == 'block':
+            launderette.isBlocked = True
+            launderetteObj = launderette.save()
+            return redirect('adminLaunderettes')
+        else:
+            launderette.isBlocked= False
+            launderetteObj = launderette.save()
+            return redirect('adminLaunderettes')
+
+def adminLaunderetteDetailView(request, pk_id):
+    admin = request.user
+    launderette = Launderette.objects.get(id = pk_id)
+    launderer = launderette.launderer
+    orders = launderette.order_set.all().order_by('-date_started')
+    context = {"admin": admin,'launderette': launderette, 'launderer': launderer, 'orders':orders}
+    return render(request,"frontend/admin/launderetteDetail.html",context)
+
 
 def adminClientsView(request):
     admin = request.user
@@ -297,14 +430,55 @@ def adminClientsView(request):
     context = {"admin": admin,'clients': clients}
     return render(request,"frontend/admin/clients.html",context)
 
+def adminClientDetailView(request, pk_id):
+    admin = request.user
+    client = Client.objects.get(id = pk_id)
+    orders =client.order_set.all().order_by('-date_created')
+    context = {"admin": admin,'client': client,  "orders": orders}
+    return render(request,"frontend/admin/clientDetail.html",context)
+
+def clientRequestProcess(request, pk_id):
+    client = Client.objects.get(id = pk_id)
+    if request.method == 'POST' :
+        req_status = request.POST.get('statusField')
+        print(req_status)
+        if req_status == 'block':
+            client.isBlocked = True
+            clientObj = client.save()
+            return redirect('adminClients')
+        else:
+            client.isBlocked= False
+            clientObj = client.save()
+            return redirect('adminClients')
+
+
 def adminReviewsView(request):
     admin = request.user
     reviews = Review.objects.all()
     context = {"admin": admin,'reviews': reviews}
     return render(request,"frontend/admin/reviews.html",context)
 
+def adminReviewDetail(request, pk_id):
+    review = Review.objects.get(id=pk_id)
+    comments = review.reviewcomment_set.all()
+    context = {'review':review, 'comments': comments}
+    return render(request,"frontend/admin/review_details.html",context)
+
+
 def adminOrdersView(request):
     admin = request.user
     orders = Order.objects.all()
     context = {"admin": admin,'orders': orders}
     return render(request,"frontend/admin/orders.html",context)
+
+def adminOrderDetails(request, pk_id):
+    order = Order.objects.get(id = pk_id)
+    context = { 'order' : order}
+    return render(request,"frontend/admin/order_detail.html",context)
+
+
+def adminComplaintsView(request):
+    admin = request.user
+    complaints = Complaint.objects.all()
+    context = {"admin": admin,'complaints': complaints}
+    return render(request,"frontend/admin/complaints.html",context)

@@ -20,6 +20,7 @@ urlpatterns = [
     path('dashboard/launderette/edit', views.launderetteEdit, name="editlaunderette"),
     path('dashboard/launderette/reviews', views.launderetteReviews, name="laundaretteReviews"),
     path('dashboard/launderette/reviews/detail/<str:pk_id>/', views.launderetteReviewDetail, name="laundaretteReviewDetail"),
+    path('dashboard/launderette/reviews/detail/delete/<str:pk_id>/', views.deleteComment, name="deleteComment"),
     path('dashboard/account/', views.laundererAccount, name="myAccount"),
     path('changeemail/', views.changeEmail, name="changeEmail"),
     path('generalinfo/', views.changeGeneralInfo, name="generalInfo"),
@@ -30,9 +31,24 @@ urlpatterns = [
 
     # Admin Dashboard urls
     path('admindashboard/', views.adminDashboardView, name="adminDashboard"),
+
     path('admindashboard/launderers/', views.adminLaunderersView, name="adminLaunderers"),
+    path('admindashboard/launderers/<str:pk_id>/', views.laundererRequestProcess, name="laundererRequestProcess"),
+    path('admindashboard/launderer/details/<str:pk_id>/', views.adminLaundererDetailView, name="adminLaundererDetail"),
+
     path('admindashboard/launderettes/', views.adminLaunderettesView, name="adminLaunderettes"),
+    path('admindashboard/launderettes/<str:pk_id>/', views.launderetteRequestProcess, name="launderetteRequestProcess"),
+    path('admindashboard/launderette/details/<str:pk_id>/', views.adminLaunderetteDetailView, name="adminLaunderetteDetail"),
+
     path('admindashboard/clients/', views.adminClientsView, name="adminClients"),
+    path('admindashboard/clients/<str:pk_id>/', views.clientRequestProcess, name="clientRequestProcess"),
+    path('admindashboard/clients/details/<str:pk_id>/', views.adminClientDetailView, name="adminClientDetail"),
+
     path('admindashboard/reviews/', views.adminReviewsView, name="adminReviews"),
+    path('admindashboard/reviews/details/<str:pk_id>/', views.adminReviewDetail, name="adminReviewDetail"),
+
     path('admindashboard/orders/', views.adminOrdersView, name="adminOrders"),
+    path('admindashboard/orders/detail/<str:pk_id>/', views.adminOrderDetails, name="adminOrderDetails"),
+
+    path('admindashboard/complaints/', views.adminComplaintsView, name="adminComplaints"),
 ]

@@ -8,6 +8,8 @@ class Client(models.Model):
     name = models.CharField(max_length=200, null=True)
     profile_pic = models.ImageField(null=True, blank=True, default="default-profile.png")
     address = models.CharField(max_length=200, null=True)
+    isBlocked = models.BooleanField(default=False, null=True)
+    date_joined =models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
         return str(self.name)
@@ -17,6 +19,8 @@ class Launderer(models.Model):
     name = models.CharField(max_length=200, null=True)
     profile_pic = models.ImageField(null=True, blank=True, default="default-profile.png")
     address = models.CharField(max_length=200, null=True)
+    isBlocked = models.BooleanField(default=False, null=True)
+    date_joined =models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
         return str(self.name)
@@ -34,6 +38,8 @@ class Launderette(models.Model):
     available_time = models.CharField(max_length=500, null=True, blank=True)
     cover_photo = models.ImageField(null=True, blank=True, default="0_GettyImages-1068728612.jpg")
     location = models.CharField(max_length=200, null=True)
+    isBlocked = models.BooleanField(default=False, null=True)
+    date_joined =models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
         return str(self.name)
@@ -114,9 +120,6 @@ class ReviewComment(models.Model):
     comment = models.CharField(max_length=500, null=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
     
-    def __str__(self):
-        return str(self.client.name)
-
 class Complaint(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)
     subject = models.CharField(max_length=200, null=True)

@@ -1,29 +1,28 @@
-{%  extends 'frontend/partialview/base_template.html' %}
+{%  extends 'frontend/admin/partialview/base_template.html' %}
 {% load static %}
 
 {% block content %}
 
    
     <div class="page">
-      <!-- navbar-->
       
-      {% include 'frontend/partialview/topbar.html' %}  
-      
+    {% include 'frontend/admin/partialview/top_navbar.html' %}
+
       
       <!-- Breadcrumb-->
       <div class="breadcrumb-holder">
         <div class="container-fluid">
           <ul class="breadcrumb">
             <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a >Launderete</a></li>
-            <li class="breadcrumb-item"><a >Reviews</a></li>
-            <li class="breadcrumb-item active"><a >Details</a></li>
+            <li class="breadcrumb-item "><a >Launderete</a></li>
+            <li class="breadcrumb-item active"><a >Reviews</a></li>
           </ul>
         </div>
       </div>
 
 
-      <h1 class="h3 display-4 text-primary m-4 text-center">Launderete    Review        </h1>
+      <h1 class="h3 display-3 text-primary m-4 text-center">   Review Details        </h1>
+     
      
      <section class="charts">
         <div class="container-fluid">
@@ -34,9 +33,16 @@
                 </div>
                 <div class="card-body">
                     
-                    <p class="lead text-primary">By:</p>
-                    <p class="lead ">{{review.client}}</p>
-
+                    <div class="row">
+                        <div class="col-6">
+                          <p class="lead text-primary">By:</p>
+                          <p class="lead ">{{review.client}}</p>
+                        </div>
+                        <div class="col-6">
+                          <p class="lead text-primary">To:</p>
+                          <p class="lead ">{{review.launderette}}</p>
+                        </div>
+                    </div>
                     <p class="lead text-primary">Review:</p>
                     <p class="lead">{{review.review}}</p>
 
@@ -54,17 +60,8 @@
                         </div>
                         </div>
                     </div>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="comment">Comment:</label>
-                            {{commentForm.comment}}
-                        </div>
-                        <div class="form-group">       
-                        <input type="submit" value="Update" class="btn btn-primary">
-                        </div>
-                    </form>
                 </div>
+                <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'adminOrderDetails' review.order.id %} ">Check Order</a>
               </div>
             
         </div><h4>Review Response</h4>
@@ -95,14 +92,6 @@
                               <p class="lead ">{{comment.date}}</p>
                           </div>
                       </div>
-                      {% if comment.client == None %}
-                        <form method="POST",  action="{% url 'deleteComment' comment.id %}">
-                            {% csrf_token %}
-                            <div class="form-group">       
-                            <input type="submit" value="Delete" class="btn btn-outline-danger">
-                            </div>
-                        </form>
-                      {% endif %}
                   </div>
               </div>
               
@@ -115,22 +104,13 @@
 
 
 
+
+
+
       <footer class="main-footer">
         {% include 'frontend/partialView/footer_navbar.html' %}
       </footer>
     </div>
-    
-    
-    <script>
-
-      //Query All input fields
-      var form_fields = document.getElementsByTagName('textarea')
-      
-
-      for (var field in form_fields){
-        form_fields[field].className += ' form-input'
-      }
-    </script>
  
 
 {% endblock content %}

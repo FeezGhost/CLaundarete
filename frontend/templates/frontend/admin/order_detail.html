@@ -1,15 +1,13 @@
-{%  extends 'frontend/partialview/base_template.html' %}
+{%  extends 'frontend/admin/partialview/base_template.html' %}
 {% load static %}
 
 {% block content %}
 
    
     <div class="page">
-      <!-- navbar-->
       
-      {% include 'frontend/partialview/topbar.html' %}  
-      
-      
+    {% include 'frontend/admin/partialview/top_navbar.html' %}
+
       <!-- Breadcrumb-->
       <div class="breadcrumb-holder">
         <div class="container-fluid">
@@ -57,7 +55,16 @@
               </div> {% endcomment %}
             <div class="card data-usage text-center p-4 mx-4">
                 <div class="container">
-                <h2 class="display h4 text-primary">{{order.client}}</h2>
+                <div class="row d-flex">
+                    <div class="col-lg-6">
+                        <h2 class="display h4 text-primary">Client</h2>
+                        <h2 class="display h4 ">{{order.client}}</h2>
+                    </div>
+                    <div class="col-lg-6">
+                        <h2 class="display h4 text-primary">Launderete</h2>
+                        <h2 class="display h4 ">{{order.launderette}}</h2>
+                    </div>
+                </div>
                   <hr>
                       <p class="text-primary">Description:</p>
                       <p>{{order.description}}</p>
@@ -128,7 +135,7 @@
                             </div>
                       </form>
                       {% else %}
-                      <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'laundaretteReviewDetail' order.id %} ">Check Review</a>
+                      <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'adminReviewDetail' order.id %} ">Check Review</a>
                       {% endif %}
                 </div>
                   

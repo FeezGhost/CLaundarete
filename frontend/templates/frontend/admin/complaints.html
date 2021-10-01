@@ -18,19 +18,18 @@
           </ul>
         </div>
       </div>
-      
       <section class="charts">
         <div class="container-fluid">
           <!-- Page Header-->
           <header> 
-            <h1 class="h3 display">Orders            </h1>
+            <h1 class="h3 display">Complaints            </h1>
           </header>
           
         <div class="card">
         
                         <div class="card-header">
                         
-                            Ongoing Orders
+                            User Complaints List
                         
                         </div>
                     
@@ -40,27 +39,19 @@
                             <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                <th>Date & Time Started</th>
+                                <th>Date</th>
                                 <th>Client</th>
-                                <th>Launderette</th>
-                                <th>Status</th>
-                                <th>Price</th>
-                                <th>Amount</th>
-                                <th>Delivery Time</th>
-                                <th>Change status</th>
+                                <th>Subject</th>
+                                <th>Details</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for orders in orders %}
+                                {% for complaint in complaints %}
                                     <tr>
-                                        <td>{{orders.date_started}}</td>
-                                        <td>{{orders.client}}</td>
-                                        <td>{{orders.launderette}}</td>
-                                        <td>{{orders.status}}</td>
-                                        <td>{{orders.price}}</td>
-                                        <td>{{orders.amount}}</td>
-                                        <td>{{orders.date_end}}</td>
-                                        <td><a class="btn btn-md btn-outline-primary" href= "{% url 'adminOrderDetails' orders.id %}">Details</a></td>
+                                        <td>{{complaint.date}}</td>
+                                        <td>{{complaint.client}}</td>
+                                        <td>{{complaint.subject}}</td>
+                                        {% comment %} <td><a class="btn btn-md btn-outline-primary" href= "{% url 'orderDetail' onGoingOrder.id %}">Details</a></td> {% endcomment %}
                                     </tr>
                                 {% endfor %}
                                 

@@ -31,31 +31,36 @@
                                 <img src="{{launderer.profile_pic.url}}" alt="person" class="img-fluid rounded-circle">  
                         </div>
                     </div>
-                  <h2 class="display h4 text-primary">{{launderer.user.username}}</h2>
+                    <a href="{% url 'adminLaundererDetail' launderer.id %}"><h2 class="display h4 text-primary">{{launderer.user.username}}</h2></a>
                       <p class="text-primary">Name:</p>
                       <p>{{launderer.name}}</p>
                       <p class="text-primary">Email</p>
                       <p class="">{{launderer.user.email}}</p>
                       <p class="text-primary">Address:</p>
                       <p class="">{{launderer.address}}</p>
-                      {% comment %} <form enctype="multipart/form-data" method="POST" action = "{% url 'orderRequestProcess' orderRequest.id %}">
+                      
+                      {% if launderer.isBlocked == False %}
+                       <form enctype="multipart/form-data" method="POST" action="{% url 'laundererRequestProcess' launderer.id %}">
                             {% csrf_token %}
                             <div class="form-group">
-                                 <input type="hidden" id="statusField1" name="statusField" value="accept">   
+                                 <input type="hidden" id="statusField1" name="statusField" value="block">   
                             </div>
                             <div class="form-group mt-4">       
-                            <input type="submit" value="Accept Order" class="btn btn-md btn-outline-primary px-4">
+                            <input type="submit" value="Block Launderer" class="btn btn-md btn-outline-danger px-4">
                             </div>
-                    </form>
-                      <form enctype="multipart/form-data" method="POST">
+                        </form>
+                      {% endif %}
+                      {% if launderer.isBlocked == True %}
+                       <form enctype="multipart/form-data" method="POST" action="{% url 'laundererRequestProcess' launderer.id %}"  >
                             {% csrf_token %}
                             <div class="form-group">
-                                 <input type="hidden" id="statusField1" name="statusField" value="decline">   
+                                 <input type="hidden" id="statusField1" name="statusField" value="unblock">   
                             </div>
                             <div class="form-group mt-4">       
-                            <input type="submit" value="Decline Order" class="btn btn-md px-4 btn-outline-danger">
+                            <input type="submit" value="Unblock Launderer" class="btn btn-md btn-outline-danger px-4">
                             </div>
-                      </form> {% endcomment %}
+                        </form>
+                      {% endif %}
                 </div>
               </div>
             {% endfor %}

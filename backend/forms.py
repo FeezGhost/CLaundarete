@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, fields
 from .models import *
 from django import forms
 from django.contrib.auth.models import User
@@ -14,7 +14,6 @@ class CreatUserForm(UserCreationForm):
         fields =  ['username', 'name', 'email','password1', 'password2']
 
 class ServicesForm(ModelForm):
-    # t_details=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))
     # des=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))
     # e_date=forms.DateField(widget=DateInput, required=False)
     
@@ -40,11 +39,12 @@ class LaunderetteForm(ModelForm):
         exclude = ['launderer']
 
 class ReviewCommentForm(ModelForm):
+    comment=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":100, }))
     
     class Meta:
-        model = Launderer
-        fields = '__all__'
-        exclude = ['client', 'launderette', 'review']
+        model = ReviewComment
+        exclude = '__all__'
+        fields = ['comment']
 
 class LaundererProfilePicForm(ModelForm):
     
