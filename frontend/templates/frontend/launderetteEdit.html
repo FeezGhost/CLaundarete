@@ -13,7 +13,7 @@
         <div class="container-fluid">
           <ul class="breadcrumb">
             <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item "><a >Launderete</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'launderette' %}">Launderete</a></li>
             <li class="breadcrumb-item active"><a >Edit</a></li>
           </ul>
         </div>
@@ -48,6 +48,7 @@
                     
                     <div class="form-group">
                       <label>Cover Photo</label>
+                      <br>
                       {{form.cover_photo}}
                     </div>
 

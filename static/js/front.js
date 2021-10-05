@@ -90,10 +90,10 @@ $(document).ready(function () {
     // ------------------------------------------------------ //
     var progress_circle = $("#progress-circle").gmpc({
         color: brandPrimary,
-        line_width: 5,
-        percent: 80
+        line_width: 7,
+        percent: myvalue
     });
-    progress_circle.gmpc('animate', 80, 3000);
+    progress_circle.gmpc('animate', myvalue, 5000);
 
     // ------------------------------------------------------- //
     // External links to new window

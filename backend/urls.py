@@ -30,6 +30,8 @@ urlpatterns = [
     path('logout/', views.logoutView, name="logout"),
 
     # Admin Dashboard urls
+    
+    path('cladmin/', views.adminLoginView, name="adminLoginPage"),
     path('admindashboard/', views.adminDashboardView, name="adminDashboard"),
 
     path('admindashboard/launderers/', views.adminLaunderersView, name="adminLaunderers"),

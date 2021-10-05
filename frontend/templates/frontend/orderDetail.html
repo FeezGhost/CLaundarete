@@ -15,7 +15,8 @@
         <div class="container-fluid">
           <ul class="breadcrumb">
             <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a >Orders</a></li>
+            <li class="breadcrumb-item "><a >Orders</a></li>
+            <li class="breadcrumb-item active"><a >Detail</a></li>
           </ul>
         </div>
       </div>
@@ -107,7 +108,7 @@
                         </div>
                       </div> 
                       <hr>
-                      {% if order.status != 'finished' %}
+                      {% if order.status == 'pending' %}
                       <h3 class=""> Change status of order:</h3> 
                       <form enctype="multipart/form-data" method="POST">
                             {% csrf_token %}
@@ -128,7 +129,7 @@
                             </div>
                       </form>
                       {% else %}
-                      <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'laundaretteReviewDetail' order.id %} ">Check Review</a>
+                      {% comment %} <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'laundaretteReviewDetail' order.id %} ">Check Review</a> {% endcomment %}
                       {% endif %}
                 </div>
                   

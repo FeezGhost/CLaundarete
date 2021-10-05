@@ -15,7 +15,7 @@
         <div class="container-fluid">
           <ul class="breadcrumb">
             <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item "><a >Launderete</a></li>
+            <li class="breadcrumb-item "><a href-"{% url 'launderette' %}">Launderete</a></li>
             <li class="breadcrumb-item active"><a >Reviews</a></li>
           </ul>
         </div>
@@ -23,30 +23,52 @@
 
 
       <h1 class="h3 display-3 text-primary m-4 text-center">Launderete   Reviews         </h1>
-     <form method="get" class="text-left">
-              {{reviewsFilters.form}}
-              
-              <div class="form-group text-center">
-		            <button class="btn btn-primary" type="submit">Search</button>
-              </div>
-            </form>
      <section class="my-4">
         <div class="container">
+          <form method="get" class="text-left">
+            <div class="filters p-4">
+              <div class="form-group-material">
+                <label>Client Name</label>
+                {{reviewsFilters.form.client_name}}
+              </div>
+              <a href="#rate_filter"  data-toggle="collapse">Rate Filters</a>
+              <div id="rate_filter" class="collapse">
+                <div class="form-group-material">
+                  <label>Rating Range</label>
+                  {{reviewsFilters.form.start_rating}}
+                  {{reviewsFilters.form.end_rating}}
+                </div>
+              </div>
+              <a href="#date_filter"  data-toggle="collapse">Date Filters</a>
+              <div id="date_filter" class="collapse">
+                <div class="form-group-material ">
+                  <label>Date Range</label>
+                  {{reviewsFilters.form.start_date}}
+                  {{reviewsFilters.form.end_date}}
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button class="my-btn btn btn-primary ml-4" type="submit">Search</button>
+            </div>
+    </form>
         <table class="table text-center">
         
             <thead>
                 <tr>
-                    <th>By</th>
-                    <th>Rating</th>
-                    <th>Review</th>
-                    <th>Details</th>
+                  <th>Date</th>
+                  <th>By</th>
+                  <th>Rating</th>
+                  <th>Review</th>
+                  <th>Details</th>
                 </tr>
             </thead>
 
             <tbody>
               {% for review in reviews %}
                 <tr class="bg-light">
-                      <th scope="row">{{review.client}}</th>
+                  <th scope="row">{{review.date}}</th>
+                      <th>{{review.client}}</th>
                       <td>{{review.rating}}</td>
                       <td> {{review.review}}</td>
                       <td><a class="btn  btn-outline-primary   text-center" href="{% url 'laundaretteReviewDetail' review.id %}">Check</a></td>
@@ -70,5 +92,22 @@
       </footer>
     </div>
  
+    <script>
+
+      //Query All input fields
+      var form_fields = document.getElementsByTagName('input')
+      var i = 0
+      for (var field in form_fields){
+        console.log(form_fields[field].name)
+        form_fields[field].className += ' form-control'
+      }
+      form_fields[0].placeholder = "Enter name of client"
+      form_fields[1].placeholder = "Intial Rate (eg: 1)"
+      form_fields[2].placeholder = "Final Rate (eg: 5)"
+      form_fields[3].placeholder = "Date started (eg: 11-09-2021)"
+      form_fields[4].placeholder = "Date Ended (eg: 05-12-2021)"
+      
+    </script>
+
 
 {% endblock content %}

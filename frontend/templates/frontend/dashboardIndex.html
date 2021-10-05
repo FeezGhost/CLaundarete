@@ -13,7 +13,7 @@
         <div class="container-fluid">
           <div class="row">
             <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+            <div class="col-xl-3 col-md-4 col-6">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-user"></i></div>
                 <div class="name"><strong class="text-uppercase">Positive Reviews</strong>
@@ -22,7 +22,7 @@
               </div>
             </div>
             <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+            <div class="col-xl-3 col-md-4 col-6">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-padnote"></i></div>
                 <div class="name"><strong class="text-uppercase">Work Orders</strong>
@@ -31,7 +31,7 @@
               </div>
             </div>
             <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+            <div class="col-xl-3 col-md-4 col-6">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-check"></i></div>
                 <div class="name"><strong class="text-uppercase">New Orders</strong>
@@ -40,7 +40,7 @@
               </div>
             </div>
             <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+            <div class="col-xl-3 col-md-4 col-6">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-bill"></i></div>
                 <div class="name"><strong class="text-uppercase">OnGoing Orders</strong>
@@ -59,7 +59,7 @@
                     
                 <!-- User Info-->
                 <div class="sidenav-header-inner text-center">
-                  <img src="{{launderer.profile_pic.url}}" alt="person" class="img-fluid rounded-circle">
+                  <img src="{{launderer.profile_pic.url}}"  alt="person" class="img-fluid pfp rounded-circle">
                 </div>
               </div>
             </div>
@@ -69,7 +69,7 @@
                 
                 
                 </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 pt-4">
               <div class="card project-progress">
                 <h3 class="display h4">Username:</h3>
                 <p> {{launderer.user.username}}</p>
@@ -81,7 +81,7 @@
             </div>
             <div class="col-lg-3 col-md-12 flex-lg-last flex-md-first align-self-baseline">
               <div class="card sales-report p-4">
-                <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'myAccount' %}">Edit Profile</a>
+                <a class="btn btn-md btn-outline-primary pf-edit-btn mx-4 mb-2 mt-4" href="{% url 'myAccount' %}">Edit Profile</a>
               </div>
             </div>
             
@@ -115,7 +115,7 @@
                   <span>{{totalCanceledOrders}}</span>
                   </div>
                 </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
+                <p>This is your orders accepted to cancelation ratio.</p>
               </div>
             </div>
             <div class="col-lg-4">
@@ -285,6 +285,12 @@
       {% include 'frontend/partialView/footer_navbar.html' %}
       </footer>
     </div>
- 
+
+    <script>
+      $(document).ready(function(){
+        console.log($(".progress-circle").html())
+        $(".gmpc-percent-text").html("<b>{{acceptedOrdersRatio}}</b>")
+      });
+    </script>
 
 {% endblock content %}

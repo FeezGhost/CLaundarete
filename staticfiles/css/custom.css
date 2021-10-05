@@ -1,0 +1,10 @@
+/* your styles go here */
+
+.pfp{
+    width: 600px !important;
+    height: 250px !important;
+}
+
+body{
+    font-family: 'Playfair Display', serif !important;
+}

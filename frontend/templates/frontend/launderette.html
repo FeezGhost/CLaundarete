@@ -28,7 +28,7 @@
               <div class="card line-chart-example">
                 <div class="card-header d-flex align-items-center">
                   
-                  <img class="card-img-top" src="{{launderette.cover_photo.url}}" alt="{{launderette.cover_photo.url}}" width="300" height="600">
+                  <img class="card-img-top launderette-pic" src="{{launderette.cover_photo.url}}" alt="{{launderette.cover_photo.url}}" >
                 </div>
                 <div class="card-body">
                     
@@ -48,10 +48,10 @@
                         </div>
                     </div>
 
-                    <a class="btn btn-lg btn-outline-primary  px-4 my-2 text-center" href="{% url 'services' %}">Services</a>
+                    <a class="my-btn btn btn-lg btn-outline-primary  px-4 my-2 text-center" href="{% url 'services' %}">Services</a>
                 </div>
                 <div class="card-footer">
-                    <a class="btn  btn-outline-primary   text-center" href="{% url 'editlaunderette' %}">Update information</a>
+                    <a class="my-btn btn  btn-outline-primary   text-center" href="{% url 'editlaunderette' %}">Update information</a>
                 </div>
               </div>
             

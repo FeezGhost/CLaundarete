@@ -14,11 +14,12 @@
         <div class="container-fluid">
           <ul class="breadcrumb">
             <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'launderette' %}">Launderette</a></li>
             <li class="breadcrumb-item active"><a >Services</a></li>
           </ul>
         </div>
       </div>
-      <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="" data-toggle="modal" data-target="#serviceModel">Create New Service</a>
+      <a class="my-btn btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="" data-toggle="modal" data-target="#serviceModel">Create New Service</a>
 
       <h1 class="display-3 text-center m-4">Services</h1>
 
@@ -30,10 +31,10 @@
             <div class="col-lg-4">
               <div class="card data-usage">
                 <h2 class="display h4 text-primary">{{service.title}}</h2>
-                    <p class="text-primary">Price(per piece):</p>
-                    <p class="">{{service.price}}$</p>
-                    <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'editServices' service.id %}">Edit Service</a>
-                    <a class="btn btn-md btn-outline-danger  mx-4 mb-2 mt-4" href="{% url 'deleteServices' service.id %}">Delete Service</a>
+                    <p class="">Price(per piece):</p>
+                    <p class="text-primary">{{service.price}}$</p>
+                    <a class="my-btn btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'editServices' service.id %}">Edit Service</a>
+                    <a class="my-btn btn btn-md btn-outline-danger  mx-4 mb-2 mt-4" href="{% url 'deleteServices' service.id %}">Delete Service</a>
               </div>
             </div>
           {% endfor %}
@@ -61,7 +62,7 @@
                     </div>
 
                     <div class="form-group mt-4">       
-                      <input type="submit" value="Create" class="btn btn-primary text-white">
+                      <input type="submit" value="Create" class="my-btn btn btn-primary text-white">
                     </div>
                   </form>
                 </div>

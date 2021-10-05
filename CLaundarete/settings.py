@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'frontend.apps.FrontendConfig',
     'backend.apps.BackendConfig',
     'django_filters',
+    'tempus_dominus',
 ]
 
 MIDDLEWARE = [

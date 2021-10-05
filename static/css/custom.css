@@ -1,1 +1,36 @@
 /* your styles go here */
+
+.pfp{
+    width: 100% !important;
+    height: 250px !important;
+}
+
+body{
+    font-family: 'Playfair Display', serif !important;
+}
+input{
+    border-radius: 20px !important;
+}
+
+.pf-edit-btn{
+    margin-top: 68px !important;
+    border-radius: 25px;
+}
+.my-pfp{
+    width: 70% !important;
+    height: 250px !important;
+}
+.card{
+    border-radius: 25px !important;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2), 0 8px 23px 0 rgba(0, 0, 0, 0.19);
+}
+
+.my-btn{
+    border-radius: 55px !important;
+}
+.launderette-pic{
+    width: 750px !important;
+    height: 400px !important;
+    margin-left: auto !important;
+    margin-right: auto  !important;
+}

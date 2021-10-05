@@ -27,13 +27,45 @@
           </header>
           
         <div class="card">
+          <div class="container mt-4">
+            
             <form method="get" class="text-left">
-              {{ordersfilter.form}}
-              
-              <div class="form-group text-center">
-		            <button class="btn btn-primary" type="submit">Search</button>
+              <div class="filters">
+                <div class="form-group-material">
+                  <label>Client Name</label>
+                  {{ordersfilter.form.client_name}}
+                </div>
+                <a href="#price_filter"  data-toggle="collapse">Price Filters</a>
+                <div id="price_filter" class="collapse">
+                  <div class="form-group-material">
+                    <label>Price Range</label>
+                    {{ordersfilter.form.start_price}}
+                    {{ordersfilter.form.end_price}}
+                  </div>
+                </div>
+                <a href="#amount_filter"  data-toggle="collapse">Amount Filters</a>
+                <div id="amount_filter" class="collapse">
+                    <div class="form-group-material">
+                      <label>Amount Range</label>
+                      {{ordersfilter.form.start_amount}}
+                      {{ordersfilter.form.end_amount}}
+                    </div>
+                </div>
+                
+                <a href="#date_filter"  data-toggle="collapse">Date Filters</a>
+                <div id="date_filter" class="collapse">
+                  <div class="form-group-material ">
+                    <label>Date Range</label>
+                    {{ordersfilter.form.start_date}}
+                    {{ordersfilter.form.end_date}}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+		            <button class="my-btn btn btn-primary" type="submit">Search</button>
               </div>
             </form>
+          </div>
                 
                         <div class="card-header">
                         
@@ -89,5 +121,24 @@
       </footer>
     </div>
  
+    
+    <script>
+
+      //Query All input fields
+      var form_fields = document.getElementsByTagName('input')
+      var i = 0
+      for (var field in form_fields){
+        console.log(form_fields[field].name)
+        form_fields[field].className += ' form-control'
+      }
+      form_fields[0].placeholder = "Enter name of client"
+      form_fields[1].placeholder = "Starting Price (eg: 50)"
+      form_fields[2].placeholder = "Ending Price (eg: 100)"
+      form_fields[3].placeholder = "Starting Amount (eg: 5)"
+      form_fields[4].placeholder = "Ending Amount (eg: 20)"
+      form_fields[5].placeholder = "Date started (eg: 11-09-2021)"
+      form_fields[6].placeholder = "Date Ended (eg: 05-12-2021)"
+      
+    </script>
 
 {% endblock content %}

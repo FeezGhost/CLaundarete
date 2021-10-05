@@ -101,7 +101,7 @@ def OngoingOrder(request):
     tLaunderette = launder.launderette_set.all()
     orders = tLaunderette[0].order_set.all().order_by('-date_started')
     onGoing = orders.filter(status='ongoing')
-    ordersfliter = OrderFilter(request.GET, queryset=orders)
+    ordersfliter = OrderFilter(request.GET, queryset=onGoing)
     onGoing = ordersfliter.qs
     p  = Paginator(onGoing, 20)
     page_num = request.GET.get('page', 1)
@@ -117,7 +117,7 @@ def ordersHistory(request):
     tLaunderette = launder.launderette_set.all()
     orders = tLaunderette[0].order_set.all().order_by('-date_started')
     finished = orders.exclude(status='ongoing').exclude(status='pending')
-    ordersfliter = OrderFilter2(request.GET, queryset=orders)
+    ordersfliter = OrderFilter2(request.GET, queryset=finished)
     finished = ordersfliter.qs
     p  = Paginator(finished, 20)
     page_num = request.GET.get('page', 1)
@@ -161,6 +161,7 @@ def orderDetails(request, pk_id):
     launder = request.user.launderer
     tLaunderette = launder.launderette_set.all()
     order = Order.objects.get(id = pk_id)
+    print(order.review_set.all().exists())
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
         if req_status == 'finished':
@@ -261,7 +262,7 @@ def launderetteEdit(request):
         if form.is_valid():
             form.save()
             return redirect("launderette")
-    context = { 'form': form }
+    context = { 'form': form, 'launderer': launder }
     return render(request,"frontend/launderetteEdit.html",context)
 
 def launderetteReviews(request):
@@ -362,9 +363,44 @@ def changeEmail(request):
 
 # Admin Dashboard
 
+def adminLoginView(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password =request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('adminDashboard')
+        else:
+            messages.info(request, 'Username OR password is incorrect')
+    return render(request,"frontend/admin/login.html")
+
+
 def adminDashboardView(request):
     admin = request.user
-    context = {"admin": admin}
+    launderer = Launderer.objects.all()
+    laundererTotal = Launderer.objects.all().count()
+    launderers = launderer.order_by('-date_joined')[:5]
+    launderette = Launderette.objects.all()
+    launderetteTotal = launderette.count()
+    launderettes = launderette.order_by('-date_joined')[:3]
+    client = Client.objects.all()
+    clientTotal = client.count()
+    clients = client.order_by('-date_joined')[:5]
+    order = Order.objects.all()
+    orderTotal = order.count()
+    orders = order.order_by('-date_created')[:5]
+    review = Review.objects.all()
+    reviewTotal = review.count()
+    reviews = review.order_by('-date')[:5]
+    context = {
+         "admin": admin,  
+         "launderers": launderers, "laundererTotal": laundererTotal,
+         "launderettes": launderettes, "launderetteTotal": launderetteTotal,
+         "clients": clients, "clientTotal": clientTotal,
+         "orders": orders, "orderTotal": orderTotal,
+         "reviews": reviews, "reviewTotal": reviewTotal,
+        }
     return render(request,"frontend/admin/dashboard.html",context)
 
 def adminLaunderersView(request):
