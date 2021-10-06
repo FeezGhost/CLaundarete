@@ -23,7 +23,7 @@
         <div class="container-fluid">
           <!-- Page Header-->
           <header> 
-            <h1 class="h3 display">Orders            </h1>
+            <h1 class=" display-3  text-center text-primary">Orders   History         </h1>
           </header>
           
         <div class="card">
@@ -33,6 +33,7 @@
                 <div class="form-group-material">
                   <label>Client Name</label>
                   {{ordersfliter.form.client_name}}
+                  {{ordersfliter.form.client_name.errors}}
                   {{ordersfliter.form.status}}
                 </div>
                 <a href="#price_filter"  data-toggle="collapse">Price Filters</a>
@@ -40,7 +41,9 @@
                   <div class="form-group-material">
                     <label>Price Range</label>
                     {{ordersfliter.form.start_price}}
+                    {{ordersfliter.form.start_price.errors}}
                     {{ordersfliter.form.end_price}}
+                    {{ordersfliter.form.end_price.errors}}
                   </div>
                 </div>
                 <a href="#amount_filter"  data-toggle="collapse">Amount Filters</a>
@@ -48,7 +51,9 @@
                     <div class="form-group-material">
                       <label>Amount Range</label>
                       {{ordersfliter.form.start_amount}}
+                      {{ordersfliter.form.start_amount.errors}}
                       {{ordersfliter.form.end_amount}}
+                      {{ordersfliter.form.end_amount.errors}}
                     </div>
                 </div>
                 
@@ -57,7 +62,9 @@
                   <div class="form-group-material ">
                     <label>Date Range</label>
                     {{ordersfliter.form.start_date}}
+                    {{ordersfliter.form.start_date.errors}}
                     {{ordersfliter.form.end_date}}
+                    {{ordersfliter.form.start_date.errors}}
                   </div>
                 </div>
                 
@@ -125,22 +132,55 @@
 
     
     <script>
-
+      toastr.options = {
+                          "closeButton": true,
+                          "debug": false,
+                          "newestOnTop": true,
+                          "progressBar": true,
+                          "positionClass": "toast-top-center",
+                          "preventDuplicates": true,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                      }
       //Query All input fields
-      var form_fields = document.getElementsByTagName('input')
-      var i = 0
+      var form_fields = document.getElementsByTagName('input');
+      var i = 0;
       for (var field in form_fields){
-        console.log(form_fields[field].name)
-        form_fields[field].className += ' form-control'
+        form_fields[field].className += ' form-control';
       }
-      form_fields[0].placeholder = "Enter name of client"
-      form_fields[1].placeholder = "Starting Price (eg: 50)"
-      form_fields[2].placeholder = "Ending Price (eg: 100)"
-      form_fields[3].placeholder = "Starting Amount (eg: 5)"
-      form_fields[4].placeholder = "Ending Amount (eg: 20)"
-      form_fields[5].placeholder = "Date started (eg: 11-09-2021)"
-      form_fields[6].placeholder = "Date Ended (eg: 05-12-2021)"
+      form_fields[0].placeholder = "Enter name of client";
+      form_fields[1].placeholder = "Starting Price (eg: 50)";
+      form_fields[2].placeholder = "Ending Price (eg: 100)";
+      form_fields[3].placeholder = "Starting Amount (eg: 5)";
+      form_fields[4].placeholder = "Ending Amount (eg: 20)";
+      form_fields[5].placeholder = "Date started (eg: 11-09-2021)";
+      form_fields[6].placeholder = "Date Ended (eg: 05-12-2021)";
       
+      $(document).ready(function(){
+        if($(".errorlist").length){
+          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
+        }
+      });
+      var formErrors = document.getElementsByClassName("errorlist");
+      if(formErrors.length){
+        for (var field in formErrors){
+          console.log(formErrors[field]);
+          myUl = formErrors[field];
+          items = myUl.getElementsByTagName("li");
+          for (var item in items){
+            if( items[item].textContent !== undefined){
+              toastr.error(items[item].textContent)
+            }
+          }
+        }
+      }
     </script>
 
 {% endblock content %}

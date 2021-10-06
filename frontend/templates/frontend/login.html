@@ -33,7 +33,7 @@
       <div class="container">
         <div class="form-outer text-center d-flex align-items-center">
           <div class="form-inner">
-            <div class="logo text-uppercase"><span>Laundarette</span>  <strong class="text-primary">Dashboard</strong></div>
+            <div class="logo text-uppercase"><span>Laundarer</span>  <strong class="text-primary">Dashboard</strong></div>
             <p>Double check your username and password.</p>
             <form method="POST" class="text-left form-validate">
               {% csrf_token %}
@@ -48,10 +48,12 @@
                 <label for="login-password" class="label-material"></label>
               </div>
               <div class="form-group text-center">
-                <input id="register" type="submit" value="Login" class="btn btn-primary text-white">
+                <input id="register" type="submit" value="Login" class="btn btn-md py-2 px-4 btn-primary text-white">
               </div>
             </form>
-            <a href="#" class="forgot-pass">Forgot Password?</a><small>Do not have an account? </small><a href="{% url 'registerPage' %}" class="signup">Signup</a>
+            <!-- <a href="#" class="forgot-pass">Forgot Password?</a> -->
+            <small>Do not have an account? </small>
+            <a href="{% url 'registerPage' %}" class="signup">Signup</a>
           </div>
         </div>
       </div>

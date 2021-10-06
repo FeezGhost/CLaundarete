@@ -38,21 +38,25 @@
                     <div class="form-group">
                       <label>Name</label>
                       {{launderetteForm.name}}
+                      {{launderetteForm.name.errors}}
                     </div>
                     
                     <div class="form-group">
                       <label>Cover Photo</label>
                       {{launderetteForm.cover_photo}}
+                      {{launderetteForm.cover_photo.errors}}
                     </div>
                     
                     <div class="form-group">
                       <label>Location</label>
                       {{launderetteForm.location}}
+                      {{launderetteForm.location.errors}}
                     </div>
 
                     <div class="form-group">
                       <label>Available Time:</label>
                       {{launderetteForm.available_time}}
+                      {{launderetteForm.available_time.errors}}
                       </div>
 
                     <div class="form-group">       
@@ -73,11 +77,46 @@
     </div>
  
      <script>
-
+      toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": true,
+                            "progressBar": true,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": true,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
       //Query All input fields
       var form_fields = document.getElementsByTagName('input')
       for (var field in form_fields){
         form_fields[field].className += ' form-control'
+      }
+      
+      $(document).ready(function(){
+        if($(".errorlist").length){
+          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
+        }
+      });
+      var formErrors = document.getElementsByClassName("errorlist");
+      if(formErrors.length){
+        for (var field in formErrors){
+          console.log(formErrors[field]);
+          myUl = formErrors[field];
+          items = myUl.getElementsByTagName("li");
+          for (var item in items){
+            if( items[item].textContent !== undefined){
+              toastr.error(items[item].textContent)
+            }
+          }
+        }
       }
     </script>
 

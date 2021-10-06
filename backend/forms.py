@@ -39,7 +39,7 @@ class LaunderetteForm(ModelForm):
         exclude = ['launderer']
 
 class ReviewCommentForm(ModelForm):
-    comment=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":100, }))
+    comment=forms.CharField(widget=forms.Textarea(attrs={"rows":5,  }))
     
     class Meta:
         model = ReviewComment

@@ -10,8 +10,11 @@ body{
 }
 input{
     border-radius: 20px !important;
+    padding-left: 7px !important;
 }
-
+/* p{
+    font-size: 1.2em !important;
+} */
 .pf-edit-btn{
     margin-top: 68px !important;
     border-radius: 25px;
@@ -33,4 +36,16 @@ input{
     height: 400px !important;
     margin-left: auto !important;
     margin-right: auto  !important;
+}
+.errorlist{
+    color: #dd0303;
+}
+
+.signup-page{
+    margin-left: 15% !important;
+    margin-right: auto !important;
+}
+.form-inner{
+    padding-left: 10% !important;
+    padding-right: 10% !important;
 }

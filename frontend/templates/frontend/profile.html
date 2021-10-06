@@ -135,12 +135,14 @@
                     <div class="form-group">
                       <label>Name</label>
                       {{form.name}}
+                      {{form.name.errors}}
                     </div>
                     
                     
                     <div class="form-group">
                       <label>Address</label>
                       {{form.address}}
+                      {{form.address.errors}}
                     </div>
                     
 
@@ -172,6 +174,8 @@
                     <div class="form-group ml-4">
                       
                       {{profilepicform.profile_pic}}
+                      
+                      {{profilepicform.profile_pic.errors}}
                     </div>
                     
 
@@ -199,6 +203,7 @@
                     <div class="form-group">
                       <hr>
                       {{emailform.email}}
+                      {{emailform.email.errors}}
                     </div>
                     
 
@@ -226,16 +231,19 @@
                       <label >Old Password</label>
                       <hr>
                       {{ passwordform.old_password }}
+                      {{ passwordform.old_password.errors }}
                     </div>
                     <div class="form-group">
                       <label >New Password</label>
                       <hr>
                       {{ passwordform.new_password1 }}
+                      {{ passwordform.new_password1.errors }}
                     </div>
                     <div class="form-group">
                       <label >Confirm New Password</label>
                       <hr>
                       {{ passwordform.new_password2 }}
+                      {{ passwordform.new_password2.errors }}
                     </div>
                     
 
@@ -257,13 +265,30 @@
  
     
     <script>
-
+    
+    toastr.options = {
+                          "closeButton": true,
+                          "debug": false,
+                          "newestOnTop": true,
+                          "progressBar": true,
+                          "positionClass": "toast-top-center",
+                          "preventDuplicates": true,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                      }
       //Query All input fields
       var form_fields = document.getElementsByTagName('input')
       var i = 0
       for (var field in form_fields){
         console.log(form_fields[field].name)
-        if(i >0 && i<= 4 || i==10){
+        if(i >0 && i<= 3 || i==10){
           form_fields[field].className += ' input-material'
         }
         if(i >10 && i<= 15 && i!=11){
@@ -272,6 +297,25 @@
         console.log(i)
         i++
         
+      $(document).ready(function(){
+        if($(".errorlist").length){
+          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
+        }
+      });
+      
+      var formErrors = document.getElementsByClassName("errorlist");
+      if(formErrors.length){
+        for (var field in formErrors){
+          console.log(formErrors[field]);
+          myUl = formErrors[field];
+          items = myUl.getElementsByTagName("li");
+          for (var item in items){
+            if( items[item].textContent !== undefined){
+              toastr.error(items[item].textContent)
+            }
+          }
+        }
+        }
       }
     </script>
 

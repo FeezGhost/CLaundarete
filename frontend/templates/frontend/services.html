@@ -21,7 +21,7 @@
       </div>
       <a class="my-btn btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="" data-toggle="modal" data-target="#serviceModel">Create New Service</a>
 
-      <h1 class="display-3 text-center m-4">Services</h1>
+      <h1 class="display-3 text-center text-primary m-4">Services</h1>
 
       <section class="statistics">
         <div class="container-fluid">
@@ -55,10 +55,12 @@
                     <div class="form-group">
                       <label>Name</label>
                       {{serviceForm.title}}
+                      {{serviceForm.title.errors}}
                     </div>
                     <div class="form-group">
                       <label>Price</label>
                       {{serviceForm.price}}
+                      {{serviceForm.price.errors}}
                     </div>
 
                     <div class="form-group mt-4">       
@@ -78,11 +80,48 @@
  
      
     <script>
-
+    
+    toastr.options = {
+                          "closeButton": true,
+                          "debug": false,
+                          "newestOnTop": true,
+                          "progressBar": true,
+                          "positionClass": "toast-top-center",
+                          "preventDuplicates": true,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                      }
       //Query All input fields
       var form_fields = document.getElementsByTagName('input')
       for (var field in form_fields){
         form_fields[field].className += ' input-material'
+      }
+      
+      $(document).ready(function(){
+        if($(".errorlist").length){
+          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
+        }
+      });
+      
+      var formErrors = document.getElementsByClassName("errorlist");
+      if(formErrors.length){
+        for (var field in formErrors){
+          console.log(formErrors[field]);
+          myUl = formErrors[field];
+          items = myUl.getElementsByTagName("li");
+          for (var item in items){
+            if( items[item].textContent !== undefined){
+              toastr.error(items[item].textContent)
+            }
+          }
+        }
       }
     </script>
 
