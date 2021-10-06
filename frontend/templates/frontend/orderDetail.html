@@ -20,6 +20,18 @@
           </ul>
         </div>
       </div>
+    <div class="container mx-4 px-4">
+      {% for message in messages %}
+        <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
 
 
       <h1 class="h3 display-3 text-primary m-4 text-center">Order Details</h1>
@@ -58,7 +70,7 @@
               </div> {% endcomment %}
             <div class="card data-usage text-center p-4 mx-4">
                 <div class="container">
-                <h2 class="display h4 text-primary">{{order.client}}</h2>
+                <h2 class="display h2 text-primary">Username: {{order.client}}</h2>
                   <hr>
                       <p class="text-primary">Description:</p>
                       <p>{{order.description}}</p>
@@ -108,7 +120,7 @@
                         </div>
                       </div> 
                       <hr>
-                      {% if order.status == 'pending' %}
+                      {% if order.status == 'ongoing' %}
                       <h3 class=""> Change status of order:</h3> 
                       <form enctype="multipart/form-data" method="POST">
                             {% csrf_token %}

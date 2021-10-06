@@ -19,6 +19,18 @@
           </ul>
         </div>
       </div>
+    <div class="container mx-4 px-4">
+      {% for message in messages %}
+        <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
       <a class="my-btn btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="" data-toggle="modal" data-target="#serviceModel">Create New Service</a>
 
       <h1 class="display-3 text-center text-primary m-4">Services</h1>
