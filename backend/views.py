@@ -28,7 +28,7 @@ def loginView(request):
             messages.info(request, greet)
             return redirect('dashboard')
         else:
-            messages.error(request, 'Username OR password is incorrect')
+            messages.error(request, 'Username or Password is incorrect! (Contact admin if you think you are blocked)')
     return render(request,"frontend/login.html")
 
 @login_required(login_url="loginPage")
@@ -506,10 +506,14 @@ def laundererRequestProcess(request, pk_id):
         print(req_status)
         if req_status == 'block':
             launderer.isBlocked = True
+            launderer.user.is_active = False
+            launderer.user.save()
             laundererObj = launderer.save()
             return redirect('adminLaunderers')
         else:
             launderer.isBlocked= False
+            launderer.user.is_active = True
+            launderer.user.save()
             laundererObj = launderer.save()
             return redirect('adminLaunderers')
 
@@ -573,10 +577,14 @@ def clientRequestProcess(request, pk_id):
         print(req_status)
         if req_status == 'block':
             client.isBlocked = True
+            client.user.is_active = False
+            client.user.save()
             clientObj = client.save()
             return redirect('adminClients')
         else:
             client.isBlocked= False
+            client.user.is_active = True
+            client.user.save()
             clientObj = client.save()
             return redirect('adminClients')
 
