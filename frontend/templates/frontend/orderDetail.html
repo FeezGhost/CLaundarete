@@ -141,7 +141,9 @@
                             </div>
                       </form>
                       {% else %}
-                      {% comment %} <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'laundaretteReviewDetail' order.id %} ">Check Review</a> {% endcomment %}
+                        {% if haveReview %}
+                          <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'laundaretteReviewDetail' review.id %} ">Check Review</a>
+                        {% endif %}
                       {% endif %}
                 </div>
                   

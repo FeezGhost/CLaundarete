@@ -12,7 +12,7 @@ class Client(models.Model):
     date_joined =models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return str(self.user.username)
+        return str(self.user)
 
 class Launderer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -23,7 +23,7 @@ class Launderer(models.Model):
     date_joined =models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return str(self.name.user.username)
+        return str(self.user)
 
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -121,13 +121,13 @@ class StatusChoice3(models.TextChoices):
     CLOSED = 'closed', 'Closed'
 
 class Complaint(models.Model):
-    client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)
-    launderer = models.ForeignKey(Launderer, null=True, on_delete= models.SET_NULL)
+    client = models.ForeignKey(Client, null=True, blank=True, on_delete= models.SET_NULL)
+    launderer = models.ForeignKey(Launderer, null=True, blank=True, on_delete= models.SET_NULL)
     subject = models.CharField(max_length=200, null=True)
     complain = models.CharField(max_length=500, null=True)
-    status =models.CharField(max_length=50, blank=True, null=True,choices=StatusChoice3.choices,default=StatusChoice2.PENDING)
+    status =models.CharField(max_length=50, blank=True, null=True, choices=StatusChoice3.choices,default=StatusChoice3.UNRESOLVED)
     date = models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
-        return str(self.client.name)
+        return str(self.subject)
 

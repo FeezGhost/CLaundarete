@@ -14,7 +14,7 @@
         </div>
         <!-- Sidebar Navigation Menus-->
         <div class="main-menu">
-          <h5 class="sidenav-heading">Main</h5>
+          <h5 class="sidenav-heading">User Menu</h5>
           <ul id="side-main-menu" class="side-menu list-unstyled">                  
             <li><a href="{% url 'dashboard' %}" > <i class="icon-form"></i>Home                             </a></li>
             
@@ -35,9 +35,18 @@
           <ul id="side-admin-menu" class="side-menu list-unstyled"> 
             <li> <a href="{% url 'launderette' %}"> <i class="icon-screen"> </i>Launderete</a></li>
             {% if totalLaunderette != 0 %}
-              <li> <a href="{% url 'laundaretteReviews' %}"> <i class="icon-flask"> </i>Launderete Reviews</a></li>
               <li> <a href="{% url 'services' %}"> <i class="icon-screen"> </i>Services</a></li>
             {% endif %}
+          </ul>
+        </div>
+        
+        <div class="admin-menu">
+          <h5 class="sidenav-heading">Reviews & Complaints</h5>
+          <ul id="side-admin-menu" class="side-menu list-unstyled"> 
+            {% if totalLaunderette != 0 %}
+              <li> <a href="{% url 'laundaretteReviews' %}"> <i class="icon-flask"> </i>Launderete Reviews</a></li>
+            {% endif %}
+            <li> <a href="{% url 'complaints' %}"> <i class="icon-flask"> </i>Complaints</a></li>
           </ul>
         </div>
       </div>

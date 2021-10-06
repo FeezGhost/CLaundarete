@@ -45,3 +45,11 @@ class ReviewFilter(django_filters.FilterSet):
         model = Order
         exclude = '__all__'
         fields = ['start_date', 'end_date', 'start_rating', 'end_rating', 'client_name']
+
+class ComplaintFilter(django_filters.FilterSet):
+    start_date = DateFilter(field_name="date", lookup_expr='gte')
+    end_date = DateFilter(field_name="date", lookup_expr='lte')
+    subject = CharFilter(field_name='subject', lookup_expr='icontains')
+    class Meta:
+        model = Order
+        fields = '__all__'

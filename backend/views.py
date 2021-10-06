@@ -200,7 +200,7 @@ def orderDetails(request, pk_id):
     launder = request.user.launderer
     tLaunderette = launder.launderette_set.all()
     order = Order.objects.get(id = pk_id)
-    print(order.review_set.all().exists())
+    haveReview = order.review_set.all().exists()
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
         if req_status == 'finished':
@@ -213,7 +213,12 @@ def orderDetails(request, pk_id):
             orderObj = order.save()
             messages.warning(request, "Orders has been Canceled! you can find this order in orders history.")
             return redirect('ongoingOrders')
-    context = {"launderer": launder, 'order' : order}
+    
+    if haveReview:
+        review = order.review_set.all()[0]
+        context = {"launderer": launder, 'order' : order, "review": review, "haveReview": haveReview}
+    else:
+        context = {"launderer": launder, 'order' : order, "haveReview": haveReview}
     return render(request,"frontend/orderDetail.html",context)
 
 @login_required(login_url="loginPage")
@@ -279,6 +284,52 @@ def servicesNew(request):
     return redirect("services")
 
 @login_required(login_url="loginPage")
+@allowed_users(allowed_roles=['launderer'])  
+def complaints(request):
+    launder = request.user.launderer
+    complaints = launder.complaint_set.all().order_by('-date')
+    complaintsFilter = ComplaintFilter(request.GET, queryset=complaints)
+    complaints = complaintsFilter.qs
+    p  = Paginator(complaints, 20)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {'launderer' : launder,  "complaints": page, "complaintsFilter": complaintsFilter}
+    return render(request,"frontend/complaints.html",context)
+
+@login_required(login_url="loginPage")
+@allowed_users(allowed_roles=['launderer'])  
+def complaintDetail(request, pk_id):
+    launder = request.user.launderer
+    complaint = Complaint.objects.get(id = pk_id)
+    context = {'launderer' : launder,  "complaint": complaint}
+    return render(request,"frontend/complaintDetail.html",context)
+
+@login_required(login_url="loginPage")
+@allowed_users(allowed_roles=['launderer'])  
+def complaintNew(request):
+    launder = request.user.launderer
+    complaintForm = ComplaintForm()
+    if request.method == 'POST':
+        complaintForm = ComplaintForm(request.POST)
+        if complaintForm.is_valid():
+            sbj = complaintForm.cleaned_data.get('subject')
+            comp = complaintForm.cleaned_data.get('complain')
+            complaintObj = Complaint.objects.create(
+                    launderer = launder,
+                    subject = sbj,
+                    complain = comp,
+            )
+            messages.success(request, "Complaint has been submitted!")
+            return redirect("complaints")
+        else:
+            messages.error(request, "Complaiint submission Failed!")  
+    context = {'launderer' : launder,  "form": complaintForm}        
+    return render(request,"frontend/complaintNew.html",context)
+
+@login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
 def launderette(request):
     launder = request.user.launderer
@@ -331,7 +382,7 @@ def launderetteEdit(request):
 @allowed_users(allowed_roles=['launderer'])
 def launderetteReviews(request):
     launderer = request.user.launderer
-    launderette = launderer.launderette_set.all()
+    launderette = launderer.launderette_set.all().order_by('-date')
     reviews = launderette[0].review_set.all()
     reviewsFilters = ReviewFilter(request.GET, queryset=reviews)
     reviews = reviewsFilters.qs
@@ -389,7 +440,6 @@ def laundererAccount(request):
 
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
-
 def changeGeneralInfo(request):
     launderer = request.user.launderer
     if request.method == 'POST':

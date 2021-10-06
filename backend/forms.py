@@ -58,3 +58,10 @@ class LaundererEmailForm(ModelForm):
     class Meta:
         model = User
         fields = ['email']
+
+class ComplaintForm(ModelForm):
+    complain=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":50}))
+
+    class Meta:
+        model = Complaint
+        fields = "__all__"

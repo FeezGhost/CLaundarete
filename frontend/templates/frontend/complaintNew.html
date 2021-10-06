@@ -1,0 +1,113 @@
+{%  extends 'frontend/partialview/base_template.html' %}
+{% load static %}
+
+{% block content %}
+
+   
+    <div class="page">
+      <!-- navbar-->
+      
+      {% include 'frontend/partialview/topbar.html' %}  
+      
+      
+      <!-- Breadcrumb-->
+      <div class="breadcrumb-holder">
+        <div class="container-fluid">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active"><a >New Launderete</a></li>
+          </ul>
+        </div>
+      </div>
+
+
+      <h1 class="h3 display-3 text-primary m-4 text-center">New complaint            </h1>
+     
+     <section class="charts">
+        <div class="container-fluid">
+          <!-- Page Header-->
+              <div class="card line-chart-example">
+                <div class="card-header d-flex align-items-center">
+                  <h4>Complaint Form</h4>
+                </div>
+                <div class="card-body">
+                 <p>You can add new Complaint here.</p>
+                    
+                    <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label>Subject</label>
+                      {{form.subject}}
+                      {{form.subject.errors}}
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Your Complain</label>
+                      <br>
+                      {{form.complain}}
+                      {{form.complain.errors}}
+                    </div>
+                    
+                    <div class="form-group">       
+                      <input type="submit" value="Send" class="btn btn-primary text-white">
+                    </div>
+                  </form>
+                </div>
+              </div>
+            
+        </div>
+      </section>
+
+
+
+      <footer class="main-footer">
+        {% include 'frontend/partialView/footer_navbar.html' %}
+      </footer>
+    </div>
+ 
+     <script>
+      toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": true,
+                            "progressBar": true,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": true,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+      //Query All input fields
+      var form_fields = document.getElementsByTagName('input')
+      for (var field in form_fields){
+        form_fields[field].className += ' form-control'
+      }
+      
+      $(document).ready(function(){
+        if($(".errorlist").length){
+          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
+        }
+      });
+      var formErrors = document.getElementsByClassName("errorlist");
+      if(formErrors.length){
+        for (var field in formErrors){
+          console.log(formErrors[field]);
+          myUl = formErrors[field];
+          items = myUl.getElementsByTagName("li");
+          for (var item in items){
+            if( items[item].textContent !== undefined){
+              toastr.error(items[item].textContent)
+            }
+          }
+        }
+      }
+    </script>
+
+
+{% endblock content %}
