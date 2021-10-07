@@ -12,15 +12,68 @@
       <div class="breadcrumb-holder">
         <div class="container-fluid">
           <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
             <li class="breadcrumb-item active"><a >Clients</a></li>
           </ul>
         </div>
       </div>
+      
+    <div class="container mx-4 px-4">
+      {% for message in messages %}
+        <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
 
       <h1 class="display-3 text-center m-4">Clients</h1>
       <hr>
       <section class="statistics">
+      
+          <div class="container mt-4">
+            
+            <form method="get" class="text-left">
+              <div class="filters">
+                <div class="form-group-material">
+                  <label>Client Name</label>
+                  {{clientFilters.form.name}}
+                  {{clientFilters.form.name.errors}}
+                  <br>
+                  <label>Blocked/Unblocked</label>
+                  {{clientFilters.form.isBlocked}}
+                  {{clientFilters.form.isBlocked.errors}}
+                </div>
+                <a href="#price_filter"  data-toggle="collapse">Address Filter</a>
+                <div id="price_filter" class="collapse">
+                  <div class="form-group-material">
+                    <label>Address</label>
+                    {{clientFilters.form.address}}
+                    {{clientFilters.form.address.errors}}
+                  </div>
+                </div>
+                
+                <a href="#date_filter"  data-toggle="collapse">Date Filters</a>
+                <div id="date_filter" class="collapse">
+                  <div class="form-group-material ">
+                    <label>Date Range</label>
+                    {{clientFilters.form.start_date}}
+                    {{clientFilters.form.start_date.errors}}
+                    {{clientFilters.form.end_date}}
+                    {{clientFilters.form.end_date.errors}}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mt-4">
+		            <button class="my-btn btn btn-primary" type="submit">Search</button>
+              </div>
+            </form>
+          </div>
+          
         <div class="container-fluid">
           <div class="row d-flex">
             {% for client in clients %}
@@ -66,6 +119,12 @@
             {% endfor %}
           </div>
         </div>
+          {% if clients.has_previous %}
+            <a href="{% url 'adminClients' %}?page={{clients.previous_page_number}}">Previous Page</a>
+          {% endif %}
+          {% if clients.has_next %}
+            <a href="{% url 'adminClients' %}?page={{clients.next_page_number}}">Next Page</a>
+          {% endif %}
       </section>
 
       <footer class="main-footer">
@@ -74,4 +133,54 @@
     </div>
  
 
+    <script>
+      toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": true,
+                            "progressBar": true,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": true,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+        
+        //Query All input fields
+        var form_fields = document.getElementsByTagName('input')
+        var i = 0
+        for (var field in form_fields){
+          console.log(form_fields[field].name)
+          form_fields[field].className += ' form-control'
+        }
+        form_fields[0].placeholder = "Enter name of client"
+        form_fields[1].placeholder = "Enter Address of client"
+        form_fields[2].placeholder = "Date started (eg: 11-09-2021)"
+        form_fields[3].placeholder = "Date Ended (eg: 05-12-2021)"
+        
+        $(document).ready(function(){
+          if($(".errorlist").length){
+            $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
+          }
+        });
+        var formErrors = document.getElementsByClassName("errorlist");
+        if(formErrors.length){
+          for (var field in formErrors){
+            console.log(formErrors[field]);
+            myUl = formErrors[field];
+            items = myUl.getElementsByTagName("li");
+            for (var item in items){
+              if( items[item].textContent !== undefined){
+                toastr.error(items[item].textContent)
+              }
+            }
+          }
+        }
+    </script>
 {% endblock content %}

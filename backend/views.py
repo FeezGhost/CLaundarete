@@ -97,8 +97,8 @@ def DashboardView(request):
         if totalOrders > 0 :
             newOrders = orders.filter(status = 'pending').order_by('date_created')
             totalNewOrders = newOrders.count()
-            ongoingOrders = orders.filter(status = 'ongoing').order_by('-date_started') 
-            finishedOrders = orders.filter(status = 'finished').order_by('-date_end')
+            ongoingOrders = orders.filter(status = 'ongoing').order_by('-date_started')[:3]
+            finishedOrders = orders.filter(status = 'finished').order_by('-date_end')[:3]
             totalOngoingOrders = ongoingOrders.count()
             canceledOrders = orders.filter(status = 'declined')
             acceptedOrders = orders.exclude(status = 'declined').count()
@@ -534,8 +534,16 @@ def adminDashboardView(request):
 @allowed_users(allowed_roles=['admin'])
 def adminLaunderersView(request):
     admin = request.user
-    launderers = Launderer.objects.all()
-    context = {"admin": admin,'launderers': launderers}
+    launderers = Launderer.objects.all().order_by('-date_joined')
+    laundererFilters = LaundererFilter(request.GET, queryset=launderers)
+    launderers = laundererFilters.qs
+    p  = Paginator(launderers, 6)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {"admin": admin,'launderers': page,  "laundererFilters":laundererFilters}
     return render(request,"frontend/admin/launderers.html",context)
 
 @login_required(login_url="adminLoginPage")
@@ -571,8 +579,16 @@ def laundererRequestProcess(request, pk_id):
 @allowed_users(allowed_roles=['admin'])
 def adminLaunderettesView(request):
     admin = request.user
-    launderettes = Launderette.objects.all()
-    context = {"admin": admin,'launderettes': launderettes}
+    launderettes = Launderette.objects.all().order_by('-date_joined')
+    launderetteFilters = LaunderetteFilter(request.GET, queryset=launderettes)
+    launderettes = launderetteFilters.qs
+    p  = Paginator(launderettes, 6)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {"admin": admin,'launderettes': page, "launderetteFilters": launderetteFilters}
     return render(request,"frontend/admin/launderettes.html",context)
 
 @login_required(login_url="adminLoginPage")
@@ -605,8 +621,16 @@ def adminLaunderetteDetailView(request, pk_id):
 @allowed_users(allowed_roles=['admin'])
 def adminClientsView(request):
     admin = request.user
-    clients = Client.objects.all()
-    context = {"admin": admin,'clients': clients}
+    clients = Client.objects.all().order_by('-date_joined')
+    clientFilters = ClientFilter(request.GET, queryset=clients)
+    clients = clientFilters.qs
+    p  = Paginator(clients, 6)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {"admin": admin, 'clients': page, 'clientFilters':clientFilters}
     return render(request,"frontend/admin/clients.html",context)
 
 @login_required(login_url="adminLoginPage")

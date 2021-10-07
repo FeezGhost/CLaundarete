@@ -20,7 +20,6 @@ FILTER_CHOICES = (
     ('declined', 'Declined'),
 )
 
-
 class OrderFilter2(django_filters.FilterSet):
     start_date = DateFilter(field_name="date_started", lookup_expr='gte')
     end_date = DateFilter(field_name="date_end", lookup_expr='lte')
@@ -53,3 +52,36 @@ class ComplaintFilter(django_filters.FilterSet):
     class Meta:
         model = Order
         fields = '__all__'
+
+class LaundererFilter(django_filters.FilterSet):
+    start_date = DateFilter(field_name="date_joined", lookup_expr='gte')
+    end_date = DateFilter(field_name="date_joined", lookup_expr='lte')
+    name = CharFilter(field_name='name', lookup_expr='icontains')
+
+    class Meta:
+        model = Launderer
+        fields = '__all__'
+        exclude = ["profile_pic"]
+
+class ClientFilter(django_filters.FilterSet):
+    start_date = DateFilter(field_name="date_joined", lookup_expr='gte')
+    end_date = DateFilter(field_name="date_joined", lookup_expr='lte')
+    name = CharFilter(field_name='name', lookup_expr='icontains')
+
+    class Meta:
+        model = Client
+        fields = '__all__'
+        exclude = ["profile_pic"]
+
+class LaunderetteFilter(django_filters.FilterSet):
+    start_date = DateFilter(field_name="date_joined", lookup_expr='gte')
+    end_date = DateFilter(field_name="date_joined", lookup_expr='lte')
+    name = CharFilter(field_name='name', lookup_expr='icontains')
+    location = CharFilter(field_name='location', lookup_expr='icontains')
+    available_time = CharFilter(field_name='available_time', lookup_expr='icontains')
+
+    class Meta:
+        model = Launderette
+        fields = '__all__'
+        exclude = ["cover_photo"]
+
