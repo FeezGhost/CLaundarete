@@ -12,6 +12,8 @@ from .decorators import *
 from django.contrib.auth.models import Group
 from .filters import *
 from django.core.paginator import Paginator, EmptyPage
+import datetime
+from dateutil.relativedelta import relativedelta
 # from .decorators import  unauthenticated_user, allowed_users,admin_only
 
 # Create your views here.
@@ -122,6 +124,152 @@ def DashboardView(request):
         'reviewsRatio' : reviewsRatio
         }
     return render(request,"frontend/dashboardIndex.html",context)
+
+@login_required(login_url="loginPage")
+@allowed_users(allowed_roles=['launderer'])
+def ReportView(request):
+    launderer = request.user.launderer
+    totalLaunderette = launderer.launderette_set.all().count()
+    totalreviews = 0
+    positiveReviews = 0
+    negativeReviews = 0 
+    reviewsRatio = 0 
+    totalNewOrders = 0
+    totalOrders = 0
+    totalOngoingOrders = 0
+    totalCanceledOrders = 0
+    acceptedOrdersRatio = 0
+    ongoingOrders = ''
+    finishedOrders = ''
+    canceledOrders = ''
+    acceptedOrders = ''
+
+    end_date = datetime.date.today().strftime("%m")
+    end_dateYear = datetime.date.today().strftime("%Y")
+    start_date = launderer.date_joined.date().strftime("%m")
+    launderette = launderer.launderette_set.all()[0]
+    ordersAccepted = launderette.order_set.all().exclude(status = 'declined').exclude(status = 'pending').exclude(status = 'canceled')
+    ordersDeclined = launderette.order_set.all().filter(status = 'declined')
+    ordersCanceled = launderette.order_set.all().filter(status = 'canceled')
+    reviews = launderette.review_set.all()
+    totalreviews = reviews.count()
+    positiveReviews = reviews.filter(rating__gte=2.5)
+    negativeReviews = reviews.filter(rating__lt=2.5)
+    totalorders = launderette.order_set.all().count()
+    end = int(end_date)
+    i = int(start_date)
+    if i > end:
+        i=1
+    else:
+        i=int(start_date)
+    acceptedOrdersList = []
+    declinedOrdersList = []
+    positiveReviewsList = []
+    negativeReviewsList = []
+    acceptedOrderRatioList = []
+    declinedOrderRatioList = []
+    positiveReviewsRatioList = []
+    negativeReviewsRatioList = []
+    monthsList = []
+    while i <= end:
+        fullDate =str(1)+"-"+str(i)+"-"+end_dateYear
+        print(fullDate)
+        ordersA = ordersAccepted.filter(date_started__month__gte=i,
+                                date_started__month__lt=(i+1)).count()
+        acceptedOrdersList.append(ordersA)
+        ordersD = ordersDeclined.filter(date_created__month__gte=i,
+                                date_created__month__lt=(i+1)).count()
+        
+        ordersD += ordersCanceled.filter(date_created__month__gte=i,
+                                date_created__month__lt=(i+1)).count()
+        
+        reviewsPos = positiveReviews.filter(date__month__gte=i,
+                                date__month__lt=(i+1)).count()
+        reviewsneg = negativeReviews.filter(date__month__gte=i,
+                                date__month__lt=(i+1)).count()
+        positiveReviewsList.append(reviewsPos) 
+        negativeReviewsList.append(reviewsneg)    
+        declinedOrdersList.append(ordersD)
+
+        acceptedOrderRatio = int(100 - float((ordersD/totalorders)*100))
+        declinedOrderRatio = int(float((ordersD/totalorders)*100))
+        postiveRatio = int(float((reviewsPos/totalreviews)*100))
+        negativeRatio = int(float((reviewsneg/totalreviews)*100))
+
+        acceptedOrderRatioList.append(acceptedOrderRatio)
+        declinedOrderRatioList.append(declinedOrderRatio)
+
+        
+        positiveReviewsRatioList.append(postiveRatio)
+        negativeReviewsRatioList.append(negativeRatio)
+
+        month = datetime.date(1900, i, 1).strftime('%B')
+        monthsList.append(month)
+        i+=1
+    bar_month_data = dict(zip(monthsList,monthsList))
+    bar_accept_data = dict(zip(acceptedOrdersList, acceptedOrdersList))
+    bar_decline_data = dict(zip(declinedOrdersList, declinedOrdersList))
+    reviewbar_accept_data = dict(zip(positiveReviewsList, positiveReviewsList))
+    reviewbar_decline_data = dict(zip(negativeReviewsList, negativeReviewsList))
+
+    reviewRatio_accept_data = dict(zip(positiveReviewsRatioList, positiveReviewsRatioList))
+    reviewRatio_decline_data = dict(zip(negativeReviewsRatioList, negativeReviewsRatioList))
+
+    line_accept_data = dict(zip(acceptedOrderRatioList, acceptedOrderRatioList))
+    line_decline_data = dict(zip(declinedOrderRatioList, declinedOrderRatioList))
+    totalDeclined = ordersDeclined.count()
+    totalFinished = launderette.order_set.all().filter(status = 'finished').count()
+    if totalLaunderette > 0 :
+        launderette = launderer.launderette_set.all()[0]
+        if totalLaunderette >0:
+            reviews = launderette.review_set.all()
+            totalreviews = reviews.count()
+            if totalreviews > 0:
+                positiveReviews = reviews.filter(rating__gte=2.5).count()
+                negativeReviews = reviews.filter(rating__lt=2.5).count()
+                reviewsRatio = float((positiveReviews/totalreviews)*100)
+        orders = launderette.order_set.all()
+        totalOrders = orders.count()
+        if totalOrders > 0 :
+            newOrders = orders.filter(status = 'pending').order_by('date_created')
+            totalNewOrders = newOrders.count()
+            ongoingOrders = orders.filter(status = 'ongoing').order_by('-date_started')[:3]
+            finishedOrders = orders.filter(status = 'finished').order_by('-date_end')[:3]
+            totalOngoingOrders = ongoingOrders.count()
+            canceledOrders = orders.filter(status = 'declined')
+            acceptedOrders = orders.exclude(status = 'declined').count()
+            totalCanceledOrders = canceledOrders.count()
+            if totalCanceledOrders > 0 :
+                acceptedOrdersRatio = 100 - float((totalCanceledOrders/totalOrders)*100)
+    context = {
+        "launderer" : launderer, 
+        'totalLaunderette' : totalLaunderette,
+        'totalreviews' : totalreviews,
+        'positiveReviews' : positiveReviews,
+        'negativeReviews' : negativeReviews,
+        'newOrders' : totalNewOrders,
+        'totalOrders' : totalOrders,
+        'totalOngoingOrders' : totalOngoingOrders,
+        'ongoingOrders' : ongoingOrders,
+        'finishedOrders' : finishedOrders,
+        'acceptedOrdersRatio' : acceptedOrdersRatio,
+        'acceptedOrders' : acceptedOrders,
+        'totalCanceledOrders' : totalCanceledOrders,
+        'reviewsRatio' : reviewsRatio,
+        'bar_month_data': bar_month_data,
+        'bar_accept_data': bar_accept_data,
+        'bar_decline_data': bar_decline_data,
+        'line_accept_data': line_accept_data,
+        'line_decline_data': line_decline_data,
+        'totalDeclined':totalDeclined,
+        'totalFinished':totalFinished,
+        'reviewbar_accept_data': reviewbar_accept_data,
+        'reviewbar_decline_data': reviewbar_decline_data,
+        'reviewRatio_accept_data': reviewRatio_accept_data,
+        'reviewRatio_decline_data': reviewRatio_decline_data,
+        }
+    return render(request,"frontend/perfomanceReport.html",context)
+
 
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])

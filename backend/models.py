@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-
 from django.http import response
 
 # Create your models here.
@@ -59,6 +58,7 @@ class StatusChoice1(models.TextChoices):
     FINISHED = 'finished', 'Finished'
     ONGOING = 'ongoing', 'Ongoing'
     DECLINED = 'declined', 'Declined'
+    Canceled = 'canceled', 'Canceled'
 
 class Order(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)
@@ -77,6 +77,7 @@ class StatusChoice2(models.TextChoices):
     PENDING = 'pending', 'Pending'
     DELIVERED = 'delivered', 'Delivered'
     SENT = 'sent', 'Sent'
+    LATE = 'late', 'Late'
 
 class Delivery(models.Model):
     client = models.OneToOneField(Client, null=True, on_delete= models.SET_NULL)

@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.loginView, name="loginPage"),
     path('register/', views.RegisterView, name="registerPage"),
     path('dashboard/', views.DashboardView, name="dashboard"),
+    path('dashboard/report/', views.ReportView, name="Report"),
     path('dashboard/orders/ongoing/', views.OngoingOrder, name="ongoingOrders"),
     path('dashboard/orders/history/', views.ordersHistory, name="ordersHistory"),
     path('dashboard/orders/requests/', views.ordersRequests, name="ordersRequest"),
