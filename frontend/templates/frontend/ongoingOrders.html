@@ -127,10 +127,10 @@
                         </div>
             
           {% if onGoingOrders.has_previous %}
-            <a href="{% url 'ongoingOrders' %}?page={{ongoingOrders.previous_page_number}}">Previous Page</a>
+            <a href="{% url 'ongoingOrders' %}?page={{onGoingOrders.previous_page_number}}">Previous Page</a>
           {% endif %}
           {% if onGoingOrders.has_next %}
-            <a href="{% url 'ongoingOrders' %}?page={{ongoingOrders.next_page_number}}">Next Page</a>
+            <a href="{% url 'ongoingOrders' %}?page={{onGoingOrders.next_page_number}}">Next Page</a>
           {% endif %}
           </div> 
         </div>

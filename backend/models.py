@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 
+from django.http import response
+
 # Create your models here.
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -125,6 +127,7 @@ class Complaint(models.Model):
     launderer = models.ForeignKey(Launderer, null=True, blank=True, on_delete= models.SET_NULL)
     subject = models.CharField(max_length=200, null=True)
     complain = models.CharField(max_length=500, null=True)
+    response = models.CharField(max_length=500, null=True, blank=True)
     status =models.CharField(max_length=50, blank=True, null=True, choices=StatusChoice3.choices,default=StatusChoice3.UNRESOLVED)
     date = models.DateTimeField(auto_now_add=True, null=True)
     

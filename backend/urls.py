@@ -56,4 +56,5 @@ urlpatterns = [
     path('admindashboard/orders/detail/<str:pk_id>/', views.adminOrderDetails, name="adminOrderDetails"),
 
     path('admindashboard/complaints/', views.adminComplaintsView, name="adminComplaints"),
+    path('admindashboard/complaints/detail/<str:pk_id>/', views.adminComplaintsDetailView, name="adminComplaintsDetail"),
 ]

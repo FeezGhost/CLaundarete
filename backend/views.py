@@ -382,8 +382,8 @@ def launderetteEdit(request):
 @allowed_users(allowed_roles=['launderer'])
 def launderetteReviews(request):
     launderer = request.user.launderer
-    launderette = launderer.launderette_set.all().order_by('-date')
-    reviews = launderette[0].review_set.all()
+    launderette = launderer.launderette_set.all().order_by('-date_joined')
+    reviews = launderette[0].review_set.all().order_by('-date')
     reviewsFilters = ReviewFilter(request.GET, queryset=reviews)
     reviews = reviewsFilters.qs
     p  = Paginator(reviews, 20)
@@ -666,8 +666,16 @@ def clientRequestProcess(request, pk_id):
 @allowed_users(allowed_roles=['admin'])
 def adminReviewsView(request):
     admin = request.user
-    reviews = Review.objects.all()
-    context = {"admin": admin,'reviews': reviews}
+    reviews = Review.objects.all().order_by('-date')
+    reviewsFilters = ReviewFilter(request.GET, queryset=reviews)
+    reviews = reviewsFilters.qs
+    p  = Paginator(reviews, 20)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {"admin": admin,'reviews': page, 'reviewsFilters': reviewsFilters}
     return render(request,"frontend/admin/reviews.html",context)
 
 @login_required(login_url="adminLoginPage")
@@ -682,8 +690,16 @@ def adminReviewDetail(request, pk_id):
 @allowed_users(allowed_roles=['admin'])
 def adminOrdersView(request):
     admin = request.user
-    orders = Order.objects.all()
-    context = {"admin": admin,'orders': orders}
+    orders = Order.objects.all().order_by('-date_started')
+    ordersfliter = OrderFilter(request.GET, queryset=orders)
+    orders = ordersfliter.qs
+    p  = Paginator(orders, 20)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {"admin": admin,'orders': page,'ordersfilter':ordersfliter}
     return render(request,"frontend/admin/orders.html",context)
 
 @login_required(login_url="adminLoginPage")
@@ -697,6 +713,30 @@ def adminOrderDetails(request, pk_id):
 @allowed_users(allowed_roles=['admin'])
 def adminComplaintsView(request):
     admin = request.user
-    complaints = Complaint.objects.all()
-    context = {"admin": admin,'complaints': complaints}
+    complaints = Complaint.objects.all().order_by('-date')
+    complaintsFilter = ComplaintFilter(request.GET, queryset=complaints)
+    complaints = complaintsFilter.qs
+    p  = Paginator(complaints, 20)
+    page_num = request.GET.get('page', 1)
+    try:
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+    context = {"admin": admin, 'complaints': page, "complaintsFilter": complaintsFilter}
     return render(request,"frontend/admin/complaints.html",context)
+
+@login_required(login_url="adminLoginPage")
+@allowed_users(allowed_roles=['admin'])
+def adminComplaintsDetailView(request, pk_id):
+    complaint = Complaint.objects.get(id=pk_id)
+    form = ComplaintForm(instance= complaint)
+    if request.method == 'POST':
+        res = request.POST.get('response')
+        complaint.status='resolved'
+        complaint.response= res
+        complaint.save()
+        messages.success(request, "Complaint has been Responded!")
+        return  redirect("adminComplaints")
+    context = {'complaint':complaint, 'form': form}
+    return render(request,"frontend/admin/complaintDetail.html",context)
+

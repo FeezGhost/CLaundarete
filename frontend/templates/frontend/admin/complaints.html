@@ -12,20 +12,57 @@
       <div class="breadcrumb-holder">
         <div class="container-fluid">
           <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item "><a >Orders</a></li>
-            <li class="breadcrumb-item active">Orders       </li>
+            <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Complaints       </li>
           </ul>
         </div>
       </div>
+      
+    <div class="container mx-4 px-4">
+      {% for message in messages %}
+        <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
       <section class="charts">
         <div class="container-fluid">
-          <!-- Page Header-->
-          <header> 
-            <h1 class="h3 display">Complaints            </h1>
-          </header>
+          
           
         <div class="card">
+          <div class="container mt-4">
+            
+            <form method="get" class="text-left">
+              <div class="filters">
+                <div class="form-group-material">
+                  <label>Subject & Status</label>
+                  {{complaintsFilter.form.subject}}
+                  {{complaintsFilter.form.subject.errors}}
+                  <br>
+                  {{complaintsFilter.form.status}}
+                </div>
+                
+                <a href="#date_filter"  data-toggle="collapse">Date Filters</a>
+                <div id="date_filter" class="collapse">
+                  <div class="form-group-material ">
+                    <label>Date Range</label>
+                    {{complaintsFilter.form.start_date}}
+                    {{complaintsFilter.form.start_date.errors}}
+                    {{complaintsFilter.form.end_date}}
+                    {{complaintsFilter.form.end_date.errors}}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+		            <button class="my-btn btn btn-primary" type="submit">Search</button>
+              </div>
+            </form>
+          </div>
         
                         <div class="card-header">
                         
@@ -40,8 +77,9 @@
                             <thead>
                                 <tr>
                                 <th>Date</th>
-                                <th>Client</th>
+                                <th>User</th>
                                 <th>Subject</th>
+                                <th>Status</th>
                                 <th>Details</th>
                                 </tr>
                             </thead>
@@ -49,9 +87,14 @@
                                 {% for complaint in complaints %}
                                     <tr>
                                         <td>{{complaint.date}}</td>
-                                        <td>{{complaint.client}}</td>
+                                        {% if complaint.client == None %}
+                                          <td>{{complaint.launderer}}</td>
+                                        {% else %}
+                                          <td>{{complaint.client}}</td>
+                                        {% endif %}
                                         <td>{{complaint.subject}}</td>
-                                        {% comment %} <td><a class="btn btn-md btn-outline-primary" href= "{% url 'orderDetail' onGoingOrder.id %}">Details</a></td> {% endcomment %}
+                                        <td>{{complaint.status}}</td>
+                                        <td><a class="btn btn-md btn-outline-primary" href= "{% url 'adminComplaintsDetail' complaint.id %}">Check</a></td>
                                     </tr>
                                 {% endfor %}
                                 
@@ -60,9 +103,13 @@
                         </div>
             </div>
       </div>
-        
        
-        
+          {% if complaints.has_previous %}
+            <a href="{% url 'adminComplaints' %}?page={{complaints.previous_page_number}}">Previous Page</a>
+          {% endif %}
+          {% if complaints.has_next %}
+            <a href="{% url 'adminComplaints' %}?page={{complaints.next_page_number}}">Next Page</a>
+          {% endif %} 
         </div>
       </section>
       
@@ -71,5 +118,54 @@
       </footer>
     </div>
  
+    <script>
+    toastr.options = {
+                          "closeButton": true,
+                          "debug": false,
+                          "newestOnTop": true,
+                          "progressBar": true,
+                          "positionClass": "toast-top-center",
+                          "preventDuplicates": true,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                      }
+      
+      //Query All input fields
+      var form_fields = document.getElementsByTagName('input')
+      var i = 0
+      for (var field in form_fields){
+        console.log(form_fields[field].name)
+        form_fields[field].className += ' form-control'
+      }
+      form_fields[0].placeholder = "Enter subject"
+      form_fields[1].placeholder = "Date started (eg: 11-09-2021)"
+      form_fields[2].placeholder = "Date Ended (eg: 05-12-2021)"
+      
+      $(document).ready(function(){
+        if($(".errorlist").length){
+          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
+        }
+      });
+      var formErrors = document.getElementsByClassName("errorlist");
+      if(formErrors.length){
+        for (var field in formErrors){
+          console.log(formErrors[field]);
+          myUl = formErrors[field];
+          items = myUl.getElementsByTagName("li");
+          for (var item in items){
+            if( items[item].textContent !== undefined){
+              toastr.error(items[item].textContent)
+            }
+          }
+        }
+      }
+    </script>
 
 {% endblock content %}

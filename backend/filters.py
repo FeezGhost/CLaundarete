@@ -40,6 +40,7 @@ class ReviewFilter(django_filters.FilterSet):
     start_rating = NumberFilter(field_name="rating", lookup_expr='gte')
     end_rating = NumberFilter(field_name="rating", lookup_expr='lte')
     client_name = CharFilter(field_name='client__name', lookup_expr='icontains')
+    launderette_name = CharFilter(field_name='launderette__name', lookup_expr='icontains')
     class Meta:
         model = Order
         exclude = '__all__'
@@ -50,7 +51,7 @@ class ComplaintFilter(django_filters.FilterSet):
     end_date = DateFilter(field_name="date", lookup_expr='lte')
     subject = CharFilter(field_name='subject', lookup_expr='icontains')
     class Meta:
-        model = Order
+        model = Complaint
         fields = '__all__'
 
 class LaundererFilter(django_filters.FilterSet):
