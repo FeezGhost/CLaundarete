@@ -13,8 +13,6 @@ from django.contrib.auth.models import Group
 from .filters import *
 from django.core.paginator import Paginator, EmptyPage
 import datetime
-from dateutil.relativedelta import relativedelta
-# from .decorators import  unauthenticated_user, allowed_users,admin_only
 
 # Create your views here.
 
@@ -147,90 +145,94 @@ def ReportView(request):
     end_date = datetime.date.today().strftime("%m")
     end_dateYear = datetime.date.today().strftime("%Y")
     start_date = launderer.date_joined.date().strftime("%m")
-    launderette = launderer.launderette_set.all()[0]
-    ordersAccepted = launderette.order_set.all().exclude(status = 'declined').exclude(status = 'pending').exclude(status = 'canceled')
-    ordersDeclined = launderette.order_set.all().filter(status = 'declined')
-    ordersCanceled = launderette.order_set.all().filter(status = 'canceled')
-    reviews = launderette.review_set.all()
-    totalreviews = reviews.count()
-    positiveReviews = reviews.filter(rating__gte=2.5)
-    negativeReviews = reviews.filter(rating__lt=2.5)
-    totalorders = launderette.order_set.all().count()
-    end = int(end_date)
-    i = int(start_date)
-    if i > end:
-        i=1
-    else:
-        i=int(start_date)
-    acceptedOrdersList = []
-    declinedOrdersList = []
-    positiveReviewsList = []
-    negativeReviewsList = []
-    acceptedOrderRatioList = []
-    declinedOrderRatioList = []
-    positiveReviewsRatioList = []
-    negativeReviewsRatioList = []
-    monthsList = []
-    while i <= end:
-        fullDate =str(1)+"-"+str(i)+"-"+end_dateYear
-        print(fullDate)
-        ordersA = ordersAccepted.filter(date_started__month__gte=i,
-                                date_started__month__lt=(i+1)).count()
-        acceptedOrdersList.append(ordersA)
-        ordersD = ordersDeclined.filter(date_created__month__gte=i,
-                                date_created__month__lt=(i+1)).count()
-        
-        ordersD += ordersCanceled.filter(date_created__month__gte=i,
-                                date_created__month__lt=(i+1)).count()
-        
-        reviewsPos = positiveReviews.filter(date__month__gte=i,
-                                date__month__lt=(i+1)).count()
-        reviewsneg = negativeReviews.filter(date__month__gte=i,
-                                date__month__lt=(i+1)).count()
-        positiveReviewsList.append(reviewsPos) 
-        negativeReviewsList.append(reviewsneg)    
-        declinedOrdersList.append(ordersD)
+    if totalLaunderette>0:
+        end = int(end_date)
+        i = int(start_date)
+        if i > end:
+            i=1
+        else:
+            i=int(start_date)
 
-        acceptedOrderRatio = int(100 - float((ordersD/totalorders)*100))
-        declinedOrderRatio = int(float((ordersD/totalorders)*100))
-        postiveRatio = int(float((reviewsPos/totalreviews)*100))
-        negativeRatio = int(float((reviewsneg/totalreviews)*100))
-
-        acceptedOrderRatioList.append(acceptedOrderRatio)
-        declinedOrderRatioList.append(declinedOrderRatio)
-
-        
-        positiveReviewsRatioList.append(postiveRatio)
-        negativeReviewsRatioList.append(negativeRatio)
-
-        month = datetime.date(1900, i, 1).strftime('%B')
-        monthsList.append(month)
-        i+=1
-    bar_month_data = dict(zip(monthsList,monthsList))
-    bar_accept_data = dict(zip(acceptedOrdersList, acceptedOrdersList))
-    bar_decline_data = dict(zip(declinedOrdersList, declinedOrdersList))
-    reviewbar_accept_data = dict(zip(positiveReviewsList, positiveReviewsList))
-    reviewbar_decline_data = dict(zip(negativeReviewsList, negativeReviewsList))
-
-    reviewRatio_accept_data = dict(zip(positiveReviewsRatioList, positiveReviewsRatioList))
-    reviewRatio_decline_data = dict(zip(negativeReviewsRatioList, negativeReviewsRatioList))
-
-    line_accept_data = dict(zip(acceptedOrderRatioList, acceptedOrderRatioList))
-    line_decline_data = dict(zip(declinedOrderRatioList, declinedOrderRatioList))
-    totalDeclined = ordersDeclined.count()
-    totalFinished = launderette.order_set.all().filter(status = 'finished').count()
-    if totalLaunderette > 0 :
         launderette = launderer.launderette_set.all()[0]
-        if totalLaunderette >0:
-            reviews = launderette.review_set.all()
-            totalreviews = reviews.count()
-            if totalreviews > 0:
-                positiveReviews = reviews.filter(rating__gte=2.5).count()
-                negativeReviews = reviews.filter(rating__lt=2.5).count()
-                reviewsRatio = float((positiveReviews/totalreviews)*100)
+
         orders = launderette.order_set.all()
         totalOrders = orders.count()
-        if totalOrders > 0 :
+        if totalOrders > 0:
+            ordersAccepted = launderette.order_set.all().exclude(status = 'declined').exclude(status = 'pending').exclude(status = 'canceled')
+            ordersDeclined = launderette.order_set.all().filter(status = 'declined')
+            ordersCanceled = launderette.order_set.all().filter(status = 'canceled')
+            acceptedOrdersList = []
+            declinedOrdersList = []
+
+            reviews = launderette.review_set.all()
+            totalreviews = reviews.count()
+            positiveReviews = reviews.filter(rating__gte=2.5)
+            negativeReviews = reviews.filter(rating__lt=2.5)
+            
+            positiveReviewsList = []
+            negativeReviewsList = []
+            acceptedOrderRatioList = []
+            declinedOrderRatioList = []
+            positiveReviewsRatioList = []
+            negativeReviewsRatioList = []
+            monthsList = []
+            while i <= end:
+                fullDate =str(1)+"-"+str(i)+"-"+end_dateYear
+                ordersA = ordersAccepted.filter(date_started__month__gte=i,
+                                        date_started__month__lt=(i+1)).count()
+                acceptedOrdersList.append(ordersA)
+                ordersD = ordersDeclined.filter(date_created__month__gte=i,
+                                        date_created__month__lt=(i+1)).count()
+                
+                ordersD += ordersCanceled.filter(date_created__month__gte=i,
+                                        date_created__month__lt=(i+1)).count()
+                declinedOrdersList.append(ordersD)
+                acceptedOrderRatio = int(100 - float((ordersD/totalOrders)*100))
+                declinedOrderRatio = int(float((ordersD/totalOrders)*100))
+                
+                reviewsPos = positiveReviews.filter(date__month__gte=i,
+                                        date__month__lt=(i+1)).count()
+                reviewsneg = negativeReviews.filter(date__month__gte=i,
+                                        date__month__lt=(i+1)).count()
+                positiveReviewsList.append(reviewsPos) 
+                negativeReviewsList.append(reviewsneg)
+                if totalreviews>0:
+                    postiveRatio = int(float((reviewsPos/totalreviews)*100))
+                    negativeRatio = int(float((reviewsneg/totalreviews)*100))
+                else:
+                    postiveRatio = 0
+                    negativeRatio = 0
+
+                acceptedOrderRatioList.append(acceptedOrderRatio)
+                declinedOrderRatioList.append(declinedOrderRatio)
+
+                
+                positiveReviewsRatioList.append(postiveRatio)
+                negativeReviewsRatioList.append(negativeRatio)
+
+                month = datetime.date(1900, i, 1).strftime('%B')
+                monthsList.append(month)
+                i+=1
+            bar_month_data = dict(zip(monthsList,monthsList))
+            bar_accept_data = dict(zip(acceptedOrdersList, acceptedOrdersList))
+            bar_decline_data = dict(zip(declinedOrdersList, declinedOrdersList))
+            line_accept_data = dict(zip(acceptedOrderRatioList, acceptedOrderRatioList))
+            line_decline_data = dict(zip(declinedOrderRatioList, declinedOrderRatioList))
+            totalDeclined = ordersDeclined.count()
+            totalFinished = launderette.order_set.all().filter(status = 'finished').count()
+
+            reviewbar_accept_data = dict(zip(positiveReviewsList, positiveReviewsList))
+            reviewbar_decline_data = dict(zip(negativeReviewsList, negativeReviewsList))
+
+            reviewRatio_accept_data = dict(zip(positiveReviewsRatioList, positiveReviewsRatioList))
+            reviewRatio_decline_data = dict(zip(negativeReviewsRatioList, negativeReviewsRatioList))
+
+
+            positiveReviews = positiveReviews.count()
+            negativeReviews = negativeReviews.count()
+
+            reviewsRatio = float((positiveReviews/totalreviews)*100)
+            
             newOrders = orders.filter(status = 'pending').order_by('date_created')
             totalNewOrders = newOrders.count()
             ongoingOrders = orders.filter(status = 'ongoing').order_by('-date_started')[:3]
@@ -241,33 +243,44 @@ def ReportView(request):
             totalCanceledOrders = canceledOrders.count()
             if totalCanceledOrders > 0 :
                 acceptedOrdersRatio = 100 - float((totalCanceledOrders/totalOrders)*100)
-    context = {
-        "launderer" : launderer, 
-        'totalLaunderette' : totalLaunderette,
-        'totalreviews' : totalreviews,
-        'positiveReviews' : positiveReviews,
-        'negativeReviews' : negativeReviews,
-        'newOrders' : totalNewOrders,
-        'totalOrders' : totalOrders,
-        'totalOngoingOrders' : totalOngoingOrders,
-        'ongoingOrders' : ongoingOrders,
-        'finishedOrders' : finishedOrders,
-        'acceptedOrdersRatio' : acceptedOrdersRatio,
-        'acceptedOrders' : acceptedOrders,
-        'totalCanceledOrders' : totalCanceledOrders,
-        'reviewsRatio' : reviewsRatio,
-        'bar_month_data': bar_month_data,
-        'bar_accept_data': bar_accept_data,
-        'bar_decline_data': bar_decline_data,
-        'line_accept_data': line_accept_data,
-        'line_decline_data': line_decline_data,
-        'totalDeclined':totalDeclined,
-        'totalFinished':totalFinished,
-        'reviewbar_accept_data': reviewbar_accept_data,
-        'reviewbar_decline_data': reviewbar_decline_data,
-        'reviewRatio_accept_data': reviewRatio_accept_data,
-        'reviewRatio_decline_data': reviewRatio_decline_data,
+            context = {
+                "launderer" : launderer, 
+                'totalLaunderette' : totalLaunderette,
+                'totalreviews' : totalreviews,
+                'positiveReviews' : positiveReviews,
+                'negativeReviews' : negativeReviews,
+                'newOrders' : totalNewOrders,
+                'totalOrders' : totalOrders,
+                'totalOngoingOrders' : totalOngoingOrders,
+                'ongoingOrders' : ongoingOrders,
+                'finishedOrders' : finishedOrders,
+                'acceptedOrdersRatio' : acceptedOrdersRatio,
+                'acceptedOrders' : acceptedOrders,
+                'totalCanceledOrders' : totalCanceledOrders,
+                'reviewsRatio' : reviewsRatio,
+                'bar_month_data': bar_month_data,
+                'bar_accept_data': bar_accept_data,
+                'bar_decline_data': bar_decline_data,
+                'line_accept_data': line_accept_data,
+                'line_decline_data': line_decline_data,
+                'totalDeclined':totalDeclined,
+                'totalFinished':totalFinished,
+                'reviewbar_accept_data': reviewbar_accept_data,
+                'reviewbar_decline_data': reviewbar_decline_data,
+                'reviewRatio_accept_data': reviewRatio_accept_data,
+                'reviewRatio_decline_data': reviewRatio_decline_data,
+            }
+        else:
+            context = {
+                "launderer" : launderer, 
+                'totalLaunderette' : totalLaunderette,
+            }
+    else:
+        context = {
+            "launderer" : launderer, 
         }
+            
+    
     return render(request,"frontend/perfomanceReport.html",context)
 
 
@@ -275,52 +288,65 @@ def ReportView(request):
 @allowed_users(allowed_roles=['launderer'])
 def OngoingOrder(request):
     launder = request.user.launderer
-    tLaunderette = launder.launderette_set.all()
-    orders = tLaunderette[0].order_set.all().order_by('-date_started')
-    onGoing = orders.filter(status='ongoing')
-    ordersfliter = OrderFilter(request.GET, queryset=onGoing)
-    onGoing = ordersfliter.qs
-    p  = Paginator(onGoing, 20)
-    page_num = request.GET.get('page', 1)
-    try:
-        page = p.page(page_num)
-    except EmptyPage:
-        page = p.page(1)
-    context = {"launderer": launder, 'onGoingOrders' : page, 'ordersfilter':ordersfliter}
+    if launder.launderette_set.all().count()>0:
+        tLaunderette = launder.launderette_set.all()
+        orders = tLaunderette[0].order_set.all().order_by('-date_started')
+        if orders.count() > 0:
+            onGoing = orders.filter(status='ongoing')
+            ordersfliter = OrderFilter(request.GET, queryset=onGoing)
+            onGoing = ordersfliter.qs
+            p  = Paginator(onGoing, 20)
+            page_num = request.GET.get('page', 1)
+            try:
+                page = p.page(page_num)
+            except EmptyPage:
+                page = p.page(1)
+            context = {"launderer": launder, 'onGoingOrders' : page, 'ordersfilter':ordersfliter}
+            return render(request,"frontend/ongoingOrders.html",context)
+    context = {"launderer": launder, }
     return render(request,"frontend/ongoingOrders.html",context)
 
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
 def ordersHistory(request):
     launder = request.user.launderer
-    tLaunderette = launder.launderette_set.all()
-    orders = tLaunderette[0].order_set.all().order_by('-date_started')
-    finished = orders.exclude(status='ongoing').exclude(status='pending')
-    ordersfliter = OrderFilter2(request.GET, queryset=finished)
-    finished = ordersfliter.qs
-    p  = Paginator(finished, 20)
-    page_num = request.GET.get('page', 1)
-    try:
-        page = p.page(page_num)
-    except EmptyPage:
-        page = p.page(1)
-    context = {"launderer": launder, 'finisheds' : page, 'ordersfliter': ordersfliter}
+    if launder.launderette_set.all().count()>0:
+        tLaunderette = launder.launderette_set.all()
+        orders = tLaunderette[0].order_set.all().order_by('-date_started')
+        if orders.count() > 0:
+            finished = orders.exclude(status='ongoing').exclude(status='pending')
+            ordersfliter = OrderFilter2(request.GET, queryset=finished)
+            finished = ordersfliter.qs
+            p  = Paginator(finished, 20)
+            page_num = request.GET.get('page', 1)
+            try:
+                page = p.page(page_num)
+            except EmptyPage:
+                page = p.page(1)
+            context = {"launderer": launder, 'finisheds' : page, 'ordersfliter': ordersfliter}
+            return render(request,"frontend/ordersHistory.html",context)
+    context = {"launderer": launder, }
     return render(request,"frontend/ordersHistory.html",context)
 
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
 def ordersRequests(request):
     launder = request.user.launderer
-    tLaunderette = launder.launderette_set.all()
-    orders = tLaunderette[0].order_set.all().order_by('-date_started')
-    orderequests = orders.filter(status='pending')
-    p  = Paginator(orderequests, 10)
-    page_num = request.GET.get('page', 1)
-    try:
-        page = p.page(page_num)
-    except EmptyPage:
-        page = p.page(1)
-    context = {"launderer": launder, 'orderRequests' : page}
+    if launder.launderette_set.all().count()>0:
+        tLaunderette = launder.launderette_set.all()
+        orders = tLaunderette[0].order_set.all().order_by('-date_started')
+        if orders.count() > 0:
+            orderequests = orders.filter(status='pending')
+            p  = Paginator(orderequests, 10)
+            page_num = request.GET.get('page', 1)
+            try:
+                page = p.page(page_num)
+            except EmptyPage:
+                page = p.page(1)
+            context = {"launderer": launder, 'orderRequests' : page}
+            return render(request,"frontend/orderRequests.html",context)
+
+    context = {"launderer": launder}
     return render(request,"frontend/orderRequests.html",context)
 
 @login_required(login_url="loginPage")
@@ -374,13 +400,16 @@ def orderDetails(request, pk_id):
 def services(request):
     launder = request.user.launderer
     tLaunderette = launder.launderette_set.all()
-    launderette = tLaunderette[0]
-    totalLaunderette = tLaunderette.count()
     serviceForm = ServicesForm()
-    services = launderette.services_set.all()
-    print(services)
-    context = { 'serviceForm': serviceForm, 'launderer' : launder, 'services' : services, 'totalLaunderette' : totalLaunderette }
-    return render(request,"frontend/services.html",context)
+    totalLaunderette = tLaunderette.count()
+    if totalLaunderette > 0:
+        launderette = tLaunderette[0]
+        if launderette.services_set.all().count()>0:
+            services = launderette.services_set.all()
+            context = { 'serviceForm': serviceForm, 'launderer' : launder, 'services' : services, 'totalLaunderette' : totalLaunderette }
+            return render(request,"frontend/services.html",context)
+    else:
+        return redirect("launderette")
 
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
@@ -530,18 +559,24 @@ def launderetteEdit(request):
 @allowed_users(allowed_roles=['launderer'])
 def launderetteReviews(request):
     launderer = request.user.launderer
-    launderette = launderer.launderette_set.all().order_by('-date_joined')
-    reviews = launderette[0].review_set.all().order_by('-date')
-    reviewsFilters = ReviewFilter(request.GET, queryset=reviews)
-    reviews = reviewsFilters.qs
-    p  = Paginator(reviews, 20)
-    page_num = request.GET.get('page', 1)
-    try:
-        page = p.page(page_num)
-    except EmptyPage:
-        page = p.page(1)
-    context = {'launderer':launderer, 'reviews':page, 'reviewsFilters': reviewsFilters}
-    return render(request,"frontend/launderetteReviews.html",context)
+    if launderer.launderette_set.all().count() > 0:
+        launderette = launderer.launderette_set.all().order_by('-date_joined')
+        reviews = launderette[0].review_set.all().order_by('-date')
+        if reviews.count() > 0:
+            reviewsFilters = ReviewFilter(request.GET, queryset=reviews)
+            reviews = reviewsFilters.qs
+            p  = Paginator(reviews, 20)
+            page_num = request.GET.get('page', 1)
+            try:
+                page = p.page(page_num)
+            except EmptyPage:
+                page = p.page(1)
+            context = {'launderer':launderer, 'reviews':page, 'reviewsFilters': reviewsFilters}
+        else:
+            context = {'launderer':launderer,}
+        return render(request,"frontend/launderetteReviews.html",context)
+    else:
+        return redirect("launderette")
 
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
@@ -699,9 +734,12 @@ def adminLaunderersView(request):
 def adminLaundererDetailView(request, pk_id):
     admin = request.user
     launderer = Launderer.objects.get(id = pk_id)
-    launderette = launderer.launderette_set.all()[0]
-    context = {"admin": admin,'launderer': launderer, 'launderette': launderette }
-    return render(request,"frontend/admin/laundererDetail.html",context)
+    if launderer.launderette_set.all().count() > 0:
+        launderette = launderer.launderette_set.all()[0]
+        context = {"admin": admin,'launderer': launderer, 'launderette': launderette }
+        return render(request,"frontend/admin/laundererDetail.html",context)
+    else :
+        return redirect('adminLaunderers')
 
 @login_required(login_url="adminLoginPage")
 @allowed_users(allowed_roles=['admin'])
@@ -839,6 +877,7 @@ def adminReviewDetail(request, pk_id):
 def adminOrdersView(request):
     admin = request.user
     orders = Order.objects.all().order_by('-date_started')
+    
     ordersfliter = OrderFilter(request.GET, queryset=orders)
     orders = ordersfliter.qs
     p  = Paginator(orders, 20)
@@ -854,7 +893,12 @@ def adminOrdersView(request):
 @allowed_users(allowed_roles=['admin'])
 def adminOrderDetails(request, pk_id):
     order = Order.objects.get(id = pk_id)
-    context = { 'order' : order}
+    haveReview = order.review_set.all().exists()
+    if haveReview:
+        review = order.review_set.all()[0]
+        context = {'order' : order, "review": review, "haveReview": haveReview}
+    else:
+        context = {'order' : order, "haveReview": haveReview}
     return render(request,"frontend/admin/order_detail.html",context)
 
 @login_required(login_url="adminLoginPage")

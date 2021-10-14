@@ -12,8 +12,9 @@
       <div class="breadcrumb-holder">
         <div class="container-fluid">
           <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a >Orders</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item "><a  href="{% url 'adminOrders' %}">Orders</a></li>
+            <li class="breadcrumb-item active"><a >Details</a></li>
           </ul>
         </div>
       </div>
@@ -135,7 +136,11 @@
                             </div>
                       </form>
                       {% else %}
-                      <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'adminReviewDetail' order.id %} ">Check Review</a>
+                      
+                        {% if haveReview %}
+                        
+                      <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'adminReviewDetail' review.id %} ">Check Review</a>
+                        {% endif %}
                       {% endif %}
                 </div>
                   

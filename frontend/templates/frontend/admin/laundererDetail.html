@@ -12,13 +12,14 @@
       <div class="breadcrumb-holder">
         <div class="container-fluid">
           <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a >Clients</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'adminLaunderers' %}">Launderers</a></li>
+            <li class="breadcrumb-item active"><a >Details</a></li>
           </ul>
         </div>
       </div>
 
-      <h1 class="display-3 text-center m-4">Clients</h1>
+      <h1 class="display-3 text-center m-4">Launderer</h1>
       <hr>
       {% comment %} <section class="statistics">
         <div class="container-fluid">

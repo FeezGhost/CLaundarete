@@ -63,7 +63,7 @@ class StatusChoice1(models.TextChoices):
 class Order(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)
     launderette = models.ForeignKey(Launderette, null=True, on_delete= models.SET_NULL)
-    description = models.CharField(max_length=200, null=True)
+    description = models.TextField(blank=True, null=True)
     price = models.FloatField(default=0)
     amount = models.FloatField(default=0)
     status =models.CharField(max_length=50, blank=True, null=True,choices=StatusChoice1.choices,default=StatusChoice1.PENDING)
@@ -82,7 +82,7 @@ class StatusChoice2(models.TextChoices):
 class Delivery(models.Model):
     client = models.OneToOneField(Client, null=True, on_delete= models.SET_NULL)
     launderette = models.OneToOneField(Launderette, null=True, on_delete= models.SET_NULL)
-    description = models.CharField(max_length=500, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     status =models.CharField(max_length=50, blank=True, null=True,choices=StatusChoice2.choices,default=StatusChoice2.PENDING)
     date = models.DateTimeField(auto_now_add=True, null=True)
     
@@ -92,7 +92,7 @@ class Delivery(models.Model):
 class Transactions(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)
     launderette = models.ForeignKey(Launderette, null=True, on_delete= models.SET_NULL)
-    details = models.CharField(max_length=200, null=True)
+    details = models.TextField(blank=True, null=True)
     amount = models.FloatField(default=0)
     available_balance = models.FloatField(default=0)
     date = models.DateTimeField(auto_now_add=True, null=True)
@@ -105,7 +105,7 @@ class Review(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)
     order = models.ForeignKey(Order, null=True, on_delete= models.SET_NULL)
     rating = models.FloatField(default=0)
-    review = models.CharField(max_length=500, null=True)
+    review = models.TextField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
     
     def __str__(self):
@@ -115,7 +115,7 @@ class ReviewComment(models.Model):
     review = models.ForeignKey(Review, null=True, on_delete= models.SET_NULL)
     client = models.ForeignKey(Client, null=True, blank=True, on_delete= models.SET_NULL)
     launderette = models.ForeignKey(Launderette, null=True, blank=True, on_delete= models.SET_NULL)
-    comment = models.CharField(max_length=500, null=True)
+    comment = models.TextField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
 
 class StatusChoice3(models.TextChoices):
@@ -127,7 +127,7 @@ class Complaint(models.Model):
     client = models.ForeignKey(Client, null=True, blank=True, on_delete= models.SET_NULL)
     launderer = models.ForeignKey(Launderer, null=True, blank=True, on_delete= models.SET_NULL)
     subject = models.CharField(max_length=200, null=True)
-    complain = models.CharField(max_length=500, null=True)
+    complain = models.TextField(blank=True, null=True)
     response = models.CharField(max_length=500, null=True, blank=True)
     status =models.CharField(max_length=50, blank=True, null=True, choices=StatusChoice3.choices,default=StatusChoice3.UNRESOLVED)
     date = models.DateTimeField(auto_now_add=True, null=True)
