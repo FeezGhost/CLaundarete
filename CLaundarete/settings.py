@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path, os
 from django.contrib.messages import constants as messages
+from datetime import timedelta
 
 
 MESSAGE_TAGS = {
@@ -47,6 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'djoser',
+    'api.apps.ApiConfig',
     'frontend.apps.FrontendConfig',
     'backend.apps.BackendConfig',
     'django_filters',
@@ -142,3 +146,23 @@ STATICFILES_DIRS = [
 MEDIA_URL ='/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+
+REST_FRAMEWORK = {
+    'COEREC_DECIMAL_TO_STRING': False,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+
+DJOSER = {
+    'SERIALIZERS' : {
+        'user_create' : 'api.serializers.UserCreateSerializer',
+        'current_user' : 'api.serializers.UserSerializer'
+    }
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+}

@@ -42,7 +42,7 @@ class ReviewFilter(django_filters.FilterSet):
     client_name = CharFilter(field_name='client__name', lookup_expr='icontains')
     launderette_name = CharFilter(field_name='launderette__name', lookup_expr='icontains')
     class Meta:
-        model = Order
+        model = Review
         exclude = '__all__'
         fields = ['start_date', 'end_date', 'start_rating', 'end_rating', 'client_name']
 

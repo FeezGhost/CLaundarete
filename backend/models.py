@@ -66,7 +66,7 @@ class Order(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.FloatField(default=0)
     amount = models.FloatField(default=0)
-    status =models.CharField(max_length=50, blank=True, null=True,choices=StatusChoice1.choices,default=StatusChoice1.PENDING)
+    status =models.CharField(max_length=50, blank=True, null=True, choices=StatusChoice1.choices,default=StatusChoice1.PENDING)
     date_started = models.DateTimeField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     date_end = models.DateTimeField(null=True,  blank=True)

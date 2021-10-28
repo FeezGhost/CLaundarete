@@ -31,12 +31,6 @@ class LaundererForm(ModelForm):
         exclude = ['user']
 
 
-class LaunderetteForm(ModelForm):
-    
-    class Meta:
-        model = Launderette
-        fields = '__all__'
-        exclude = ['launderer']
 
 class ReviewCommentForm(ModelForm):
     comment=forms.CharField(widget=forms.Textarea(attrs={"rows":5,  }))
