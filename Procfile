@@ -1,0 +1,1 @@
+web: gunicorn CLaundarete.wsgi --log-file -

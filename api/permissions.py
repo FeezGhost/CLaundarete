@@ -11,10 +11,15 @@ class IsCreatorOrIsAdmin(permissions.BasePermission):
 
     message = 'You must be the creator of this object.'
     print('check 1')
+        
+
     def has_object_permission(self, request, view, obj):
         print('check 2')
         if request.method in permissions.SAFE_METHODS:
             print('check 3')
+            return True
+        if request.method == 'GET':
+            print('get')
             return True
         user = request.user
         if user.groups.filter(name='launderer').exists():
