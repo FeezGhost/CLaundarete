@@ -27,7 +27,7 @@ django-storages==1.11.1
 django-templated-mail==1.1.1
 django-tempus-dominus==5.1.2.16
 djangorestframework==3.12.4
-djangorestframework-simplejwt==5.0.0
+djangorestframework-simplejwt==4.8.0
 djoser==2.1.0
 drf-nested-routers==0.93.4
 filelock==3.0.12
