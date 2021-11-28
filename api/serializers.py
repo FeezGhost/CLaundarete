@@ -7,12 +7,12 @@ from backend.models import *
 class UserCreateSerializer(BaseUserCreateSerializer):
     
     class Meta(BaseUserCreateSerializer.Meta):
-        fields = ['username', 'first_name', 'last_name', 'email', 'password']
+        fields = ['id', 'is_staff', 'is_active','username', 'first_name', 'last_name', 'email', 'password']
 
 class UserSerializer(BaseUserSerializer):
     
     class Meta(BaseUserSerializer.Meta):
-        fields = ['username', 'first_name', 'last_name', 'email', 'password']
+        fields = ['id' ,'is_staff', 'is_active', 'username', 'first_name', 'last_name', 'email', 'password']
 
 class CLUserSerializer(serializers.ModelSerializer):
     # user = serializers.HyperlinkedRelatedField(

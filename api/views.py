@@ -19,7 +19,6 @@ from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from .permissions import IsCreatorOrIsAdmin, IsCreatorLaunderetteOrIsAdmin
 
-
 class ComplaintViewSet(ModelViewSet):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
@@ -35,7 +34,7 @@ class ComplaintViewSet(ModelViewSet):
 
     def get_serializer_context(self):
         return {'request': self.request}
-        
+
 class LaundererViewSet(ModelViewSet):
     
     permission_classes = [IsCreatorOrIsAdmin]

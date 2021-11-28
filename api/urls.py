@@ -3,6 +3,7 @@ from django.urls.conf import include
 from . import views
 # from rest_framework.routers import DefaultRouter
 from rest_framework_nested import routers
+from pprint import pprint
 
 router = routers.DefaultRouter()
 router.register('complaints', views.ComplaintViewSet)
@@ -33,6 +34,7 @@ review_router = routers.NestedDefaultRouter(router, 'reviews', lookup='review')
 review_router.register('review-comments', views.ReviewCommentViewSet, basename="review-reviewcomments")
 
 # urlpatterns = router.urls + launderette_router.urls
+
 
 urlpatterns = [
     path('', include(router.urls)),
