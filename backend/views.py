@@ -288,6 +288,8 @@ def ReportView(request):
 def OngoingOrder(request):
     launder = request.user.launderer
     if launder.launderette_set.all().count()>0:
+        tLaunderette = launder.launderette_set.all()
+        orders = tLaunderette[0].order_set.all().order_by('-date_started')
         if orders.count() > 0:
             onGoing = orders.filter(status='ongoing')
             ordersfliter = OrderFilter(request.GET, queryset=onGoing)
