@@ -17,6 +17,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.parsers import MultiPartParser, FormParser
 from .permissions import IsCreatorOrIsAdmin, IsCreatorLaunderetteOrIsAdmin
 
 class ComplaintViewSet(ModelViewSet):
@@ -84,7 +85,8 @@ class ClientViewSet(ModelViewSet):
     queryset = Client.objects.all()
     permission_classes = (IsCreatorOrIsAdmin, )
     serializer_class = ClientSerializer
-
+    
+    parser_classes = [MultiPartParser, FormParser]
     filter_backends = [DjangoFilterBackend]
     filterset_class = ClientFilter
 
