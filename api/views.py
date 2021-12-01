@@ -86,7 +86,6 @@ class ClientViewSet(ModelViewSet):
     permission_classes = (IsCreatorOrIsAdmin, )
     serializer_class = ClientSerializer
     
-    parser_classes = [MultiPartParser, FormParser]
     filter_backends = [DjangoFilterBackend]
     filterset_class = ClientFilter
 
