@@ -20,6 +20,7 @@ from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str, force_text, DjangoUnicodeDecodeError
 from .utils import generateToken
 from django.core.mail import send_mail
+from django.conf import settings
 
 def send_activation_email(request, user):
     cuurent_site = get_current_site(request)
@@ -35,7 +36,7 @@ def send_activation_email(request, user):
     send_mail(
         email_subject,
         email_body,
-        'cloudlaunderette@gmail.com',
+        settings.EMAIL_HOST_USER,
         [user.email],
     )
 
