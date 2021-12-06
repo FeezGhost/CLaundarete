@@ -170,12 +170,12 @@ SIMPLE_JWT = {
 
 
 # Email Settings
-
+# smtp.google.com
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smpt.google.com'
-EMAIL_HOST_USER = 'cloudlaunderette@gmail.com'
-EMAIL_HOST_PASSWORD = 'rpxffxdecyaarule'
+EMAIL_HOST = 'smtp.google.com'
 EMAIL_PORT = 587
+EMAIL_HOST_USER = 'feezoocrazy420@gmail.com'
+EMAIL_HOST_PASSWORD = 'dlldpdphgayalccy'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # EMAIL_USE_SLS = False
