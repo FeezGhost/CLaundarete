@@ -9,9 +9,11 @@ class DateInput(forms.DateInput):
 
 class CreatUserForm(UserCreationForm):
     name = forms.CharField(max_length=30, required=True, help_text='Full Name.', label='Full Name')
+    address = forms.CharField(max_length=30, required=False, help_text='Your address.', label='Address')
+    city = forms.CharField(max_length=30, required=True, help_text='Your city name.', label='City')
     class Meta:
         model =  User
-        fields =  ['username', 'name', 'email','password1', 'password2']
+        fields =  ['username', 'name','city', 'address', 'email','password1', 'password2']
 
 class ServicesForm(ModelForm):
     # des=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))

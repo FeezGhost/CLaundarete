@@ -1,14 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-from django.http import response
 
-# Create your models here.
+User._meta.get_field('email')._unique = True
+
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=200, null=True)
     profile_pic = models.ImageField(default="default-profile.png")
     address = models.CharField(max_length=200, null=True)
+    city = models.CharField(max_length=200, null=True)
+    lat = models.FloatField(default=0)
+    lon = models.FloatField(default=0)
     isBlocked = models.BooleanField(default=False)
     date_joined =models.DateTimeField(auto_now_add=True)
     
@@ -20,6 +23,9 @@ class Launderer(models.Model):
     name = models.CharField(max_length=200, null=True)
     profile_pic = models.ImageField( default="default-profile.png")
     address = models.CharField(max_length=200, null=True)
+    city = models.CharField(max_length=200, null=True)
+    lat = models.FloatField(null=True, blank=True)
+    lon = models.FloatField(null=True, blank=True)
     isBlocked = models.BooleanField(default=False)
     date_joined =models.DateTimeField(auto_now_add=True)
     
@@ -66,6 +72,7 @@ class Order(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.FloatField(default=0)
     amount = models.FloatField(default=0)
+    services = models.ManyToManyField(Services)
     status =models.CharField(max_length=50, blank=True, null=True, choices=StatusChoice1.choices,default=StatusChoice1.PENDING)
     date_started = models.DateTimeField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)

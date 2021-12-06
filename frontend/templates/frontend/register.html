@@ -51,6 +51,14 @@
                 {{form.email}}
               </div>
               <div class="form-group-material">
+              <p class="text-muted">City</p>
+                {{form.city}}
+              </div>
+              <div class="form-group-material">
+              <p class="text-muted">Address</p>
+                {{form.address}}
+              </div>
+              <div class="form-group-material">
               <p class="text-muted">Password</p>
                 {{form.password1}}
               </div>
@@ -58,6 +66,10 @@
                 <p class="text-muted">Confirm Password</p>
                 {{form.password2}}
               </div>
+              <div class="form-group-material">
+                  <input type="hidden" name="lat" id="latitude">
+                  <input type="hidden" name="logn" id="longitude">
+                </div>
               <div class="form-group text-center">
                 <input id="register" type="submit" value="Register" class="btn btn-primary text-white">
               </div>
@@ -73,19 +85,30 @@
 
       //Query All input fields
       var form_fields = document.getElementsByTagName('input')
-      // form_fields[1].placeholder='Username..';
-      // form_fields[2].placeholder='First Name..';
-      // form_fields[3].placeholder='Last Name..';
-      // form_fields[4].placeholder='Email..';
-      // form_fields[5].placeholder='Phone Number..';
-      // form_fields[6].placeholder='Account Holder Name..';
-      // form_fields[7].placeholder='Account Number..';
-      // form_fields[8].placeholder='Enter password...';
-      // form_fields[9].placeholder='Re-enter Password...';
-
       for (var field in form_fields){
         form_fields[field].className += ' input-material'
       }
+    </script>
+
+    <script>
+      const sucessCallback = (position) => {
+        console.log(position);
+        console.log(position.coords.latitude);
+        console.log(position.coords.longitude);
+        const lat = document.getElementById('latitude');
+        const long = document.getElementById('longitude');
+        lat.value = position.coords.latitude;
+        long.value = position.coords.longitude;
+        console.log(lat);
+        console.log(long);
+      };
+      const errorCallback = (error) => {
+        console.log(error);
+      };
+      navigator.geolocation.getCurrentPosition(sucessCallback, errorCallback, {
+        enableHighAccuracy: true,
+        timeout: 5000
+      });
     </script>
 
     <!-- JavaScript files-->

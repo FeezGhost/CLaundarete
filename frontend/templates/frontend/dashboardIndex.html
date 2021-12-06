@@ -38,7 +38,7 @@
             <div class="col-xl-3 col-md-4 col-6">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-padnote"></i></div>
-                <div class="name"><strong class="text-uppercase">Work Orders</strong>
+                <div class="name"><strong class="text-uppercase">Total Orders</strong>
                   <div class="count-number">{{totalOrders}}</div>
                 </div>
               </div>
@@ -121,7 +121,7 @@
                   <div class="col-sm-6">
                     <div id="progress-circle" class="d-flex align-items-center justify-content-center"></div>
                   </div>
-                  <div class="col-sm-6"><strong class="text-primary">{{acceptedOrdersRatio}}</strong>
+                  <div class="col-sm-6"><strong class="text-primary">{{acceptedOrdersRatio|floatformat:2}}</strong>
                   <small>Accepted Orders</small>
                   <span>{{acceptedOrders}}</span>
                   <small>Canceled Orders</small>

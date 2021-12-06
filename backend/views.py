@@ -1,6 +1,6 @@
 from django.contrib.messages.api import success
 from django.http.request import QueryDict
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -14,7 +14,30 @@ from .filters import *
 from django.core.paginator import Paginator, EmptyPage
 import datetime
 
-# Create your views here.
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str, force_text, DjangoUnicodeDecodeError
+from .utils import generateToken
+from django.core.mail import send_mail
+
+def send_activation_email(request, user):
+    cuurent_site = get_current_site(request)
+    email_subject = "Activate Your Account"
+    print(user)
+    email_body = render_to_string("frontend/authentication/activate.html",{
+        'user': user,
+        'domain': cuurent_site,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': generateToken.make_token(user)
+    })
+    print(email_body)
+    send_mail(
+        email_subject,
+        email_body,
+        'cloudlaunderette@gmail.com',
+        [user.email],
+    )
 
 @unauthenticated_user
 def loginView(request):
@@ -41,28 +64,61 @@ def logoutView(request):
 def RegisterView(request):
     form = CreatUserForm()
     if request.method == 'POST':
-        form = CreatUserForm(request.POST)   
+        form = CreatUserForm(request.POST)
         if form.is_valid():
             user = form.save()
             fname = form.cleaned_data.get('name')
+            city = form.cleaned_data.get('city')
+            addres = form.cleaned_data.get('address')
+            latitude = float(request.POST.get('lat'))
+            longitude = float(request.POST.get('logn'))
             launderer=Launderer.objects.create(
                user=user,
                name=fname,
+               city=city,
+               address=addres,
+               lat= latitude,
+               lon = longitude,
             )
-            myuser = User.objects.get(username=form.cleaned_data.get('username'))
+            user = User.objects.get(username=form.cleaned_data.get('username'))
+            user.is_active = False
+            user.save()
             my_group= Group.objects.get(name='launderer')
-            my_group.user_set.add(myuser)
+            my_group.user_set.add(user)
+
+            send_activation_email(request, user)
 
             messages.success(request, 'Account has been created for ' + fname)
-            greet = "Welcome to the CL Dashboard "+request.user.username
-            messages.info(request, greet)
-            login(request, user)
-            return redirect('dashboard')
+            if user.is_active:
+                greet = "Welcome to the CL Dashboard "+request.user.username
+                messages.info(request, greet)
+                login(request, user)
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'We sent verification email to your account please check it out!')
+
         else:
             messages.error(request, "Couldn't create account. Please provide correct information!")
 
     context = {'form': form}
     return render(request,"frontend/register.html",context)
+
+def activate_user(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(uid)
+    
+    except Exception as e:
+        user = None
+    
+    if user and generateToken.check_token(user,token):
+        user.is_active = True
+        user.save()
+        
+        messages,success(request, 'Your Email Verified')
+        return redirect('loginPage')
+    
+    return render(request, 'frontend/authentication/activate-failed.html', {'user': user})
 
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
@@ -103,7 +159,7 @@ def DashboardView(request):
             acceptedOrders = orders.exclude(status = 'declined').count()
             totalCanceledOrders = canceledOrders.count()
             if totalCanceledOrders > 0 :
-                acceptedOrdersRatio = 100 - float((totalCanceledOrders/totalOrders)*100)
+                acceptedOrdersRatio =  float((totalCanceledOrders/totalOrders)*100)
     context = {
         "launderer" : launderer, 
         'totalLaunderette' : totalLaunderette,
@@ -167,7 +223,14 @@ def ReportView(request):
             totalreviews = reviews.count()
             positiveReviews = reviews.filter(rating__gte=2.5)
             negativeReviews = reviews.filter(rating__lt=2.5)
-            
+            for revew in reviews:
+                print(revew.rating)
+
+            reviews_average = 0.0
+            reviews_counter = 0
+            reviews_sum = 0
+
+            avgReviewsList = []
             positiveReviewsList = []
             negativeReviewsList = []
             acceptedOrderRatioList = []
@@ -193,11 +256,20 @@ def ReportView(request):
                                         date__month__lt=(i+1)).count()
                 reviewsneg = negativeReviews.filter(date__month__gte=i,
                                         date__month__lt=(i+1)).count()
+                reviewsavg = reviews.filter(date__month__gte=i,
+                                        date__month__lt=(i+1))
                 positiveReviewsList.append(reviewsPos) 
                 negativeReviewsList.append(reviewsneg)
                 if totalreviews>0:
                     postiveRatio = int(float((reviewsPos/totalreviews)*100))
                     negativeRatio = int(float((reviewsneg/totalreviews)*100))
+                    
+                    for review in reviewsavg:
+                        reviews_sum += review.rating
+                        reviews_counter +=1
+                    reviews_average = (reviews_sum/reviews_counter)*10
+                    avgReviewsList.append(reviews_average)
+                    reviewRatio_average_data = dict(zip(avgReviewsList, avgReviewsList))
                 else:
                     postiveRatio = 0
                     negativeRatio = 0
@@ -205,13 +277,13 @@ def ReportView(request):
                 acceptedOrderRatioList.append(acceptedOrderRatio)
                 declinedOrderRatioList.append(declinedOrderRatio)
 
-                
                 positiveReviewsRatioList.append(postiveRatio)
                 negativeReviewsRatioList.append(negativeRatio)
 
                 month = datetime.date(1900, i, 1).strftime('%B')
                 monthsList.append(month)
                 i+=1
+
             bar_month_data = dict(zip(monthsList,monthsList))
             bar_accept_data = dict(zip(acceptedOrdersList, acceptedOrdersList))
             bar_decline_data = dict(zip(declinedOrdersList, declinedOrdersList))
@@ -223,9 +295,11 @@ def ReportView(request):
             reviewbar_accept_data = dict(zip(positiveReviewsList, positiveReviewsList))
             reviewbar_decline_data = dict(zip(negativeReviewsList, negativeReviewsList))
 
+            print(avgReviewsList)
             reviewRatio_accept_data = dict(zip(positiveReviewsRatioList, positiveReviewsRatioList))
             reviewRatio_decline_data = dict(zip(negativeReviewsRatioList, negativeReviewsRatioList))
-
+            reviewRatio_average_data = dict(zip(avgReviewsList, avgReviewsList))
+            print(reviewRatio_average_data)
 
             positiveReviews = positiveReviews.count()
             negativeReviews = negativeReviews.count()
@@ -268,6 +342,7 @@ def ReportView(request):
                 'reviewbar_decline_data': reviewbar_decline_data,
                 'reviewRatio_accept_data': reviewRatio_accept_data,
                 'reviewRatio_decline_data': reviewRatio_decline_data,
+                'reviewRatio_average_data':  reviewRatio_average_data
             }
         else:
             context = {
@@ -309,11 +384,22 @@ def OngoingOrder(request):
 @allowed_users(allowed_roles=['launderer'])
 def ordersHistory(request):
     launder = request.user.launderer
+    serv = ""
     if launder.launderette_set.all().count()>0:
         tLaunderette = launder.launderette_set.all()
         orders = tLaunderette[0].order_set.all().order_by('-date_started')
         if orders.count() > 0:
+            if tLaunderette[0].services_set.all():
+                serv = tLaunderette[0].services_set.all()
             finished = orders.exclude(status='ongoing').exclude(status='pending')
+            if request.method == 'POST':
+                finished = orders.exclude(status='ongoing').exclude(status='pending')
+                service_title = request.POST.get('service_title')
+                service_id = request.POST.get('service_id')
+                service = Services.objects.get(id = int(service_id))
+                print(service)
+                finished = finished.filter(services = service)
+                print(finished)
             ordersfliter = OrderFilter2(request.GET, queryset=finished)
             finished = ordersfliter.qs
             p  = Paginator(finished, 20)
@@ -322,7 +408,7 @@ def ordersHistory(request):
                 page = p.page(page_num)
             except EmptyPage:
                 page = p.page(1)
-            context = {"launderer": launder, 'finisheds' : page, 'ordersfliter': ordersfliter}
+            context = {"launderer": launder, 'finisheds' : page, 'ordersfliter': ordersfliter, 'services': serv}
             return render(request,"frontend/ordersHistory.html",context)
     context = {"launderer": launder, }
     return render(request,"frontend/ordersHistory.html",context)
@@ -373,6 +459,8 @@ def orderDetails(request, pk_id):
     launder = request.user.launderer
     tLaunderette = launder.launderette_set.all()
     order = Order.objects.get(id = pk_id)
+    services = order.services.all()
+    print(services)
     haveReview = order.review_set.all().exists()
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
@@ -931,3 +1019,7 @@ def adminComplaintsDetailView(request, pk_id):
     context = {'complaint':complaint, 'form': form}
     return render(request,"frontend/admin/complaintDetail.html",context)
 
+def charttest(request):
+    context = {
+    }
+    return render(request, "frontend/charttest.html", context)

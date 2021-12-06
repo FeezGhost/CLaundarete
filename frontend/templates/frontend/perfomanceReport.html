@@ -189,6 +189,16 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg-6">
+              <div class="card line-chart-example">
+                <div class="card-header d-flex align-items-center">
+                  <h4>Reviews Ratio</h4>
+                </div>
+                <div class="card-body">
+                  <canvas id="reviewAveragesLineChart"></canvas>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
     </section>
@@ -377,6 +387,38 @@
                     data: [{% for data in reviewRatio_decline_data %} '{{data}}',{% endfor %}],
                     spanGaps: false
                 }
+            ]
+        }
+    });
+    REVIEWSAVERAGELINECHART   = $('#reviewAveragesLineChart')
+    var reviewAverageLine = new Chart(REVIEWSAVERAGELINECHART, {
+        type: 'line',
+        data: {
+            labels: [{% for data in bar_month_data %} '{{data}}',{% endfor %}],
+            datasets: [
+                {
+                    label: "Reviews Average",
+                    fill: true,
+                    lineTension: 0.3,
+                    borderColor: brandPrimary,
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    borderWidth: 1,
+                    pointBorderColor: brandPrimary,
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: brandPrimary,
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    
+                    {% comment %} data: [1,5,5,3], {% endcomment %}
+                    data: [{% for data in bar_month_data %} {% for data in reviewRatio_average_data %} '{{data|floatformat:2}}',{% endfor %}{% endfor %}],
+                    spanGaps: false
+                },
             ]
         }
     });

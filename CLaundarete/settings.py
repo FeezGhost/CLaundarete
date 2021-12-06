@@ -167,3 +167,13 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+
+# Email Settings
+
+EMAIL_HOST = 'smpt.google.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'cloudlaunderette@gmail.com'
+EMAIL_HOST_PASSWORD = 'rpxffxdecyaarule'
+EMAIL_USE_TLS = True
+# EMAIL_USE_SLS = False

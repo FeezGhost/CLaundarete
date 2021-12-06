@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - Material Style</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+
+<body>
+    <div id="wrapper">
+        <div class="content-area">
+            <div class="container-fluid">
+                <div class="text-right mt-3 mb-3 d-fixed">
+                    <a href="https://github.com/apexcharts/apexcharts.js/tree/master/samples/vanilla-js/dashboards/material"
+                        target="_blank" class="btn btn-outline-primary mr-2">
+                        <span class="btn-text">View Code</span>
+                    </a>
+                </div>
+                <div class="main">
+                    <div class="row mt-4">
+                        <div class="col-md-5">
+                            <div class="box shadow">
+                                <div id="bar"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="box shadow">
+                                <div id="donutTop"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="box shadow">
+                                <div id="radialBar1"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4 mb-5">
+                        <div class="col-md-6">
+                            <div class="row sparkboxes mt-4">
+                                <div class="col-md-6">
+                                    <div class="box box1">
+                                        <div id="spark1"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="box box2">
+                                        <div id="spark2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row sparkboxes mt-3">
+                                <div class="col-md-6">
+                                    <div class="box box3">
+                                        <div id="spark3"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="box box4">
+                                        <div id="spark4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box body-bg">
+                                <div id="area-adwords" style="background: #fff" class="shadow"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4 mb-5">
+                        <div class="col-md-5">
+                            <div class="box shadow">
+                                <div id="radialBarBottom"></div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="box shadow">
+                                <div id="bubbleChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        window.Apex = {
+            dataLabels: {
+                enabled: true
+            }
+        };
+
+
+        var options = {
+            chart: {
+                height: 500,
+                type: 'bubble',
+                sparkline: {
+                    enabled: true
+                },
+            },
+            plotOptions: {
+                bubble: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            colors: ["#734CEA", "#34bfa3", "#f4516c", "#00c5dc"],
+            series: [{
+                    name: 'Rating',
+                    data: [
+                        ["uman", 1, 1], 
+                        ["umaan", 3, 3], 
+                        ["uma", 4, 4],  
+                        ["umn", 5, 5],  
+                        ["um", 1, 1],
+                    ],
+                },
+            ],
+            fill: {
+                opacity: 0.8,
+                gradient: {
+                    enabled: true
+                }
+            },
+            title: {
+                text: 'Social Media Reach'
+            },
+            xaxis: {
+                tickAmount: 12,
+                type: 'category',
+            },
+        }
+
+        
+      console.log(generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
+            min: 10,
+            max: 60
+          }))
+        var options = {
+          series: [{
+          name: 'Product1',
+          data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
+            min: 10,
+            max: 60
+          })
+        },
+        {
+          name: 'Product2',
+          data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
+            min: 10,
+            max: 60
+          })
+        },
+        {
+          name: 'Product3',
+          data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
+            min: 10,
+            max: 60
+          })
+        },
+        {
+          name: 'Product4',
+          data: generateData(new Date('11 Feb 2017 GMT').getTime(), 20, {
+            min: 10,
+            max: 60
+          })
+        }],
+          chart: {
+          height: 350,
+          type: 'bubble',
+        },
+        dataLabels: {
+          enabled: false
+        },
+        fill: {
+          type: 'gradient',
+        },
+        title: {
+          text: '3D Bubble Chart'
+        },
+        xaxis: {
+          tickAmount: 12,
+          type: 'datetime',
+          labels: {
+              rotate: 0,
+          }
+        },
+        yaxis: {
+          max: 70
+        },
+        theme: {
+          palette: 'palette2'
+        }
+        };
+
+
+        var chart = new ApexCharts(
+            document.querySelector("#bubbleChart"),
+            options
+        );
+
+        // a small hack to extend height in website sample dashboard
+        chart.render().then(function () {
+            var ifr = document.querySelector("#wrapper");
+            if (ifr.contentDocument) {
+                ifr.style.height = ifr.contentDocument.body.scrollHeight + 20 + 'px';
+            }
+        });
+    </script>
+</body>
+
+</html>

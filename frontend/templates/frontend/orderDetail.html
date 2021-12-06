@@ -77,15 +77,11 @@
                       <hr>
                       <p class="text-primary">Services</p>
                       <div class="row d-flex">
+                        {% for service in order.services.all %}
                         <div class="col">
-                            <p class="">Dry Cleaning</p>
+                            <p class="">{{service.title}}</p>
                         </div>
-                        <div class="col">
-                            <p class="">Ironing</p> 
-                        </div>
-                        <div class="col">
-                            <p class="">Washing</p> 
-                        </div>
+                        {% endfor %}
                       </div>
                       <hr>
                       <div class="row d-flex">

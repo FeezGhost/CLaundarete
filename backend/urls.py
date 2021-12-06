@@ -6,6 +6,7 @@ urlpatterns = [
     # Launderer Dashboard urls
     path('', views.loginView, name="loginPage"),
     path('register/', views.RegisterView, name="registerPage"),
+    path('activate-user/<uidb64>/<token>', views.activate_user, name='activate'),
     path('dashboard/', views.DashboardView, name="dashboard"),
     path('dashboard/report/', views.ReportView, name="Report"),
     path('dashboard/orders/ongoing/', views.OngoingOrder, name="ongoingOrders"),
@@ -58,4 +59,7 @@ urlpatterns = [
 
     path('admindashboard/complaints/', views.adminComplaintsView, name="adminComplaints"),
     path('admindashboard/complaints/detail/<str:pk_id>/', views.adminComplaintsDetailView, name="adminComplaintsDetail"),
+
+    
+    path('dashboard/charttest/', views.charttest, name="charsTest"),
 ]
