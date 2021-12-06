@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path, os
 from django.contrib.messages import constants as messages
 from datetime import timedelta
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
 
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-secondary',
@@ -170,12 +173,12 @@ SIMPLE_JWT = {
 
 
 # Email Settings
-# smtp.google.com
+
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.google.com'
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'feezoocrazy420@gmail.com'
-EMAIL_HOST_PASSWORD = 'dlldpdphgayalccy'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # EMAIL_USE_SLS = False
