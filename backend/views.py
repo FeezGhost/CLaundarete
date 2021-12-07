@@ -19,8 +19,20 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str, force_text, DjangoUnicodeDecodeError
 from .utils import generateToken
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
+import threading
+
+
+class EmailThread(threading.Thread):
+
+    def __init__(self, email):
+        self.email = email
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.email.send()
+
 
 def send_activation_email(request, user):
     cuurent_site = get_current_site(request)
@@ -32,13 +44,13 @@ def send_activation_email(request, user):
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': generateToken.make_token(user)
     })
-    print(email_body)
-    send_mail(
-        email_subject,
-        email_body,
-        settings.EMAIL_HOST_USER,
-        [user.email],
+    email = EmailMessage(
+        subject = email_subject,
+        body = email_body,
+        from_email = settings.EMAIL_HOST_USER,
+        to = [user.email],
     )
+    EmailThread(email).start()
 
 @unauthenticated_user
 def loginView(request):
@@ -47,12 +59,18 @@ def loginView(request):
         password =request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
-            greet = "Welcome to the CL Dashboard "+request.user.username
-            messages.info(request, greet)
-            return redirect('dashboard')
+            if user.launderer.is_email_verified:
+                if user.is_active:
+                    login(request, user)
+                    greet = "Welcome to the CL Dashboard "+request.user.username
+                    messages.info(request, greet)
+                    return redirect('dashboard')
+                else:
+                    messages.error(request, 'Your account is inactive or blocked please contact admin')
+            else:
+                messages.error(request, 'Email is not verified, please check your email inbox')
         else:
-            messages.error(request, 'Username or Password is incorrect! (Contact admin if you think you are blocked)')
+            messages.error(request, 'Username or Password is incorrect!')
     return render(request,"frontend/login.html")
 
 @login_required(login_url="loginPage")
@@ -82,21 +100,14 @@ def RegisterView(request):
                lon = longitude,
             )
             user = User.objects.get(username=form.cleaned_data.get('username'))
-            user.is_active = False
-            user.save()
             my_group= Group.objects.get(name='launderer')
             my_group.user_set.add(user)
 
             send_activation_email(request, user)
 
-            messages.success(request, 'Account has been created for ' + fname)
-            if user.is_active:
-                greet = "Welcome to the CL Dashboard "+request.user.username
-                messages.info(request, greet)
-                login(request, user)
-                return redirect('dashboard')
-            else:
-                messages.error(request, 'We sent verification email to your account please check it out!')
+            messages.success(request, user.username + ' your account has been created.')
+            messages.info(request, 'We sent verification email to your account please check it out!')
+            return redirect('loginPage')
 
         else:
             messages.error(request, "Couldn't create account. Please provide correct information!")
@@ -107,16 +118,19 @@ def RegisterView(request):
 def activate_user(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(uid)
+        print('user id', uid)
+        user = User.objects.get(pk=uid)
+        launderer = user.launderer
     
     except Exception as e:
         user = None
+        launderer = None
     
-    if user and generateToken.check_token(user,token):
-        user.is_active = True
-        user.save()
+    if user and launderer and generateToken.check_token(user,token):
+        launderer.is_email_verified = True
+        launderer.save()
         
-        messages,success(request, 'Your Email Verified')
+        messages,success(request, 'Your Account is now Verified')
         return redirect('loginPage')
     
     return render(request, 'frontend/authentication/activate-failed.html', {'user': user})

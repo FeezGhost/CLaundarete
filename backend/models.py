@@ -13,6 +13,7 @@ class Client(models.Model):
     lat = models.FloatField(default=0)
     lon = models.FloatField(default=0)
     isBlocked = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField(default=False)
     date_joined =models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -27,6 +28,7 @@ class Launderer(models.Model):
     lat = models.FloatField(null=True, blank=True)
     lon = models.FloatField(null=True, blank=True)
     isBlocked = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField(default=False)
     date_joined =models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

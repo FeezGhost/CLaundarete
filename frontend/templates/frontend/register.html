@@ -32,6 +32,18 @@
   <body>
     <div class="page login-page ">
       <div class="container signup-page">
+        <div class="container mx-4 px-4">
+          {% for message in messages %}
+            <div class="container-fluid p-0">
+              <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
         <div class="form-outer text-center d-flex align-items-center ">
           <div class="form-inner">
             <div class="logo text-uppercase"><span>Cloud</span><strong class="text-primary">Laundarette</strong></div>
@@ -41,30 +53,37 @@
               <div class="form-group-material">
               <p class="text-muted">Username</p>
                 {{form.username}}
+                {{form.username.errors}}
               </div>
               <div class="form-group-material">
               <p class="text-muted">Name</p>
                 {{form.name}}
+                {{form.name.errors}}
               </div>
               <div class="form-group-material">
               <p class="text-muted">Email</p>
                 {{form.email}}
+                {{form.email.errors}}
               </div>
               <div class="form-group-material">
               <p class="text-muted">City</p>
                 {{form.city}}
+                {{form.city.errors}}
               </div>
               <div class="form-group-material">
               <p class="text-muted">Address</p>
                 {{form.address}}
+                {{form.address.errors}}
               </div>
               <div class="form-group-material">
               <p class="text-muted">Password</p>
                 {{form.password1}}
+                {{form.password1.errors}}
               </div>
               <div class="form-group-material">
                 <p class="text-muted">Confirm Password</p>
                 {{form.password2}}
+                {{form.password2.errors}}
               </div>
               <div class="form-group-material">
                   <input type="hidden" name="lat" id="latitude">
@@ -87,6 +106,43 @@
       var form_fields = document.getElementsByTagName('input')
       for (var field in form_fields){
         form_fields[field].className += ' input-material'
+      }
+      
+      toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+          }
+
+      $(document).ready(function(){
+        if($(".errorlist").length){
+          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
+        }
+      });
+      var formErrors = document.getElementsByClassName("errorlist");
+      if(formErrors.length){
+        for (var field in formErrors){
+          console.log(formErrors[field]);
+          myUl = formErrors[field];
+          items = myUl.getElementsByTagName("li");
+          for (var item in items){
+            if( items[item].textContent !== undefined){
+              toastr.error(items[item].textContent)
+              }
+          }
+        }
       }
     </script>
 
