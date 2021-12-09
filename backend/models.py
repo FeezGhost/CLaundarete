@@ -48,6 +48,7 @@ class Launderette(models.Model):
     cover_photo = models.ImageField( default="0_GettyImages-1068728612.jpg")
     location = models.CharField(max_length=200, null=True)
     isBlocked = models.BooleanField(default=False)
+    delivery_fee_pkm = models.FloatField(default=0)
     date_joined =models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
