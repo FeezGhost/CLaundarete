@@ -97,8 +97,12 @@ WSGI_APPLICATION = 'CLaundarete.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('AWS_DB_INTIAL_Name'),
+        'USER': env('AWS_DB_USERNAME'),
+        'PASSWORD': env('AWS_DB_PASSWORD'),
+        'HOST': env('AWS_DB_ENDPOINT'),
+        'PORT': env('AWS_DB_PORT')
     }
 }
 
