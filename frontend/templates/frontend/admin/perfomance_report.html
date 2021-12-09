@@ -1,0 +1,403 @@
+{%  extends 'frontend/admin/partialview/base_template.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="page">
+
+  {% include 'frontend/admin/partialview/top_navbar.html' %}
+
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item "><a href="{% url 'adminReviews' %}">Reviews</a></li>
+        <li class="breadcrumb-item active"><a>Details</a></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="container mx-4 px-4">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <section class="dashboard-counts section-padding">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Count item widget-->
+        <div class="col-xl-3 col-md-4 col-6">
+          <div class="wrapper count-title d-flex">
+            <div class="icon"><i class="icon-user"></i></div>
+            <div class="name"><strong class="text-uppercase">Users</strong>
+              <div class="count-number">{{totalUsers}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Count item widget-->
+        <div class="col-xl-3 col-md-4 col-6">
+          <div class="wrapper count-title d-flex">
+            <div class="icon"><i class="icon-padnote"></i></div>
+            <div class="name"><strong class="text-uppercase">Complaints</strong>
+              <div class="count-number">{{totalComplaints}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Count item widget-->
+        <div class="col-xl-3 col-md-4 col-6">
+          <div class="wrapper count-title d-flex">
+            <div class="icon"><i class="icon-check"></i></div>
+            <div class="name"><strong class="text-uppercase">Complaint Resolved</strong>
+              <div class="count-number">{{totalComplaintsResolved}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Count item widget-->
+        <div class="col-xl-3 col-md-4 col-6">
+          <div class="wrapper count-title d-flex">
+            <div class="icon"><i class="icon-bill"></i></div>
+            <div class="name"><strong class="text-uppercase">Complaints Unresolved</strong>
+              <div class="count-number">{{totalComplaintsUnresolved}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="statistics">
+    <div class="container-fluid">
+      <div class="row d-flex">
+        <div class="col-lg-6">
+          <!-- Monthly Usage-->
+          <div class="card data-usage">
+            <h2 class="display h4">Cancel Ratio</h2>
+            <div class="row d-flex align-items-center">
+              <div class="col-sm-6">
+                <div id="progress-circle" class="d-flex align-items-center justify-content-center"></div>
+              </div>
+              <div class="col-sm-6"><strong class="text-primary">{{acceptedOrdersRatio}}</strong>
+                <small>Accepted Orders</small>
+                <span>{{acceptedOrders}}</span>
+                <small>Canceled Orders</small>
+                <span>{{totalCanceledOrders}}</span>
+              </div>
+            </div>
+            <p>This is your orders accepted to cancelation ratio.</p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <!-- User Actibity-->
+          <div class="card user-activity">
+            <h2 class="display h4">Launderete Rating</h2>
+            <div class="number">{{reviewsRatio|floatformat:1}}</div>
+            <h3 class="h4 display">Total Reviews</h3>
+            <div class="number">{{totalreviews}}</div>
+            <div class="progress">
+              <div role="progressbar" style="width: {{reviewsRatio}}%" aria-valuenow="{{positiveReviews}}"
+                aria-valuemin="0" aria-valuemax="{{totalreviews}}" class="progress-bar progress-bar bg-primary"></div>
+            </div>
+            <div class="page-statistics d-flex justify-content-between">
+              <div class="page-statistics-left"><span>Positive Reviews</span><strong>{{positiveReviews}}</strong></div>
+              <div class="page-statistics-right"><span>Negative Reviews</span><strong>{{negativeReviews}}</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      <header>
+        <h1 class="h3 display">Orders </h1>
+      </header>
+      <div class="row">
+
+            <div class="col-lg-12">
+            <div class="card line-chart-example">
+                <div class="card-header d-flex align-items-center">
+                <h4>Site Users</h4>
+                </div>
+                <div class="card-body">
+                <canvas id="lineChartExample"></canvas>
+                </div>
+            </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card line-chart-example">
+                <div class="card-header d-flex align-items-center">
+                    <h4>Launderers & Launderettes</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="pieChartExample"></canvas>
+                </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card line-chart-example">
+                <div class="card-header d-flex align-items-center">
+                    <h4>Complaints</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="polarChartExample"></canvas>
+                </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-12">
+              <div class="card line-chart-example">
+              <div class="card-header d-flex align-items-center">
+                  <h4>Complaints</h4>
+              </div>
+              <div class="card-body">
+                  <canvas id="complaintsmixedchart"></canvas>
+              </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+
+
+<footer class="main-footer">
+  {% include 'frontend/partialView/footer_navbar.html' %}
+</footer>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<script src="{% static '/js/grasp_mobile_progress_circle-1.0.0.min.js'%}"></script>
+<script src="{% static '/vendor/jquery.cookie/jquery.cookie.js'%}"> </script>
+<script src="{% static '/vendor/chart.js/Chart.min.js'%}"></script>
+<script src="{% static '/vendor/jquery-validation/jquery.validate.min.js'%}"></script>
+<script src="{% static '/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js'%}"></script>
+<script src="{% static '/js/charts-custom.js'%}"></script>
+<!-- Main File-->
+<script src="{% static '/js/front.js'%}"></script>
+
+
+<script>
+    $(document).ready(function () {
+      console.log($(".progress-circle").html())
+      $(".gmpc-percent-text").html("<b>{{acceptedOrdersRatio}}</b>")
+  
+      'use strict';
+  
+      var brandPrimary = 'rgba(51, 179, 90, 1)';
+  
+      LINECHARTEXMPLE = $('#lineChartExample')
+  
+      var lineChartExample = new Chart(LINECHARTEXMPLE, {
+        type: 'line',
+        data: {
+          labels: [{%for data in line_month_data %}'{{data}}', {% endfor %}],
+          datasets: [{
+              label: "Users",
+              fill: false,
+              lineTension: 0.3,
+              backgroundColor: "rgba(51, 179, 90, 0.38)",
+              borderColor: brandPrimary,
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              borderWidth: 2,
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 3,
+              pointHoverRadius: 7,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 4,
+              pointRadius: 3,
+              pointHitRadius: 10,
+              data: [{%for data in line_users_data %}'{{data.1}}', {% endfor %}],
+              spanGaps: false
+            },
+            {
+              label: "Clients",
+              fill: false,
+              lineTension: 0.3,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              borderWidth: 2,
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 3,
+              pointHoverRadius: 7,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 4,
+              pointRadius: 3,
+              pointHitRadius: 10,
+              data: [{%for data in line_clients_data %}'{{data.1}}', {% endfor %}],
+              spanGaps: false
+            },
+            {
+              label: "Launderers",
+              fill: false,
+              lineTension: 0.3,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "#FF3366",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              borderWidth: 2,
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 3,
+              pointHoverRadius: 7,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 4,
+              pointRadius: 3,
+              pointHitRadius: 10,
+              data: [{%for data in line_launderers_data %}'{{data.1}}', {% endfor %}],
+              spanGaps: false
+            },
+            {
+              label: "Launderettes",
+              fill: false,
+              lineTension: 0.3,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "#F7DC6F",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              borderWidth: 2,
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 3,
+              pointHoverRadius: 7,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 4,
+              pointRadius: 3,
+              pointHitRadius: 10,
+              data: [{%for data in line_launderettes_data %}'{{data.1}}', {% endfor %}],
+              spanGaps: false
+            }
+          ]
+        }
+      });
+
+      
+    POLARCHARTEXMPLE  = $('#polarChartExample');
+    
+    var polarChartExample = new Chart(POLARCHARTEXMPLE, {
+        type: 'polarArea',
+        data: {
+            datasets: [{
+                data: [
+                    {{totalComplaints}},
+                    {{totalComplaintsResolved}},
+                    {{totalComplaintsUnresolved}},
+                    
+                ],
+                backgroundColor: [
+                    "#F7DC6F",
+                    "#4BC0C0",
+                    "#FF6384"
+                ],
+                label: 'My dataset' // for legend
+            }],
+            labels: [
+                "Total",
+                "Resolved",
+                "Unresolved",
+            ]
+        }
+    });
+    PIECHARTEXMPLE    = $('#pieChartExample')
+    
+    var pieChartExample = new Chart(PIECHARTEXMPLE, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                "Users",
+                "Launderers",
+                "Launderettes"
+            ],
+            datasets: [
+                {
+                    data: [{{totalUsers}}, {{totalLaunderers}}, {{totalLaunderettes}}],
+                    borderWidth: [1, 1, 1],
+                    backgroundColor: [
+                        brandPrimary,
+                        "rgba(75,192,192,1)",
+                        "#FF6384"
+                    ],
+                    hoverBackgroundColor: [
+                        brandPrimary,
+                        "rgba(75,192,192,1)",
+                        "#FFCE56"
+                    ]
+                }]
+            }
+    });
+
+    var pieChartExample = {
+        responsive: true
+    };
+
+    var polarChartExample = {
+        responsive: true
+    };
+    
+    COMPLAINTSMIXEDCHART    = $('#complaintsmixedchart')
+    var mixedChart = new Chart(COMPLAINTSMIXEDCHART, {
+      type: 'bar',
+      data: {
+          datasets: [{
+              label: 'Resolved Complaints',
+              backgroundColor: [{% for data in line_month_data %} 'rgba(51, 179, 90, 0.6)',{% endfor %}],
+              borderColor: [{% for data in line_month_data %} 'rgba(51, 179, 90, 1)',{% endfor %}],
+              data: [{%for data in bar_complaints_resolved_data %}{{data.1}}, {% endfor %}],
+              // this dataset is drawn below
+              order: 1
+          },{
+            label: 'Unresolved Complaints',
+            backgroundColor: [{% for data in line_month_data %} "#FF6384",{% endfor %}],
+            borderColor: [{% for data in line_month_data %} "#FF6384",{% endfor %}],
+            data: [{%for data in bar_complaints_unresolved_data %}{{data.1}}, {% endfor %}],
+            // this dataset is drawn below
+            order: 1
+          },{
+              label: 'Total Complaints',
+              data: [{%for data in line_complaints_data %}{{data.1}}, {% endfor %}],
+              type: 'line',
+              // this dataset is drawn on top
+              order: 2
+          }],
+          labels: [{%for data in line_month_data %}'{{data}}', {% endfor %}],
+      },
+  });
+
+    });
+  </script>
+
+{% endblock content %}

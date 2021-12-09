@@ -1,3 +1,4 @@
+from typing import Tuple
 from django.contrib.messages.api import success
 from django.http.request import QueryDict
 from django.shortcuts import render, redirect
@@ -238,8 +239,6 @@ def ReportView(request):
             totalreviews = reviews.count()
             positiveReviews = reviews.filter(rating__gte=2.5)
             negativeReviews = reviews.filter(rating__lt=2.5)
-            for revew in reviews:
-                print(revew.rating)
 
             reviews_average = 0.0
             reviews_counter = 0
@@ -371,6 +370,130 @@ def ReportView(request):
             
     
     return render(request,"frontend/perfomanceReport.html",context)
+
+    
+@login_required(login_url="loginPage")
+@allowed_users(allowed_roles=['admin'])
+def AdminReportView(request):
+    users = User.objects.all()
+    launderers = Launderer.objects.all()
+    clients = Client.objects.all()
+    launderettes = Launderette.objects.all()
+    orders = Order.objects.all()
+    complaints = Complaint.objects.all()
+    complaintsResolved = complaints.filter(status = 'resolved')
+    complaintsUnresolved = complaints.filter(status = 'unresolved')
+    complaintsClosed = complaints.filter(status = 'closed')
+
+    totalUsers = users.count()
+    totalLaunderers = launderers.count()
+    totalClients = clients.count()
+    totalLaunderettes = launderettes.count()
+    totalOrders = orders.count()
+    totalComplaints = complaints.count()
+    totalComplaintsResolved = complaintsResolved.count()
+    totalComplaintsUnresolved = complaintsUnresolved.count()
+    totalComplaintsClosed = complaintsClosed.count()
+    
+    usersList = []
+    launderersList = []
+    clientsList = []
+    launderettesList = []
+    ordersList = []
+    complaintsList = []
+    complaintsResolvedList = []
+    complaintsUnresolvedList = []
+    monthsList = []
+    dummyList = []
+    dummyValue = 0
+
+    end_date = datetime.date.today().strftime("%m")
+    end_dateYear = datetime.date.today().strftime("%Y")
+    start_date = 8
+    end = int(end_date)
+    i = int(start_date)
+    if i > end:
+        i=1
+    else:
+        i=int(start_date)
+
+    while i<=end:
+        order = orders.filter(date_started__month__gte=i, date_started__month__lt=(i+1)).count()
+        ordersList.append(order)
+
+        complaint = complaints.filter(date__month__gte=i, date__month__lt=(i+1)).count()
+        complaintsList.append(complaint)
+         
+        complaintRsolved = complaintsResolved.filter(date__month__gte=i, date__month__lt=(i+1)).count()
+        complaintsResolvedList.append(complaintRsolved)
+
+        complaintUnresolved = complaintsUnresolved.filter(date__month__gte=i, date__month__lt=(i+1)).count()
+        complaintsUnresolvedList.append(complaintUnresolved)
+
+        user = users.filter(date_joined__month__gte=i, date_joined__month__lt=(i+1)).count()
+        if user < 1 or user == None:
+            user = 0
+        usersList.append(user)
+
+        client = clients.filter(date_joined__month__gte=i, date_joined__month__lt=(i+1)).count()
+        if client < 1 or client == None:
+            client = 0
+        # client = str(client)
+        print('client',client)
+        clientsList.append(client)
+        
+        launderer = launderers.filter(date_joined__month__gte=i, date_joined__month__lt=(i+1)).count()
+        if launderer < 1 or launderer == None:
+            launderer = 0
+        # launderer = str(launderer)
+        launderersList.append(launderer)
+
+        launderette = launderettes.filter(date_joined__month__gte=i, date_joined__month__lt=(i+1)).count()
+        if launderette < 1 or launderette == None:
+            launderette = 0
+        # launderette = str(launderette)
+        launderettesList.append(launderette)
+
+        month = datetime.date(1900, i, 1).strftime('%B')
+        monthsList.append(month)
+
+        dummyList.append(dummyValue)
+        dummyValue+=1
+
+        i+=1
+    
+    line_month_data = dict(zip(monthsList,monthsList))
+    line_users_data = tuple(zip(dummyList, usersList))
+    line_clients_data = tuple(zip(dummyList, clientsList))
+    line_launderers_data = tuple(zip(dummyList, launderersList))
+    line_launderettes_data = tuple(zip(dummyList, launderettesList))
+
+    line_complaints_data = tuple(zip(dummyList, complaintsList))
+    bar_complaints_resolved_data = tuple(zip(dummyList, complaintsResolvedList))
+    bar_complaints_unresolved_data = tuple(zip(dummyList, complaintsUnresolvedList))
+    
+    context = {
+        'line_clients_data': line_clients_data,
+        'line_month_data': line_month_data,
+        'line_launderettes_data': line_launderettes_data,
+        'line_users_data': line_users_data,
+        'line_launderers_data': line_launderers_data,
+
+        'totalUsers': totalUsers,
+        'totalClients': totalClients,
+        'totalLaunderers': totalLaunderers,
+        'totalLaunderettes': totalLaunderettes,
+        'totalComplaints': totalComplaints,
+        'totalOrders': totalOrders,
+        'totalComplaintsResolved': totalComplaintsResolved,
+        'totalComplaintsUnresolved': totalComplaintsUnresolved,
+        
+        'line_complaints_data': line_complaints_data,
+        'bar_complaints_resolved_data': bar_complaints_resolved_data,
+        'bar_complaints_unresolved_data': bar_complaints_unresolved_data
+    }
+
+    return render(request,"frontend/admin/perfomance_report.html", context)
 
 
 @login_required(login_url="loginPage")
@@ -1033,8 +1156,3 @@ def adminComplaintsDetailView(request, pk_id):
         return  redirect("adminComplaints")
     context = {'complaint':complaint, 'form': form}
     return render(request,"frontend/admin/complaintDetail.html",context)
-
-def charttest(request):
-    context = {
-    }
-    return render(request, "frontend/charttest.html", context)

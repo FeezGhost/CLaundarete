@@ -38,7 +38,6 @@ class ComplaintViewSet(ModelViewSet):
 
 class LaundererViewSet(ModelViewSet):
     
-    permission_classes = [IsCreatorOrIsAdmin]
 
     queryset = Launderer.objects.all()
     serializer_class = LaundererSerializer
@@ -83,7 +82,6 @@ class CLUserViewSet(ModelViewSet):
 class ClientViewSet(ModelViewSet):
 
     queryset = Client.objects.all()
-    permission_classes = (IsCreatorOrIsAdmin, )
     serializer_class = ClientSerializer
     
     filter_backends = [DjangoFilterBackend]
