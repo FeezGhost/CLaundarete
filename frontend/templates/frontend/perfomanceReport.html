@@ -70,12 +70,12 @@
             <div class="col-lg-6">
               <!-- Monthly Usage-->
               <div class="card data-usage">
-                <h2 class="display h4">Cancel Ratio</h2>
+                <h2 class="display h4">Accept Ratio</h2>
                 <div class="row d-flex align-items-center">
                   <div class="col-sm-6">
                     <div id="progress-circle" class="d-flex align-items-center justify-content-center"></div>
                   </div>
-                  <div class="col-sm-6"><strong class="text-primary">{{acceptedOrdersRatio}}</strong>
+                  <div class="col-sm-6"><strong class="text-primary">{{acceptedOrdersRatio|floatformat:2}}</strong>
                   <small>Accepted Orders</small>
                   <span>{{acceptedOrders}}</span>
                   <small>Canceled Orders</small>
@@ -161,8 +161,7 @@
         </div>
     </section>
 
-    
-     <section class="charts">
+    <section class="charts">
         <div class="container-fluid">
           <!-- Page Header-->
           <header> 
@@ -186,16 +185,6 @@
                 </div>
                 <div class="card-body">
                   <canvas id="lineChartExample2"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  <h4>Reviews Ratio</h4>
-                </div>
-                <div class="card-body">
-                  <canvas id="reviewAveragesLineChart"></canvas>
                 </div>
               </div>
             </div>
@@ -233,17 +222,28 @@
                         borderColor: [{% for data in bar_month_data %} 'rgba(51, 179, 90, 1)',{% endfor %}
                         ],
                         borderWidth: 1,
-                        data: [{% for data in bar_accept_data %} '{{data}}',{% endfor %}],
+                        data: [{% for data in bar_accept_data %} '{{data.1}}',{% endfor %}],
                     },
                     {
                         label: "Declined Orders",
-                        backgroundColor: [{% for data in bar_month_data %} 'rgba(203, 203, 203, 0.6)',{% endfor %}
+                        backgroundColor: [{% for data in bar_month_data %} '#ff6385c9',{% endfor %}
                         ],
-                        borderColor: [{% for data in bar_month_data %} 'rgba(203, 203, 203, 1)',{% endfor %}
+                        borderColor: [{% for data in bar_month_data %} '#FF6384',{% endfor %}
                         ],
                         borderWidth: 1,
-                        data: [{% for data in bar_decline_data %} '{{data}}',{% endfor %}],
-                    }
+                        data: [{% for data in bar_decline_data %} '{{data.1}}',{% endfor %}],
+                    },{
+                      label: 'Total Complaints',
+                      data: [{%for data in bar_total_data %} '{{data.1}}', {% endfor %}],
+                      type: 'line',
+                      fill: false,
+                      backgroundColor: "rgba(75,192,192,0.4)",
+                      borderColor: "rgba(75,192,192,1)",
+                      borderWidth: 1,
+                      spanGaps: false,
+                      // this dataset is drawn on top
+                      order: 2
+                  }
                 ]
             }
         });
@@ -274,15 +274,15 @@
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 10,
-                    data: [{% for data in line_accept_data %} '{{data}}',{% endfor %}],
+                    data: [{% for data in line_accept_data %} '{{data.1}}',{% endfor %}],
                     spanGaps: false
                 },
                 {
-                    label: "Declined",
+                    label: "Declined Ratio",
                     fill: true,
                     lineTension: 0.3,
-                    backgroundColor: "rgba(75,192,192,0.4)",
-                    borderColor: "rgba(75,192,192,1)",
+                    backgroundColor: "#ff6385c9",
+                    borderColor: "#FF6384",
                     borderCapStyle: 'butt',
                     borderDash: [],
                     borderDashOffset: 0.0,
@@ -297,7 +297,7 @@
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 10,
-                    data: [{% for data in line_decline_data %} '{{data}}',{% endfor %}],
+                    data: [{% for data in line_decline_data %} '-{{data.1}}',{% endfor %}],
                     spanGaps: false
                 }
             ]
@@ -320,17 +320,25 @@
                         borderColor: [{% for data in bar_month_data %} 'rgba(51, 179, 90, 1)',{% endfor %}
                         ],
                         borderWidth: 1,
-                        data: [{% for data in reviewbar_accept_data %} '{{data}}',{% endfor %}],
+                        data: [{% for data in reviewbar_accept_data %} '{{data.1}}',{% endfor %}],
                     },
                     {
                         label: "Negative Reviews",
-                        backgroundColor: [{% for data in bar_month_data %} 'rgba(203, 203, 203, 0.6)',{% endfor %}
+                        backgroundColor: [{% for data in bar_month_data %} '#ff6385c9',{% endfor %}
                         ],
-                        borderColor: [{% for data in bar_month_data %} 'rgba(203, 203, 203, 1)',{% endfor %}
+                        borderColor: [{% for data in bar_month_data %} '#FF6384',{% endfor %}
                         ],
                         borderWidth: 1,
-                        data: [{% for data in reviewbar_decline_data %} '{{data}}',{% endfor %}],
-                    }
+                        data: [{% for data in reviewbar_decline_data %} '{{data.1}}',{% endfor %}],
+                    },
+                    {
+                      label: 'Total Reviews',
+                      data: [{%for data in bar_total_data %} '{{data.1}}', {% endfor %}],
+                      type: 'line',
+                      fill: true,
+                      // this dataset is drawn on top
+                      order: 2
+                  }
                 ]
             }
         });
@@ -361,12 +369,35 @@
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 10,
-                    data: [{% for data in reviewRatio_accept_data %} '{{data}}',{% endfor %}],
+                    data: [{% for data in reviewRatio_accept_data %} '{{data.1}}',{% endfor %}],
                     spanGaps: false
                 },
                 {
                     label: "Negative Reviews",
                     fill: true,
+                    lineTension: 0.3,
+                    backgroundColor: "#ff6385c9",
+                    borderColor: "#FF6384",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    borderWidth: 1,
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [{% for data in reviewRatio_decline_data %} '-{{data.1}}',{% endfor %}],
+                    spanGaps: false
+                },
+                {
+                    label: "Average",
+                    fill: false,
                     lineTension: 0.3,
                     backgroundColor: "rgba(75,192,192,0.4)",
                     borderColor: "rgba(75,192,192,1)",
@@ -384,41 +415,9 @@
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 10,
-                    data: [{% for data in reviewRatio_decline_data %} '{{data}}',{% endfor %}],
+                    data: [{% for data in reviewRatio_average_data %} '{{data.1|floatformat:2}}',{% endfor %}],
                     spanGaps: false
                 }
-            ]
-        }
-    });
-    REVIEWSAVERAGELINECHART   = $('#reviewAveragesLineChart')
-    var reviewAverageLine = new Chart(REVIEWSAVERAGELINECHART, {
-        type: 'line',
-        data: {
-            labels: [{% for data in bar_month_data %} '{{data}}',{% endfor %}],
-            datasets: [
-                {
-                    label: "Reviews Average",
-                    fill: true,
-                    lineTension: 0.3,
-                    borderColor: brandPrimary,
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    borderWidth: 1,
-                    pointBorderColor: brandPrimary,
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: brandPrimary,
-                    pointHoverBorderColor: "rgba(220,220,220,1)",
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    
-                    {% comment %} data: [1,5,5,3], {% endcomment %}
-                    data: [{% for data in bar_month_data %} {% for data in reviewRatio_average_data %} '{{data|floatformat:2}}',{% endfor %}{% endfor %}],
-                    spanGaps: false
-                },
             ]
         }
     });
