@@ -1,8 +1,9 @@
-from django.forms import ModelForm, fields
+from django.forms import ModelForm
 from .models import *
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -16,8 +17,6 @@ class CreatUserForm(UserCreationForm):
         fields =  ['username', 'name', 'city', 'address', 'email', 'password1', 'password2']
 
 class ServicesForm(ModelForm):
-    # des=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))
-    # e_date=forms.DateField(widget=DateInput, required=False)
     
     class Meta:
         model = Services
@@ -67,4 +66,4 @@ class ComplaintForm(ModelForm):
 
     class Meta:
         model = Complaint
-        fields = ["complain", "response"]
+        fields = ["complain", "response", 'subject']

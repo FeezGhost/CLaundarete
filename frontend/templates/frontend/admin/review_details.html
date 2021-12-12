@@ -3,114 +3,105 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      
-    {% include 'frontend/admin/partialview/top_navbar.html' %}
 
-      
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item "><a href="{% url 'adminReviews' %}">Reviews</a></li>
-            <li class="breadcrumb-item active"><a >Details</a></li>
-          </ul>
+<div class="page">
+
+  {% include 'frontend/admin/partialview/top_navbar.html' %}
+
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item "><a href="{% url 'adminReviews' %}">Reviews</a></li>
+        <li class="breadcrumb-item active"><a>Details</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <h1 class="h3 display-3 text-primary m-4 text-center"> Review Details </h1>
+
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      <div class="card line-chart-example">
+        <div class="card-header d-flex align-items-center">
+          <h4>Review</h4>
         </div>
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-6">
+              <p class="lead text-primary">By:</p>
+              <p class="lead ">{{review.client}}</p>
+            </div>
+            <div class="col-6">
+              <p class="lead text-primary">To:</p>
+              <p class="lead ">{{review.launderette}}</p>
+            </div>
+          </div>
+          <p class="lead text-primary">Review:</p>
+          <p class="lead">{{review.review}}</p>
+
+          <div class="row">
+            <div class="col-6">
+              <p class="lead text-primary">Rating:</p>
+              <p class="lead ">{{review.rating}}</p>
+            </div>
+            <div class="col-6">
+
+              <div class="col-6">
+                <p class="lead text-primary">Sent Time:</p>
+                <p class="lead ">{{review.date}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4"
+          href="{% url 'adminOrderDetails' review.order.id %} ">Check Order</a>
       </div>
 
-
-      <h1 class="h3 display-3 text-primary m-4 text-center">   Review Details        </h1>
-     
-     
-     <section class="charts">
-        <div class="container-fluid">
-          <!-- Page Header-->
-              <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  <h4>Review</h4>
-                </div>
-                <div class="card-body">
-                    
-                    <div class="row">
-                        <div class="col-6">
-                          <p class="lead text-primary">By:</p>
-                          <p class="lead ">{{review.client}}</p>
-                        </div>
-                        <div class="col-6">
-                          <p class="lead text-primary">To:</p>
-                          <p class="lead ">{{review.launderette}}</p>
-                        </div>
-                    </div>
-                    <p class="lead text-primary">Review:</p>
-                    <p class="lead">{{review.review}}</p>
-
-                    
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="lead text-primary">Rating:</p>
-                            <p class="lead ">{{review.rating}}</p>
-                        </div>
-                        <div class="col-6">
-                            
-                        <div class="col-6">
-                            <p class="lead text-primary">Sent Time:</p>
-                            <p class="lead ">{{review.date}}</p>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'adminOrderDetails' review.order.id %} ">Check Order</a>
-              </div>
-            
-        </div><h4>Review Response</h4>
-
-        {% for comment in comments %}
-        <div class="container-fluid">
-              <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  
-                </div>
-                  <div class="card-body">
-                      
-                      <p class="lead text-primary">By:</p>
-                      {% if comment.client == None %}
-                        <p class="lead ">{{comment.launderette}}</p>
-                      {% else %}
-                      <p class="lead ">{{comment.client}}</p>
-                      {% endif %}
-
-                      <p class="lead text-primary">Comment:</p>
-                      <p class="lead">{{comment.comment}}</p>
-
-                      
-                      <div class="row">
-                          
-                          <div class="col-6">
-                              <p class="lead text-primary">Sent Time:</p>
-                              <p class="lead ">{{comment.date}}</p>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              
-                
-            
-        </div>
-        
-                  {% endfor %}
-      </section>
-
-
-
-
-
-
-      <footer class="main-footer">
-        {% include 'frontend/partialView/footer_navbar.html' %}
-      </footer>
     </div>
- 
+    <h4>Review Response</h4>
+
+    {% for comment in comments %}
+    <div class="container-fluid">
+      <div class="card line-chart-example">
+        <div class="card-header d-flex align-items-center">
+
+        </div>
+        <div class="card-body">
+
+          <p class="lead text-primary">By:</p>
+          {% if comment.client == None %}
+          <p class="lead ">{{comment.launderette}}</p>
+          {% else %}
+          <p class="lead ">{{comment.client}}</p>
+          {% endif %}
+
+          <p class="lead text-primary">Comment:</p>
+          <p class="lead">{{comment.comment}}</p>
+
+
+          <div class="row">
+
+            <div class="col-6">
+              <p class="lead text-primary">Sent Time:</p>
+              <p class="lead ">{{comment.date}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+  </section>
+
+  <footer class="main-footer">
+    {% include 'frontend/partialView/footer_navbar.html' %}
+  </footer>
+</div>
+
 
 {% endblock content %}

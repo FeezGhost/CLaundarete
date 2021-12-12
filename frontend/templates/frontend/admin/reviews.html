@@ -3,155 +3,157 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      
-    {% include 'frontend/admin/partialview/top_navbar.html' %}
 
-      
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a >Reviews</a></li>
-          </ul>
-        </div>
-      </div>
+<div class="page">
+
+  {% include 'frontend/admin/partialview/top_navbar.html' %}
 
 
-      <h1 class="h3 display-3 text-primary m-4 text-center">Launderete  Reviews         </h1>
-     
-     <section class="my-4">
-        
-          <div class="container mt-4">
-            
-          <form method="get" class="text-left">
-            <div class="filters p-4">
-              <div class="form-group-material">
-                <label>Client Name</label>
-                {{reviewsFilters.form.client_name}}
-                {{reviewsFilters.form.client_name.errors}}
-                <label>Launderette Name</label>
-                {{reviewsFilters.form.launderette_name}}
-                {{reviewsFilters.form.launderette_name.errors}}
-              </div>
-              <a href="#rate_filter"  data-toggle="collapse">Rate Filters</a>
-              <div id="rate_filter" class="collapse">
-                <div class="form-group-material">
-                  <label>Rating Range</label>
-                  {{reviewsFilters.form.start_rating}}
-                  {{reviewsFilters.form.start_rating.errors}}
-                  {{reviewsFilters.form.end_rating}}
-                  {{reviewsFilters.form.end_rating.errors}}
-                </div>
-              </div>
-              <a href="#date_filter"  data-toggle="collapse">Date Filters</a>
-              <div id="date_filter" class="collapse">
-                <div class="form-group-material ">
-                  <label>Date Range</label>
-                  {{reviewsFilters.form.start_date}}
-                  {{reviewsFilters.form.start_date.errors}}
-                  {{reviewsFilters.form.end_date}}
-                  {{reviewsFilters.form.end_date.errors}}
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <button class="my-btn btn btn-primary ml-4" type="submit">Search</button>
-            </div>
-        </form>
-          </div>
-
-        <div class="container">
-        <table class="table text-center">
-        
-            <thead>
-                <tr>
-                    <th>Client</th>
-                    <th>Launderette</th>
-                    <th>Rating</th>
-                    <th>Review</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-
-            <tbody>
-              {% for review in reviews %}
-                <tr class="bg-light">
-                      <th scope="row">{{review.client}}</th>
-                      <td> {{review.launderette}}</td>
-                      <td>{{review.rating}}</td>
-                      <td> {{review.review}}</td>
-                      <td><a class="btn  btn-outline-primary   text-center" href="{% url 'adminReviewDetail' review.id %}">Check</a></td>
-                </tr>
-              {% endfor %}
-            </tbody>
-
-        </table>
-        </div>
-        
-    </section>
-
-
-
-      <footer class="main-footer">
-        {% include 'frontend/partialView/footer_navbar.html' %}
-      </footer>
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active"><a>Reviews</a></li>
+      </ul>
     </div>
- 
+  </div>
 
-    <script>
-      toastr.options = {
-                          "closeButton": true,
-                          "debug": false,
-                          "newestOnTop": true,
-                          "progressBar": true,
-                          "positionClass": "toast-top-center",
-                          "preventDuplicates": true,
-                          "onclick": null,
-                          "showDuration": "300",
-                          "hideDuration": "1000",
-                          "timeOut": "5000",
-                          "extendedTimeOut": "1000",
-                          "showEasing": "swing",
-                          "hideEasing": "linear",
-                          "showMethod": "fadeIn",
-                          "hideMethod": "fadeOut"
-                      }
+  <h1 class="h3 display-3 text-primary m-4 text-center">Launderete Reviews </h1>
 
-      //Query All input fields
-      var form_fields = document.getElementsByTagName('input')
-      var i = 0
-      for (var field in form_fields){
-        console.log(form_fields[field].name)
-        form_fields[field].className += ' form-control'
-      }
-      form_fields[0].placeholder = "Enter name of client"
-      form_fields[1].placeholder = "Enter name of launderette"
-      form_fields[2].placeholder = "Intial Rate (eg: 1)"
-      form_fields[3].placeholder = "Final Rate (eg: 5)"
-      form_fields[4].placeholder = "Date started (eg: 11-09-2021)"
-      form_fields[5].placeholder = "Date Ended (eg: 05-12-2021)"
-      
-      $(document).ready(function(){
-        if($(".errorlist").length){
-          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
-        }
+  <section class="my-4">
+
+    <div class="container mt-4">
+
+      <form method="get" class="text-left">
+        <div class="filters p-4">
+          <div class="form-group-material">
+            <label>Client Name</label>
+            {{reviewsFilters.form.client_name}}
+            {{reviewsFilters.form.client_name.errors}}
+            <label>Launderette Name</label>
+            {{reviewsFilters.form.launderette_name}}
+            {{reviewsFilters.form.launderette_name.errors}}
+          </div>
+          <a href="#rate_filter" data-toggle="collapse">Rate Filters</a>
+          <div id="rate_filter" class="collapse">
+            <div class="form-group-material">
+              <label>Rating Range</label>
+              {{reviewsFilters.form.start_rating}}
+              {{reviewsFilters.form.start_rating.errors}}
+              {{reviewsFilters.form.end_rating}}
+              {{reviewsFilters.form.end_rating.errors}}
+            </div>
+          </div>
+          <a href="#date_filter" data-toggle="collapse">Date Filters</a>
+          <div id="date_filter" class="collapse">
+            <div class="form-group-material ">
+              <label>Date Range</label>
+              {{reviewsFilters.form.start_date}}
+              {{reviewsFilters.form.start_date.errors}}
+              {{reviewsFilters.form.end_date}}
+              {{reviewsFilters.form.end_date.errors}}
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="my-btn btn btn-primary ml-4" type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="container">
+      <table class="table text-center">
+
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Launderette</th>
+            <th>Rating</th>
+            <th>Review</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for review in reviews %}
+          <tr class="bg-light">
+            <th scope="row">{{review.client}}</th>
+            <td> {{review.launderette}}</td>
+            <td>{{review.rating}}</td>
+            <td> {{review.review}}</td>
+            <td><a class="btn  btn-outline-primary   text-center"
+                href="{% url 'adminReviewDetail' review.id %}">Check</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+
+  </section>
+
+
+
+  <footer class="main-footer">
+    {% include 'frontend/partialView/footer_navbar.html' %}
+  </footer>
+</div>
+
+
+<script>
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+
+  //Query All input fields
+  var form_fields = document.getElementsByTagName('input')
+  var i = 0
+  for (var field in form_fields) {
+    console.log(form_fields[field].name)
+    form_fields[field].className += ' form-control'
+  }
+  form_fields[0].placeholder = "Enter name of client"
+  form_fields[1].placeholder = "Enter name of launderette"
+  form_fields[2].placeholder = "Intial Rate (eg: 1)"
+  form_fields[3].placeholder = "Final Rate (eg: 5)"
+  form_fields[4].placeholder = "Date started (eg: 11-09-2021)"
+  form_fields[5].placeholder = "Date Ended (eg: 05-12-2021)"
+
+  $(document).ready(function () {
+    if ($(".errorlist").length) {
+      $(".errorlist").parent().parent().prev("a").css({
+        "color": "#dd0303"
       });
-      var formErrors = document.getElementsByClassName("errorlist");
-      if(formErrors.length){
-        for (var field in formErrors){
-          console.log(formErrors[field]);
-          myUl = formErrors[field];
-          items = myUl.getElementsByTagName("li");
-          for (var item in items){
-            if( items[item].textContent !== undefined){
-              toastr.error(items[item].textContent)
-            }
-          }
+    }
+  });
+  var formErrors = document.getElementsByClassName("errorlist");
+  if (formErrors.length) {
+    for (var field in formErrors) {
+      console.log(formErrors[field]);
+      myUl = formErrors[field];
+      items = myUl.getElementsByTagName("li");
+      for (var item in items) {
+        if (items[item].textContent !== undefined) {
+          toastr.error(items[item].textContent)
         }
       }
-    </script>
+    }
+  }
+</script>
 
 {% endblock content %}

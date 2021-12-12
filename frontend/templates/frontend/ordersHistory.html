@@ -31,22 +31,23 @@
           <h3>Serivces Filter</h3>
           <ul class="nav nav-pills">
             {% for service in services %}
-            
-              <form class="my-4" id="{{service.id}}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="service_title" value="{{service.title}}">
-                <input type="hidden" name="service_id" value="{{service.id}}">
-                <li>
-                <a class="btn btn-info text-light" onclick="document.getElementById('{{service.id}}').submit();">{{service.title}}</a>
+
+            <form class="my-4" id="{{service.id}}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="service_title" value="{{service.title}}">
+              <input type="hidden" name="service_id" value="{{service.id}}">
+              <li>
+                <a class="btn btn-info text-light"
+                  onclick="document.getElementById('{{service.id}}').submit();">{{service.title}}</a>
               </li>
-              </form>
-            
+            </form>
+
             {% endfor %}
           </ul>
         </div>
         <div class="col">
           <div class="card">
-        
+
             <form method="get" class="text-left">
               <div class="filters p-4">
                 <div class="form-group-material">
@@ -76,7 +77,7 @@
                     {{ordersfliter.form.end_amount.errors}}
                   </div>
                 </div>
-    
+
                 <a href="#date_filter" data-toggle="collapse">Date Filters</a>
                 <div id="date_filter" class="collapse">
                   <div class="form-group-material ">
@@ -87,15 +88,15 @@
                     {{ordersfliter.form.start_date.errors}}
                   </div>
                 </div>
-    
-    
+
+
                 <div class="form-group">
                   <button class="my-btn btn btn-primary" type="submit">Search</button>
                 </div>
               </div>
             </form>
             <div class="card-header">
-    
+
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
                   aria-controls="collapseOne">
@@ -124,7 +125,8 @@
                       <td>{{finished.price}}</td>
                       <td>{{finished.amount}}</td>
                       <td>{{finished.status}}</td>
-                      <td><a class="btn btn-md btn-outline-primary " href="{% url 'orderDetail' finished.id %}">Details</a>
+                      <td><a class="btn btn-md btn-outline-primary "
+                          href="{% url 'orderDetail' finished.id %}">Details</a>
                       </td>
                     </tr>
                     {% endfor %}
@@ -132,7 +134,7 @@
                 </table>
               </div>
             </div>
-    
+
             {% if finisheds.has_previous %}
             <a href="{% url 'ordersHistory' %}?page={{ordersHistory.previous_page_number}}">Previous Page</a>
             {% endif %}

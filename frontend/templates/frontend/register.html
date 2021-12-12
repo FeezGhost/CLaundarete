@@ -1,181 +1,183 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Cloud|Dashboard</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="all,follow">
-    <!-- Bootstrap CSS-->
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="{% static '/vendor/font-awesome/css/font-awesome.min.css'%}">
-    <!-- Fontastic Custom icon font-->
-    <link rel="stylesheet" href="{% static '/css/fontastic.css'%}">
-    <!-- Google fonts - Roboto -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-    <!-- jQuery Circle-->
-    <link rel="stylesheet" href="{% static '/css/grasp_mobile_progress_circle-1.0.0.min.css'%}">
-    <!-- Custom Scrollbar-->
-    <link rel="stylesheet" href="{% static '/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css'%}">
-    <!-- theme stylesheet-->
-    <link rel="stylesheet" href="{% static '/css/mystyle.css'%}" id="theme-stylesheet'%}">
-    <!-- Custom stylesheet - for your changes-->
-    <link rel="stylesheet" href="{% static '/css/custom.css'%}">
-    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-  </head>
-  <body>
-    <div class="page login-page ">
-      <div class="container signup-page">
-        <div class="container mx-4 px-4">
-          {% for message in messages %}
-            <div class="container-fluid p-0">
-              <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                {{ message }}
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-        <div class="form-outer text-center d-flex align-items-center ">
-          <div class="form-inner">
-            <div class="logo text-uppercase"><span>Cloud</span><strong class="text-primary">Laundarette</strong></div>
-            <p>Create Your Account with accourate information that represents you.</p>
-            <form class="text-left" method="POST">
-              {% csrf_token %}
-              <div class="form-group-material">
-              <p class="text-muted">Username</p>
-                {{form.username}}
-                {{form.username.errors}}
-              </div>
-              <div class="form-group-material">
-              <p class="text-muted">Name</p>
-                {{form.name}}
-                {{form.name.errors}}
-              </div>
-              <div class="form-group-material">
-              <p class="text-muted">Email</p>
-                {{form.email}}
-                {{form.email.errors}}
-              </div>
-              <div class="form-group-material">
-              <p class="text-muted">City</p>
-                {{form.city}}
-                {{form.city.errors}}
-              </div>
-              <div class="form-group-material">
-              <p class="text-muted">Address</p>
-                {{form.address}}
-                {{form.address.errors}}
-              </div>
-              <div class="form-group-material">
-              <p class="text-muted">Password</p>
-                {{form.password1}}
-                {{form.password1.errors}}
-              </div>
-              <div class="form-group-material">
-                <p class="text-muted">Confirm Password</p>
-                {{form.password2}}
-                {{form.password2.errors}}
-              </div>
-              <div class="form-group-material">
-                  <input type="hidden" name="lat" id="latitude">
-                  <input type="hidden" name="logn" id="longitude">
-                </div>
-              <div class="form-group text-center">
-                <input id="register" type="submit" value="Register" class="btn btn-primary text-white">
-              </div>
-            </form><small>Already have an account? </small><a href="{% url 'loginPage' %}" class="signup">Login</a>
-            <!-- {{form}} -->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Cloud|Dashboard</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <!-- Bootstrap CSS-->
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+  <link rel="stylesheet" href="{% static '/vendor/font-awesome/css/font-awesome.min.css'%}">
+  
+  <link rel="stylesheet" href="{% static '/css/fontastic.css'%}">
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+  
+  <link rel="stylesheet" href="{% static '/css/grasp_mobile_progress_circle-1.0.0.min.css'%}">
+  
+  <link rel="stylesheet" href="{% static '/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css'%}">
+  
+  <link rel="stylesheet" href="{% static '/css/mystyle.css'%}" id="theme-stylesheet'%}">
+  
+  <link rel="stylesheet" href="{% static '/css/custom.css'%}">
+</head>
+
+<body>
+  <div class="page login-page ">
+    <div class="container signup-page">
+      <div class="container mx-4 px-4">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
           </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="form-outer text-center d-flex align-items-center ">
+        <div class="form-inner">
+          <div class="logo text-uppercase"><span>Cloud</span><strong class="text-primary">Laundarette</strong></div>
+          <p>Create Your Account with accourate information that represents you.</p>
+          <form class="text-left" method="POST">
+            {% csrf_token %}
+            <div class="form-group-material">
+              <p class="text-muted">Username</p>
+              {{form.username}}
+              {{form.username.errors}}
+            </div>
+            <div class="form-group-material">
+              <p class="text-muted">Name</p>
+              {{form.name}}
+              {{form.name.errors}}
+            </div>
+            <div class="form-group-material">
+              <p class="text-muted">Email</p>
+              {{form.email}}
+              {{form.email.errors}}
+            </div>
+            <div class="form-group-material">
+              <p class="text-muted">City</p>
+              {{form.city}}
+              {{form.city.errors}}
+            </div>
+            <div class="form-group-material">
+              <p class="text-muted">Address</p>
+              {{form.address}}
+              {{form.address.errors}}
+            </div>
+            <div class="form-group-material">
+              <p class="text-muted">Password</p>
+              {{form.password1}}
+              {{form.password1.errors}}
+            </div>
+            <div class="form-group-material">
+              <p class="text-muted">Confirm Password</p>
+              {{form.password2}}
+              {{form.password2.errors}}
+            </div>
+            <div class="form-group-material">
+              <input type="hidden" name="lat" id="latitude">
+              <input type="hidden" name="logn" id="longitude">
+            </div>
+            <div class="form-group text-center">
+              <input id="register" type="submit" value="Register" class="btn btn-primary text-white">
+            </div>
+          </form><small>Already have an account? </small><a href="{% url 'loginPage' %}" class="signup">Login</a>
+          <!-- {{form}} -->
         </div>
       </div>
     </div>
+  </div>
 
-    
-    <script>
 
-      //Query All input fields
-      var form_fields = document.getElementsByTagName('input')
-      for (var field in form_fields){
-        form_fields[field].className += ' input-material'
+  <script>
+    //Query All input fields
+    var form_fields = document.getElementsByTagName('input')
+    for (var field in form_fields) {
+      form_fields[field].className += ' input-material'
+    }
+
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-center",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+
+    $(document).ready(function () {
+      if ($(".errorlist").length) {
+        $(".errorlist").parent().parent().prev("a").css({
+          "color": "#dd0303"
+        });
       }
-      
-      toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": true,
-        "positionClass": "toast-top-center",
-        "preventDuplicates": true,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-          }
-
-      $(document).ready(function(){
-        if($(".errorlist").length){
-          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
-        }
-      });
-      var formErrors = document.getElementsByClassName("errorlist");
-      if(formErrors.length){
-        for (var field in formErrors){
-          console.log(formErrors[field]);
-          myUl = formErrors[field];
-          items = myUl.getElementsByTagName("li");
-          for (var item in items){
-            if( items[item].textContent !== undefined){
-              toastr.error(items[item].textContent)
-              }
+    });
+    var formErrors = document.getElementsByClassName("errorlist");
+    if (formErrors.length) {
+      for (var field in formErrors) {
+        console.log(formErrors[field]);
+        myUl = formErrors[field];
+        items = myUl.getElementsByTagName("li");
+        for (var item in items) {
+          if (items[item].textContent !== undefined) {
+            toastr.error(items[item].textContent)
           }
         }
       }
-    </script>
+    }
+  </script>
 
-    <script>
-      const sucessCallback = (position) => {
-        console.log(position);
-        console.log(position.coords.latitude);
-        console.log(position.coords.longitude);
-        const lat = document.getElementById('latitude');
-        const long = document.getElementById('longitude');
-        lat.value = position.coords.latitude;
-        long.value = position.coords.longitude;
-        console.log(lat);
-        console.log(long);
-      };
-      const errorCallback = (error) => {
-        console.log(error);
-      };
-      navigator.geolocation.getCurrentPosition(sucessCallback, errorCallback, {
-        enableHighAccuracy: true,
-        timeout: 5000
-      });
-    </script>
+  <script>
+    const sucessCallback = (position) => {
+      console.log(position);
+      console.log(position.coords.latitude);
+      console.log(position.coords.longitude);
+      const lat = document.getElementById('latitude');
+      const long = document.getElementById('longitude');
+      lat.value = position.coords.latitude;
+      long.value = position.coords.longitude;
+      console.log(lat);
+      console.log(long);
+    };
+    const errorCallback = (error) => {
+      console.log(error);
+    };
+    navigator.geolocation.getCurrentPosition(sucessCallback, errorCallback, {
+      enableHighAccuracy: true,
+      timeout: 5000
+    });
+  </script>
 
-    <!-- JavaScript files-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
-    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
-    <script src="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-    <!-- Main File-->
-    <script src="js/front.js"></script>
-  </body>
+  <!-- JavaScript files-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+  <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+  <script src="vendor/chart.js/Chart.min.js"></script>
+  <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+  <script src="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+  <!-- Main File-->
+  <script src="js/front.js"></script>
+</body>
+
 </html>

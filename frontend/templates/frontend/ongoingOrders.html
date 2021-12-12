@@ -3,197 +3,201 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      <!-- navbar-->
 
-      {% include 'frontend/partialview/topbar.html' %}  
-      
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item "><a >Orders</a></li>
-            <li class="breadcrumb-item active">Ongoing Orders       </li>
-          </ul>
-        </div>
+<div class="page">
+  <!-- navbar-->
+
+  {% include 'frontend/partialview/topbar.html' %}
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item "><a>Orders</a></li>
+        <li class="breadcrumb-item active">Ongoing Orders </li>
+      </ul>
+    </div>
+  </div>
+  <div class="container mx-4 px-4">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
       </div>
-    <div class="container mx-4 px-4">
-      {% for message in messages %}
-        <div class="container-fluid p-0">
-          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
-          </div>
-        </div>
-      {% endfor %}
     </div>
+    {% endfor %}
+  </div>
 
-      <section class="charts">
-        <div class="container-fluid">
-          <!-- Page Header-->
-          <header> 
-            <h1 class="h3 display-3  text-primary text-center">Ongoing Orders            </h1>
-          </header>
-          
-        <div class="card">
-          <div class="container mt-4">
-            
-            <form method="get" class="text-left">
-              <div class="filters">
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      <header>
+        <h1 class="h3 display-3  text-primary text-center">Ongoing Orders </h1>
+      </header>
+
+      <div class="card">
+        <div class="container mt-4">
+
+          <form method="get" class="text-left">
+            <div class="filters">
+              <div class="form-group-material">
+                <label>Client Name</label>
+                {{ordersfilter.form.client_name}}
+                {{ordersfilter.form.client_name.errors}}
+              </div>
+              <a href="#price_filter" data-toggle="collapse">Price Filters</a>
+              <div id="price_filter" class="collapse">
                 <div class="form-group-material">
-                  <label>Client Name</label>
-                  {{ordersfilter.form.client_name}}
-                  {{ordersfilter.form.client_name.errors}}
-                </div>
-                <a href="#price_filter"  data-toggle="collapse">Price Filters</a>
-                <div id="price_filter" class="collapse">
-                  <div class="form-group-material">
-                    <label>Price Range</label>
-                    {{ordersfilter.form.start_price}}
-                    {{ordersfilter.form.start_price.errors}}
-                    {{ordersfilter.form.end_price}}
-                    {{ordersfilter.form.end_price.errors}}
-                  </div>
-                </div>
-                <a href="#amount_filter"  data-toggle="collapse">Amount Filters</a>
-                <div id="amount_filter" class="collapse">
-                    <div class="form-group-material">
-                      <label>Amount Range</label>
-                      {{ordersfilter.form.start_amount}}
-                      {{ordersfilter.form.start_amount.errors}}
-                      {{ordersfilter.form.end_amount}}
-                      {{ordersfilter.form.end_amount.errors}}
-                    </div>
-                </div>
-                
-                <a href="#date_filter"  data-toggle="collapse">Date Filters</a>
-                <div id="date_filter" class="collapse">
-                  <div class="form-group-material ">
-                    <label>Date Range</label>
-                    {{ordersfilter.form.start_date}}
-                    {{ordersfilter.form.start_date.errors}}
-                    {{ordersfilter.form.end_date}}
-                    {{ordersfilter.form.end_date.errors}}
-                  </div>
+                  <label>Price Range</label>
+                  {{ordersfilter.form.start_price}}
+                  {{ordersfilter.form.start_price.errors}}
+                  {{ordersfilter.form.end_price}}
+                  {{ordersfilter.form.end_price.errors}}
                 </div>
               </div>
-              <div class="form-group">
-		            <button class="my-btn btn btn-primary" type="submit">Search</button>
+              <a href="#amount_filter" data-toggle="collapse">Amount Filters</a>
+              <div id="amount_filter" class="collapse">
+                <div class="form-group-material">
+                  <label>Amount Range</label>
+                  {{ordersfilter.form.start_amount}}
+                  {{ordersfilter.form.start_amount.errors}}
+                  {{ordersfilter.form.end_amount}}
+                  {{ordersfilter.form.end_amount.errors}}
+                </div>
               </div>
-            </form>
-          </div>
-                
-                        <div class="card-header">
-                        
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Ongoing Orders
-                            </a>
-                        </h4>
-                        </div>
-                        
-                        <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                <th>Date & Time Started</th>
-                                <th>Client</th>
-                                <th>Price</th>
-                                <th>Amount</th>
-                                <th>Delivery Time</th>
-                                <th>Change status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for onGoingOrder in onGoingOrders %}
-                                    <tr>
-                                        <td>{{onGoingOrder.date_started}}</td>
-                                        <td>{{onGoingOrder.client}}</td>
-                                        <td>{{onGoingOrder.price}}</td>
-                                        <td>{{onGoingOrder.amount}}</td>
-                                        <td>{{onGoingOrder.date_end}}</td>
-                                        <td><a class="btn btn-md btn-outline-primary" href= "{% url 'orderDetail' onGoingOrder.id %}">Details</a></td>
-                                    </tr>
-                                {% endfor %}
-                                
-                            </tbody>
-                            </table>
-                        </div>
-                        </div>
-            
-          {% if onGoingOrders.has_previous %}
-            <a href="{% url 'ongoingOrders' %}?page={{onGoingOrders.previous_page_number}}">Previous Page</a>
-          {% endif %}
-          {% if onGoingOrders.has_next %}
-            <a href="{% url 'ongoingOrders' %}?page={{onGoingOrders.next_page_number}}">Next Page</a>
-          {% endif %}
-          </div> 
+
+              <a href="#date_filter" data-toggle="collapse">Date Filters</a>
+              <div id="date_filter" class="collapse">
+                <div class="form-group-material ">
+                  <label>Date Range</label>
+                  {{ordersfilter.form.start_date}}
+                  {{ordersfilter.form.start_date.errors}}
+                  {{ordersfilter.form.end_date}}
+                  {{ordersfilter.form.end_date.errors}}
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <button class="my-btn btn btn-primary" type="submit">Search</button>
+            </div>
+          </form>
         </div>
-      </section>
-      
-      <footer class="main-footer">
-        {% include 'frontend/partialview/footer_navbar.html' %}
-      </footer>
+
+        <div class="card-header">
+
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+              aria-controls="collapseOne">
+              Ongoing Orders
+            </a>
+          </h4>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Date & Time Started</th>
+                  <th>Client</th>
+                  <th>Price</th>
+                  <th>Amount</th>
+                  <th>Delivery Time</th>
+                  <th>Change status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for onGoingOrder in onGoingOrders %}
+                <tr>
+                  <td>{{onGoingOrder.date_started}}</td>
+                  <td>{{onGoingOrder.client}}</td>
+                  <td>{{onGoingOrder.price}}</td>
+                  <td>{{onGoingOrder.amount}}</td>
+                  <td>{{onGoingOrder.date_end}}</td>
+                  <td><a class="btn btn-md btn-outline-primary"
+                      href="{% url 'orderDetail' onGoingOrder.id %}">Details</a></td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {% if onGoingOrders.has_previous %}
+        <a href="{% url 'ongoingOrders' %}?page={{onGoingOrders.previous_page_number}}">Previous Page</a>
+        {% endif %}
+        {% if onGoingOrders.has_next %}
+        <a href="{% url 'ongoingOrders' %}?page={{onGoingOrders.next_page_number}}">Next Page</a>
+        {% endif %}
+      </div>
     </div>
- 
-    
-    <script>
-    toastr.options = {
-                          "closeButton": true,
-                          "debug": false,
-                          "newestOnTop": true,
-                          "progressBar": true,
-                          "positionClass": "toast-top-center",
-                          "preventDuplicates": true,
-                          "onclick": null,
-                          "showDuration": "300",
-                          "hideDuration": "1000",
-                          "timeOut": "5000",
-                          "extendedTimeOut": "1000",
-                          "showEasing": "swing",
-                          "hideEasing": "linear",
-                          "showMethod": "fadeIn",
-                          "hideMethod": "fadeOut"
-                      }
-      
-      //Query All input fields
-      var form_fields = document.getElementsByTagName('input')
-      var i = 0
-      for (var field in form_fields){
-        console.log(form_fields[field].name)
-        form_fields[field].className += ' form-control'
-      }
-      form_fields[0].placeholder = "Enter name of client"
-      form_fields[1].placeholder = "Starting Price (eg: 50)"
-      form_fields[2].placeholder = "Ending Price (eg: 100)"
-      form_fields[3].placeholder = "Starting Amount (eg: 5)"
-      form_fields[4].placeholder = "Ending Amount (eg: 20)"
-      form_fields[5].placeholder = "Date started (eg: 11-09-2021)"
-      form_fields[6].placeholder = "Date Ended (eg: 05-12-2021)"
-      
-      $(document).ready(function(){
-        if($(".errorlist").length){
-          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
-        }
+  </section>
+
+  <footer class="main-footer">
+    {% include 'frontend/partialview/footer_navbar.html' %}
+  </footer>
+</div>
+
+
+<script>
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+
+  //Query All input fields
+  var form_fields = document.getElementsByTagName('input')
+  var i = 0
+  for (var field in form_fields) {
+    console.log(form_fields[field].name)
+    form_fields[field].className += ' form-control'
+  }
+  form_fields[0].placeholder = "Enter name of client"
+  form_fields[1].placeholder = "Starting Price (eg: 50)"
+  form_fields[2].placeholder = "Ending Price (eg: 100)"
+  form_fields[3].placeholder = "Starting Amount (eg: 5)"
+  form_fields[4].placeholder = "Ending Amount (eg: 20)"
+  form_fields[5].placeholder = "Date started (eg: 11-09-2021)"
+  form_fields[6].placeholder = "Date Ended (eg: 05-12-2021)"
+
+  $(document).ready(function () {
+    if ($(".errorlist").length) {
+      $(".errorlist").parent().parent().prev("a").css({
+        "color": "#dd0303"
       });
-      var formErrors = document.getElementsByClassName("errorlist");
-      if(formErrors.length){
-        for (var field in formErrors){
-          console.log(formErrors[field]);
-          myUl = formErrors[field];
-          items = myUl.getElementsByTagName("li");
-          for (var item in items){
-            if( items[item].textContent !== undefined){
-              toastr.error(items[item].textContent)
-            }
-          }
+    }
+  });
+  var formErrors = document.getElementsByClassName("errorlist");
+  if (formErrors.length) {
+    for (var field in formErrors) {
+      console.log(formErrors[field]);
+      myUl = formErrors[field];
+      items = myUl.getElementsByTagName("li");
+      for (var item in items) {
+        if (items[item].textContent !== undefined) {
+          toastr.error(items[item].textContent)
         }
       }
-    </script>
+    }
+  }
+</script>
 
 {% endblock content %}

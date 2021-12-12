@@ -1,71 +1,87 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Cloud|Launderette</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="all,follow">
-    
-    <!-- Bootstrap CSS-->
-    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="{% static '/vendor/font-awesome/css/font-awesome.min.css'%}">
-    <!-- Fontastic Custom icon font-->
-    <link rel="stylesheet" href="{% static '/css/fontastic.css'%}">
-    <!-- Google fonts - Roboto -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-    <!-- jQuery Circle-->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    
-    <script>
-      var myvalue = {{acceptedOrdersRatio}};
-    </script>
-    <link rel="stylesheet" href="{% static '/css/grasp_mobile_progress_circle-1.0.0.min.css'%}">
-    <!-- Custom Scrollbar-->
-    <link rel="stylesheet" href="{% static '/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css'%}">
-    {% comment %} Font {% endcomment %}
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
-    <!-- theme stylesheet-->
-    <link rel="stylesheet" href="{% static '/css/mystyle.css'%}">
-    <!-- Custom stylesheet - for your changes-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Cloud|Launderette</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+
+  <!-- Bootstrap CSS-->
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="{% static '/vendor/font-awesome/css/font-awesome.min.css'%}">
+
+  <link rel="stylesheet" href="{% static '/css/fontastic.css'%}">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <script>
+    var myvalue = {
+      {
+        acceptedOrdersRatio
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="{% static '/css/grasp_mobile_progress_circle-1.0.0.min.css'%}">
+
+
+  <link rel="stylesheet" href="{% static '/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css'%}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static '/css/mystyle.css'%}">
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+    integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+    integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-    <link rel="stylesheet" href="{% static '/css/custom.css'%}">
-    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-       
-  </head>
+  <link rel="stylesheet" href="{% static '/css/custom.css'%}">
+
+</head>
+
 <body>
-    
+
   {% include 'frontend/partialview/header_navbar.html' %}
-  
+
   {% block content %}
 
   {% endblock content %}
 
 
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
 
-    <script src="{% static '/js/grasp_mobile_progress_circle-1.0.0.min.js'%}"></script>
-    <script src="{% static '/vendor/jquery.cookie/jquery.cookie.js'%}"> </script>
-    <script src="{% static '/vendor/chart.js/Chart.min.js'%}"></script>
-    <script src="{% static '/vendor/jquery-validation/jquery.validate.min.js'%}"></script>
-    <script src="{% static '/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js'%}"></script>
-    <script src="{% static '/js/charts-custom.js'%}"></script>
-    <!-- Main File-->
-    <script src="{% static '/js/front.js'%}"></script>
+  <script src="{% static '/js/grasp_mobile_progress_circle-1.0.0.min.js'%}"></script>
+  <script src="{% static '/vendor/jquery.cookie/jquery.cookie.js'%}"> </script>
+  <script src="{% static '/vendor/chart.js/Chart.min.js'%}"></script>
+  <script src="{% static '/vendor/jquery-validation/jquery.validate.min.js'%}"></script>
+  <script src="{% static '/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js'%}"></script>
+  <script src="{% static '/js/charts-custom.js'%}"></script>
+  <!-- Main File-->
+  <script src="{% static '/js/front.js'%}"></script>
 </body>
+
 </html>

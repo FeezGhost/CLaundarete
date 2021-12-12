@@ -1,53 +1,56 @@
 {% load static %}
 
- <!-- Side Navbar -->
-    <nav class="side-navbar">
-      <div class="side-navbar-wrapper">
-        <!-- Sidebar Header    -->
-        <div class="sidenav-header d-flex align-items-center justify-content-center">
-          <!-- User Info-->
-          <div class="sidenav-header-inner text-center"><img src="{{launderer.profile_pic.url}}" alt="person" class="img-fluid rounded-circle">
-            <h2 class="h5">{{launderer.name}}</h2>
-          </div>
-          <!-- Small Brand information, appears on minimized sidebar-->
-          <div class="sidenav-header-logo"><a  class="brand-small text-center"> <strong>C</strong><strong class="text-primary">L</strong></a></div>
-        </div>
-        <!-- Sidebar Navigation Menus-->
-        <div class="main-menu">
-          <h5 class="sidenav-heading">User Menu</h5>
-          <ul id="side-main-menu" class="side-menu list-unstyled">                  
-            <li><a href="{% url 'dashboard' %}" > <i class="icon-form"></i>Home                             </a></li>
-            
-            <li><a href="{% url 'myAccount' %}"> <i class="icon-form"></i>Profile                             </a></li>
-            <li class=""><a href="{% url 'Report' %}"> <i class="fa fa-bar-chart"></i>Performance Report                              </a></li>
-            <li><a href="#exampledropdownDropdown2" aria-expanded="false" data-toggle="collapse"> <i class="icon-home"></i>Order </a>
-              <ul id="exampledropdownDropdown2" class="collapse list-unstyled ">
-                <li><a href="{% url 'ordersRequest' %}">Order Requests</a></li>
-                <li><a href="{% url 'ongoingOrders' %}">Ongoing Orders</a></li>
-                <li><a href="{% url 'ordersHistory' %}">Orders History</a></li>
-              </ul>
-            </li>
-            
-            
-        </div>
-        <div class="admin-menu">
-          <h5 class="sidenav-heading">Launderete Menu</h5>
-          <ul id="side-admin-menu" class="side-menu list-unstyled"> 
-            <li> <a href="{% url 'launderette' %}"> <i class="icon-screen"> </i>Launderete</a></li>
-            {% if totalLaunderette != 0 %}
-              <li> <a href="{% url 'services' %}"> <i class="icon-screen"> </i>Services</a></li>
-            {% endif %}
-          </ul>
-        </div>
-        
-        <div class="admin-menu">
-          <h5 class="sidenav-heading">Reviews & Complaints</h5>
-          <ul id="side-admin-menu" class="side-menu list-unstyled"> 
-            {% if totalLaunderette != 0 %}
-              <li> <a href="{% url 'laundaretteReviews' %}"> <i class="icon-flask"> </i>Launderete Reviews</a></li>
-            {% endif %}
-            <li> <a href="{% url 'complaints' %}"> <i class="icon-flask"> </i>Complaints</a></li>
-          </ul>
-        </div>
+<!-- Side Navbar -->
+<nav class="side-navbar">
+  <div class="side-navbar-wrapper">
+    <!-- Sidebar Header    -->
+    <div class="sidenav-header d-flex align-items-center justify-content-center">
+      <!-- User Info-->
+      <div class="sidenav-header-inner text-center"><img src="{{launderer.profile_pic.url}}" alt="person"
+          class="img-fluid rounded-circle">
+        <h2 class="h5">{{launderer.name}}</h2>
       </div>
-    </nav>
+      <!-- Small Brand information, appears on minimized sidebar-->
+      <div class="sidenav-header-logo"><a class="brand-small text-center"> <strong>C</strong><strong
+            class="text-primary">L</strong></a></div>
+    </div>
+    <!-- Sidebar Navigation Menus-->
+    <div class="main-menu">
+      <h5 class="sidenav-heading">User Menu</h5>
+      <ul id="side-main-menu" class="side-menu list-unstyled">
+        <li><a href="{% url 'dashboard' %}"> <i class="icon-form"></i>Home </a></li>
+
+        <li><a href="{% url 'myAccount' %}"> <i class="icon-form"></i>Profile </a></li>
+        <li class=""><a href="{% url 'Report' %}"> <i class="fa fa-bar-chart"></i>Performance Report </a></li>
+        <li><a href="#exampledropdownDropdown2" aria-expanded="false" data-toggle="collapse"> <i
+              class="icon-home"></i>Order </a>
+          <ul id="exampledropdownDropdown2" class="collapse list-unstyled ">
+            <li><a href="{% url 'ordersRequest' %}">Order Requests</a></li>
+            <li><a href="{% url 'ongoingOrders' %}">Ongoing Orders</a></li>
+            <li><a href="{% url 'ordersHistory' %}">Orders History</a></li>
+          </ul>
+        </li>
+
+
+    </div>
+    <div class="admin-menu">
+      <h5 class="sidenav-heading">Launderete Menu</h5>
+      <ul id="side-admin-menu" class="side-menu list-unstyled">
+        <li> <a href="{% url 'launderette' %}"> <i class="icon-screen"> </i>Launderete</a></li>
+        {% if totalLaunderette != 0 %}
+        <li> <a href="{% url 'services' %}"> <i class="icon-screen"> </i>Services</a></li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="admin-menu">
+      <h5 class="sidenav-heading">Reviews & Complaints</h5>
+      <ul id="side-admin-menu" class="side-menu list-unstyled">
+        {% if totalLaunderette != 0 %}
+        <li> <a href="{% url 'laundaretteReviews' %}"> <i class="icon-flask"> </i>Launderete Reviews</a></li>
+        {% endif %}
+        <li> <a href="{% url 'complaints' %}"> <i class="icon-flask"> </i>Complaints</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -3,318 +3,322 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      <!-- navbar-->
 
-      {% include 'frontend/partialview/topbar.html' %}  
-      
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active">My Account       </li>
-          </ul>
-        </div>
-      </div>
-<section class="dashboard-header section-padding">
-        <div class="container-fluid">
-          <div class="row d-flex align-items-md-stretch ">
-          <div class="col-lg-2 mr-4 pr-4"></div>
-            <div class="col-lg-2 col-md-6 mr-4 pr-4">
-              <div class="card to-do">
-                    
-                <!-- User Info-->
-                <div class="">
-                  <img src="{{launderer.profile_pic.url}}"alt="person" class="img-fluid pfp rounded-circle">
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-7 col-md-12 py-4 my-4 ml-4 pl-4 ">
-              <div class="row">
-              
-                  <div class="col-lg-4 col-md-4">
-                    <div class="card project-progress">
-                      <h2 class="display h4 text-primary">Name:</h2>
-                      <p class="display h4 ">{{launderer.name}}</p>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-4">
-                    <div class="card project-progress">
-                    
-                      <h3 class="display h4 text-primary">Username:</h3>
-                      <p>{{launderer.user.username}} </p>
-                    </div>
-                </div>
-              </div>
-            <div class="row mt-4">
-              
-                  <div class="col-lg-4 col-md-4">
-                    <div class="card project-progress">
-                      <h2 class="display h4 text-primary">Email:</h2>
-                      <p>{{launderer.user.email}} </p>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-4">
-                    <div class="card project-progress">
-                    
-                      <h2 class="display h4 text-primary">Address:</h2>
-                      <p class='text-muted'>{{launderer.address}}</p>
-                    </div>
-                </div>
-              </div>
-            
-            </div>
-                
-            
-          </div>
-        </div>
-      </section>
-      
-      <div class="container text-center">
-      
-          <a class="btn btn-md btn-outline-primary  " href="" data-toggle="modal" data-target="#profilepicModal">Change Profile Pic </a>
-          <a class="btn btn-md btn-outline-primary  " href="" data-toggle="modal" data-target="#generalModal">Edit General Info</a>
-          <a class="btn btn-md btn-outline-primary  " href="" data-toggle="modal" data-target="#emailModal">Change Email</a>
-          <a class="btn btn-md btn-outline-primary  " href="" data-toggle="modal" data-target="#passwordModal">Change Password </a>
-      </div>
-      
-    <section class="charts">
-        <div class="container-fluid">
-          <!-- Page Header-->
-          <header> 
-            <h1 class="h3 display">Payment Methods            </h1>
-          </header>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  <h4>Default</h4>
-                </div>
-                <div class="card-body">
-                    <p class="lead">Select Defaut Payment Here.</p>
-                    <form>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" checked>Cash On Delivery</label>
-                        </div>
-                        <div class="radio">
-                            <a class="btn  btn-outline-primary" href="">Update </a>
-                        </div>
-                    </form>
-                    
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="card bar-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  <h4>Add Payment Account</h4>
-                </div>
-                <div class="card-body">
-                    <p class="lead">Add New Payment Method Here.</p>
-                    <a class="btn btn-lg btn-outline-primary my-3" href="">Add</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-    </section>
+<div class="page">
+  <!-- navbar-->
 
+  {% include 'frontend/partialview/topbar.html' %}
 
-      <div id="generalModal" class="modal fade" role="dialog">
-        <div class="modal-dialog ">
-            <div class="modal-content bg-dark text-white text-center">
-                <div class="modal-header">
-                  <h1>General Info</h1>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form enctype="multipart/form-data" method="POST", action="{% url 'generalInfo' %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                      <label>Name</label>
-                      {{form.name}}
-                      {{form.name.errors}}
-                    </div>
-                    
-                    
-                    <div class="form-group">
-                      <label>Address</label>
-                      {{form.address}}
-                      {{form.address.errors}}
-                    </div>
-                    
-
-                    <div class="form-group mt-4">       
-                      <input type="submit" value="Save Changes" class="btn btn-primary text-white">
-                    </div>
-                  </form>
-                </div>
-                
-            </div>
-        </div>
-      </div>
-
-      <div id="profilepicModal" class="modal fade" role="dialog">
-        <div class="modal-dialog ">
-            <div class="modal-content bg-dark text-white text-center">
-                <div class="modal-header">
-                    <h1>Profile Pic</h1>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                </div>
-                
-                <div class="modal-body">
-                    <form enctype="multipart/form-data" method="POST", action="{% url 'profilepic' %}">
-                    {% csrf_token %}
-                    <div class="container px-4">
-                      <img src="{{launderer.profile_pic.url}}"alt="person" class="img-fluid my-pfp rounded-circle">
-                      <hr>
-                    </div>
-                    <div class="form-group ml-4">
-                      
-                      {{profilepicform.profile_pic}}
-                      
-                      {{profilepicform.profile_pic.errors}}
-                    </div>
-                    
-
-                    <div class="form-group mt-4">       
-                      <input type="submit" value="Save Changes" class="btn btn-primary text-white">
-                    </div>
-                  </form>
-                </div>
-                
-            </div>
-        </div>
-      </div>
-      
-      <div id="emailModal" class="modal fade" role="dialog">
-        <div class="modal-dialog ">
-            <div class="modal-content bg-dark text-white text-center">
-                <div class="modal-header">
-                  <h3 class="text-center">Email</h3>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form enctype="multipart/form-data" method="POST", action="{% url 'changeEmail' %}">
-                    {% csrf_token %}
-
-                    <div class="form-group">
-                      <hr>
-                      {{emailform.email}}
-                      {{emailform.email.errors}}
-                    </div>
-                    
-
-                    <div class="form-group mt-4">       
-                      <input type="submit" value="Save Changes" class="btn btn-primary">
-                    </div>
-                  </form>
-                </div>
-                
-            </div>
-        </div>
-      </div>
-      
-      <div id="passwordModal" class="modal fade" role="dialog">
-        <div class="modal-dialog ">
-            <div class="modal-content bg-dark text-white text-center">
-                <div class="modal-header">
-                  <h3>Password Reset</h3>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form enctype="multipart/form-data" method="POST", action="{% url 'changepass' %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                      <label >Old Password</label>
-                      <hr>
-                      {{ passwordform.old_password }}
-                      {{ passwordform.old_password.errors }}
-                    </div>
-                    <div class="form-group">
-                      <label >New Password</label>
-                      <hr>
-                      {{ passwordform.new_password1 }}
-                      {{ passwordform.new_password1.errors }}
-                    </div>
-                    <div class="form-group">
-                      <label >Confirm New Password</label>
-                      <hr>
-                      {{ passwordform.new_password2 }}
-                      {{ passwordform.new_password2.errors }}
-                    </div>
-                    <div class="form-group mt-4">       
-                      <input type="submit" value="Save Changes" class="btn btn-primary text-white">
-                    </div>
-                  </form>
-                </div>
-                
-            </div>
-        </div>
-      </div>
-      
-      <footer class="main-footer">
-        {% include 'frontend/partialview/footer_navbar.html' %}
-      </footer>
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active">My Account </li>
+      </ul>
     </div>
- 
- 
-    
-    <script>
-    
-    toastr.options = {
-                          "closeButton": true,
-                          "debug": false,
-                          "newestOnTop": true,
-                          "progressBar": true,
-                          "positionClass": "toast-top-center",
-                          "preventDuplicates": true,
-                          "onclick": null,
-                          "showDuration": "300",
-                          "hideDuration": "1000",
-                          "timeOut": "5000",
-                          "extendedTimeOut": "1000",
-                          "showEasing": "swing",
-                          "hideEasing": "linear",
-                          "showMethod": "fadeIn",
-                          "hideMethod": "fadeOut"
-                      }
-      //Query All input fields
-      var form_fields = document.getElementsByTagName('input')
-      var i = 0
-      for (var field in form_fields){
-        console.log(form_fields[field].name)
-        if(i >0 && i<= 3 || i==10){
-          form_fields[field].className += ' input-material'
-        }
-        if(i >10 && i<= 15 && i!=11){
-          form_fields[field].className += ' input-material'
-        }
-        console.log(i)
-        i++
-        
-      $(document).ready(function(){
-        if($(".errorlist").length){
-          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
-        }
-      });
-      
-      var formErrors = document.getElementsByClassName("errorlist");
-      if(formErrors.length){
-        for (var field in formErrors){
-          console.log(formErrors[field]);
-          myUl = formErrors[field];
-          items = myUl.getElementsByTagName("li");
-          for (var item in items){
-            if( items[item].textContent !== undefined){
-              toastr.error(items[item].textContent)
-            }
+  </div>
+  <section class="dashboard-header section-padding">
+    <div class="container-fluid">
+      <div class="row d-flex align-items-md-stretch ">
+        <div class="col-lg-2 mr-4 pr-4"></div>
+        <div class="col-lg-2 col-md-6 mr-4 pr-4">
+          <div class="card to-do">
+
+            <!-- User Info-->
+            <div class="">
+              <img src="{{launderer.profile_pic.url}}" alt="person" class="img-fluid pfp rounded-circle">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7 col-md-12 py-4 my-4 ml-4 pl-4 ">
+          <div class="row">
+
+            <div class="col-lg-4 col-md-4">
+              <div class="card project-progress">
+                <h2 class="display h4 text-primary">Name:</h2>
+                <p class="display h4 ">{{launderer.name}}</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="card project-progress">
+
+                <h3 class="display h4 text-primary">Username:</h3>
+                <p>{{launderer.user.username}} </p>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+
+            <div class="col-lg-4 col-md-4">
+              <div class="card project-progress">
+                <h2 class="display h4 text-primary">Email:</h2>
+                <p>{{launderer.user.email}} </p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="card project-progress">
+
+                <h2 class="display h4 text-primary">Address:</h2>
+                <p class='text-muted'>{{launderer.address}}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+
+  <div class="container text-center">
+
+    <a class="btn btn-md btn-outline-primary  " href="" data-toggle="modal" data-target="#profilepicModal">Change
+      Profile Pic </a>
+    <a class="btn btn-md btn-outline-primary  " href="" data-toggle="modal" data-target="#generalModal">Edit General
+      Info</a>
+    <a class="btn btn-md btn-outline-primary  " href="" data-toggle="modal" data-target="#emailModal">Change Email</a>
+    <a class="btn btn-md btn-outline-primary  " href="" data-toggle="modal" data-target="#passwordModal">Change Password
+    </a>
+  </div>
+
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      <header>
+        <h1 class="h3 display">Payment Methods </h1>
+      </header>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card line-chart-example">
+            <div class="card-header d-flex align-items-center">
+              <h4>Default</h4>
+            </div>
+            <div class="card-body">
+              <p class="lead">Select Defaut Payment Here.</p>
+              <form>
+                <div class="radio">
+                  <label><input type="radio" name="optradio" checked>Cash On Delivery</label>
+                </div>
+                <div class="radio">
+                  <a class="btn  btn-outline-primary" href="">Update </a>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card bar-chart-example">
+            <div class="card-header d-flex align-items-center">
+              <h4>Add Payment Account</h4>
+            </div>
+            <div class="card-body">
+              <p class="lead">Add New Payment Method Here.</p>
+              <a class="btn btn-lg btn-outline-primary my-3" href="">Add</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div id="generalModal" class="modal fade" role="dialog">
+    <div class="modal-dialog ">
+      <div class="modal-content bg-dark text-white text-center">
+        <div class="modal-header">
+          <h1>General Info</h1>
+          <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form enctype="multipart/form-data" method="POST" , action="{% url 'generalInfo' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label>Name</label>
+              {{form.name}}
+              {{form.name.errors}}
+            </div>
+
+
+            <div class="form-group">
+              <label>Address</label>
+              {{form.address}}
+              {{form.address.errors}}
+            </div>
+
+
+            <div class="form-group mt-4">
+              <input type="submit" value="Save Changes" class="btn btn-primary text-white">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="profilepicModal" class="modal fade" role="dialog">
+    <div class="modal-dialog ">
+      <div class="modal-content bg-dark text-white text-center">
+        <div class="modal-header">
+          <h1>Profile Pic</h1>
+          <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <form enctype="multipart/form-data" method="POST" , action="{% url 'profilepic' %}">
+            {% csrf_token %}
+            <div class="container px-4">
+              <img src="{{launderer.profile_pic.url}}" alt="person" class="img-fluid my-pfp rounded-circle">
+              <hr>
+            </div>
+            <div class="form-group ml-4">
+
+              {{profilepicform.profile_pic}}
+
+              {{profilepicform.profile_pic.errors}}
+            </div>
+
+
+            <div class="form-group mt-4">
+              <input type="submit" value="Save Changes" class="btn btn-primary text-white">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="emailModal" class="modal fade" role="dialog">
+    <div class="modal-dialog ">
+      <div class="modal-content bg-dark text-white text-center">
+        <div class="modal-header">
+          <h3 class="text-center">Email</h3>
+          <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form enctype="multipart/form-data" method="POST" , action="{% url 'changeEmail' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+              <hr>
+              {{emailform.email}}
+              {{emailform.email.errors}}
+            </div>
+
+
+            <div class="form-group mt-4">
+              <input type="submit" value="Save Changes" class="btn btn-primary">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="passwordModal" class="modal fade" role="dialog">
+    <div class="modal-dialog ">
+      <div class="modal-content bg-dark text-white text-center">
+        <div class="modal-header">
+          <h3>Password Reset</h3>
+          <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form enctype="multipart/form-data" method="POST" , action="{% url 'changepass' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label>Old Password</label>
+              <hr>
+              {{ passwordform.old_password }}
+              {{ passwordform.old_password.errors }}
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <hr>
+              {{ passwordform.new_password1 }}
+              {{ passwordform.new_password1.errors }}
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <hr>
+              {{ passwordform.new_password2 }}
+              {{ passwordform.new_password2.errors }}
+            </div>
+            <div class="form-group mt-4">
+              <input type="submit" value="Save Changes" class="btn btn-primary text-white">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="main-footer">
+    {% include 'frontend/partialview/footer_navbar.html' %}
+  </footer>
+</div>
+
+
+
+<script>
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+  //Query All input fields
+  var form_fields = document.getElementsByTagName('input')
+  var i = 0
+  for (var field in form_fields) {
+    console.log(form_fields[field].name)
+    if (i > 0 && i <= 3 || i == 10) {
+      form_fields[field].className += ' input-material'
+    }
+    if (i > 10 && i <= 15 && i != 11) {
+      form_fields[field].className += ' input-material'
+    }
+    console.log(i)
+    i++
+
+    $(document).ready(function () {
+      if ($(".errorlist").length) {
+        $(".errorlist").parent().parent().prev("a").css({
+          "color": "#dd0303"
+        });
+      }
+    });
+
+    var formErrors = document.getElementsByClassName("errorlist");
+    if (formErrors.length) {
+      for (var field in formErrors) {
+        console.log(formErrors[field]);
+        myUl = formErrors[field];
+        items = myUl.getElementsByTagName("li");
+        for (var item in items) {
+          if (items[item].textContent !== undefined) {
+            toastr.error(items[item].textContent)
           }
         }
-        }
       }
-    </script>
+    }
+  }
+</script>
 
 {% endblock content %}

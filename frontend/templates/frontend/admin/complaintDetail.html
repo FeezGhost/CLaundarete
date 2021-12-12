@@ -3,111 +3,110 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      
-    {% include 'frontend/admin/partialview/top_navbar.html' %}
 
-      
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a href="{% url 'adminComplaints' %}">Complaint</a></li>
-            <li class="breadcrumb-item active"><a >Details</a></li>
-          </ul>
-        </div>
+<div class="page">
+
+  {% include 'frontend/admin/partialview/top_navbar.html' %}
+
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active"><a href="{% url 'adminComplaints' %}">Complaint</a></li>
+        <li class="breadcrumb-item active"><a>Details</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container mx-4 px-4">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
       </div>
+    </div>
+    {% endfor %}
+  </div>
 
-    <div class="container mx-4 px-4">
-      {% for message in messages %}
-        <div class="container-fluid p-0">
-          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
+  <h1 class="h3 display-3 text-primary m-4 text-center"> Complaint Details </h1>
+
+
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      <div class="card line-chart-example">
+        <div class="card-header d-flex align-items-center">
+          <h4>Complaint</h4>
+        </div>
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-6">
+              <p class="lead text-primary">By:</p>
+              {% if complaint.client == None %}
+              <p class="lead ">{{complaint.launderer}}</p>
+              {% else %}
+              <p class="lead ">{{complaint.client}}</p>
+              {% endif %}
+            </div>
+            <div class="col-6">
+              <p class="lead text-primary">Subject:</p>
+              <p class="lead ">{{complaint.subject}}</p>
+            </div>
+          </div>
+
+          <p class="lead text-primary">Complain:</p>
+          <p class="lead">{{complaint.complain}}</p>
+
+          {% if complaint.response != None %}
+          <p class="lead text-primary">Response:</p>
+          <p class="lead">{{complaint.response}}</p>
+          {% endif %}
+
+
+          <div class="row">
+            <div class="col-6">
+              <p class="lead text-primary">Status:</p>
+              <p class="lead ">{{complaint.status}}</p>
+            </div>
+
+            <div class="col-6">
+              <p class="lead text-primary">Sent Time:</p>
+              <p class="lead ">{{complaint.date}}</p>
+            </div>
           </div>
         </div>
-      {% endfor %}
+      </div>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_response">Response:</label>
+          <br>
+          {{form.response}}
+          {{form.response.errors}}
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Post" class="btn btn-primary">
+        </div>
+      </form>
     </div>
 
-      <h1 class="h3 display-3 text-primary m-4 text-center">   Complaint Details        </h1>
-     
-     
-     <section class="charts">
-        <div class="container-fluid">
-          <!-- Page Header-->
-              <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  <h4>Complaint</h4>
-                </div>
-                <div class="card-body">
-                    
-                    <div class="row">
-                        <div class="col-6">
-                        <p class="lead text-primary">By:</p>
-                        {% if complaint.client == None %}
-                        <p class="lead ">{{complaint.launderer}}</p>
-                        {% else %}
-                        <p class="lead ">{{complaint.client}}</p>
-                        {% endif %}
-                        </div>
-                        <div class="col-6">
-                            <p class="lead text-primary">Subject:</p>
-                            <p class="lead ">{{complaint.subject}}</p>
-                        </div>
-                    </div>
-
-                    <p class="lead text-primary">Complain:</p>
-                    <p class="lead">{{complaint.complain}}</p>
-
-                    {% if complaint.response != None %}
-                    <p class="lead text-primary">Response:</p>
-                    <p class="lead">{{complaint.response}}</p>
-                    {% endif %}
-
-                    
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="lead text-primary">Status:</p>
-                            <p class="lead ">{{complaint.status}}</p>
-                        </div>
-                            
-                        <div class="col-6">
-                            <p class="lead text-primary">Sent Time:</p>
-                            <p class="lead ">{{complaint.date}}</p>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-                <form method="POST">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="id_response">Response:</label>
-                            <br>
-                            {{form.response}}
-                            {{form.response.errors}}
-                        </div>
-                        <div class="form-group">       
-                        <input type="submit" value="Post" class="btn btn-primary">
-                        </div>
-                </form>
-                {% comment %} <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'adminOrderDetails' review.order.id %} ">Check Order</a> {% endcomment %}
-              </div>
-            
-      </section>
+  </section>
 
 
 
 
 
 
-      <footer class="main-footer">
-        {% include 'frontend/partialView/footer_navbar.html' %}
-      </footer>
-    </div>
- 
+  <footer class="main-footer">
+    {% include 'frontend/partialView/footer_navbar.html' %}
+  </footer>
+</div>
+
 
 {% endblock content %}

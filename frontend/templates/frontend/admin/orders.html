@@ -3,34 +3,34 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      
-    {% include 'frontend/admin/partialview/top_navbar.html' %}
 
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active">Orders       </li>
-          </ul>
-        </div>
-      </div>
-      
-      <section class="charts">
-        <div class="container-fluid">
-          <!-- Page Header-->
-          <header> 
-            <h1 class="h3 display">Orders            </h1>
-          </header>
-          
-        <div class="card">
-        
-                        <div class="card-header">
-                        
+<div class="page">
+
+  {% include 'frontend/admin/partialview/top_navbar.html' %}
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Orders </li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      <header>
+        <h1 class="h3 display">Orders </h1>
+      </header>
+
+      <div class="card">
+
+        <div class="card-header">
+
           <div class="container mt-4">
-            
+
             <form method="get" class="text-left">
               <div class="filters">
                 <div class="form-group-material">
@@ -38,7 +38,7 @@
                   {{ordersfilter.form.client_name}}
                   {{ordersfilter.form.client_name.errors}}
                 </div>
-                <a href="#price_filter"  data-toggle="collapse">Price Filters</a>
+                <a href="#price_filter" data-toggle="collapse">Price Filters</a>
                 <div id="price_filter" class="collapse">
                   <div class="form-group-material">
                     <label>Price Range</label>
@@ -48,18 +48,18 @@
                     {{ordersfilter.form.end_price.errors}}
                   </div>
                 </div>
-                <a href="#amount_filter"  data-toggle="collapse">Amount Filters</a>
+                <a href="#amount_filter" data-toggle="collapse">Amount Filters</a>
                 <div id="amount_filter" class="collapse">
-                    <div class="form-group-material">
-                      <label>Amount Range</label>
-                      {{ordersfilter.form.start_amount}}
-                      {{ordersfilter.form.start_amount.errors}}
-                      {{ordersfilter.form.end_amount}}
-                      {{ordersfilter.form.end_amount.errors}}
-                    </div>
+                  <div class="form-group-material">
+                    <label>Amount Range</label>
+                    {{ordersfilter.form.start_amount}}
+                    {{ordersfilter.form.start_amount.errors}}
+                    {{ordersfilter.form.end_amount}}
+                    {{ordersfilter.form.end_amount.errors}}
+                  </div>
                 </div>
-                
-                <a href="#date_filter"  data-toggle="collapse">Date Filters</a>
+
+                <a href="#date_filter" data-toggle="collapse">Date Filters</a>
                 <div id="date_filter" class="collapse">
                   <div class="form-group-material ">
                     <label>Date Range</label>
@@ -71,118 +71,121 @@
                 </div>
               </div>
               <div class="form-group">
-		            <button class="my-btn btn btn-primary" type="submit">Search</button>
+                <button class="my-btn btn btn-primary" type="submit">Search</button>
               </div>
             </form>
           </div>
-                        
-                        </div>
-                    
-                        
-                        <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                <th>Date & Time Started</th>
-                                <th>Client</th>
-                                <th>Launderette</th>
-                                <th>Status</th>
-                                <th>Price</th>
-                                <th>Amount</th>
-                                <th>Delivery Time</th>
-                                <th>Change status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for orders in orders %}
-                                    <tr>
-                                        <td>{{orders.date_started}}</td>
-                                        <td>{{orders.client}}</td>
-                                        <td>{{orders.launderette}}</td>
-                                        <td>{{orders.status}}</td>
-                                        <td>{{orders.price}}</td>
-                                        <td>{{orders.amount}}</td>
-                                        <td>{{orders.date_end}}</td>
-                                        <td><a class="btn btn-md btn-outline-primary" href= "{% url 'adminOrderDetails' orders.id %}">Details</a></td>
-                                    </tr>
-                                {% endfor %}
-                                
-                            </tbody>
-                            </table>
-                        </div>
-            </div>
-            
-          {% if orders.has_previous %}
-            <a href="{% url 'adminOrders' %}?page={{orders.previous_page_number}}">Previous Page</a>
-          {% endif %}
-          {% if orders.has_next %}
-            <a href="{% url 'adminOrders' %}?page={{orders.next_page_number}}">Next Page</a>
-          {% endif %}
-      </div>
-        
-       
-        
+
         </div>
-      </section>
-      
-      <footer class="main-footer">
-        {% include 'frontend/partialView/footer_navbar.html' %}
-      </footer>
+
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Date & Time Started</th>
+                  <th>Client</th>
+                  <th>Launderette</th>
+                  <th>Status</th>
+                  <th>Price</th>
+                  <th>Amount</th>
+                  <th>Delivery Time</th>
+                  <th>Change status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for orders in orders %}
+                <tr>
+                  <td>{{orders.date_started}}</td>
+                  <td>{{orders.client}}</td>
+                  <td>{{orders.launderette}}</td>
+                  <td>{{orders.status}}</td>
+                  <td>{{orders.price}}</td>
+                  <td>{{orders.amount}}</td>
+                  <td>{{orders.date_end}}</td>
+                  <td><a class="btn btn-md btn-outline-primary"
+                      href="{% url 'adminOrderDetails' orders.id %}">Details</a></td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {% if orders.has_previous %}
+        <a href="{% url 'adminOrders' %}?page={{orders.previous_page_number}}">Previous Page</a>
+        {% endif %}
+        {% if orders.has_next %}
+        <a href="{% url 'adminOrders' %}?page={{orders.next_page_number}}">Next Page</a>
+        {% endif %}
+      </div>
+
+
+
     </div>
- 
-    <script>
-    toastr.options = {
-                          "closeButton": true,
-                          "debug": false,
-                          "newestOnTop": true,
-                          "progressBar": true,
-                          "positionClass": "toast-top-center",
-                          "preventDuplicates": true,
-                          "onclick": null,
-                          "showDuration": "300",
-                          "hideDuration": "1000",
-                          "timeOut": "5000",
-                          "extendedTimeOut": "1000",
-                          "showEasing": "swing",
-                          "hideEasing": "linear",
-                          "showMethod": "fadeIn",
-                          "hideMethod": "fadeOut"
-                      }
-      
-      //Query All input fields
-      var form_fields = document.getElementsByTagName('input')
-      var i = 0
-      for (var field in form_fields){
-        console.log(form_fields[field].name)
-        form_fields[field].className += ' form-control'
-      }
-      form_fields[0].placeholder = "Enter name of client"
-      form_fields[1].placeholder = "Starting Price (eg: 50)"
-      form_fields[2].placeholder = "Ending Price (eg: 100)"
-      form_fields[3].placeholder = "Starting Amount (eg: 5)"
-      form_fields[4].placeholder = "Ending Amount (eg: 20)"
-      form_fields[5].placeholder = "Date started (eg: 11-09-2021)"
-      form_fields[6].placeholder = "Date Ended (eg: 05-12-2021)"
-      
-      $(document).ready(function(){
-        if($(".errorlist").length){
-          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
-        }
+  </section>
+
+  <footer class="main-footer">
+    {% include 'frontend/partialView/footer_navbar.html' %}
+  </footer>
+</div>
+
+<script>
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+
+  //Query All input fields
+  var form_fields = document.getElementsByTagName('input')
+  var i = 0
+  for (var field in form_fields) {
+    console.log(form_fields[field].name)
+    form_fields[field].className += ' form-control'
+  }
+  form_fields[0].placeholder = "Enter name of client"
+  form_fields[1].placeholder = "Starting Price (eg: 50)"
+  form_fields[2].placeholder = "Ending Price (eg: 100)"
+  form_fields[3].placeholder = "Starting Amount (eg: 5)"
+  form_fields[4].placeholder = "Ending Amount (eg: 20)"
+  form_fields[5].placeholder = "Date started (eg: 11-09-2021)"
+  form_fields[6].placeholder = "Date Ended (eg: 05-12-2021)"
+
+  $(document).ready(function () {
+    if ($(".errorlist").length) {
+      $(".errorlist").parent().parent().prev("a").css({
+        "color": "#dd0303"
       });
-      var formErrors = document.getElementsByClassName("errorlist");
-      if(formErrors.length){
-        for (var field in formErrors){
-          console.log(formErrors[field]);
-          myUl = formErrors[field];
-          items = myUl.getElementsByTagName("li");
-          for (var item in items){
-            if( items[item].textContent !== undefined){
-              toastr.error(items[item].textContent)
-            }
-          }
+    }
+  });
+  var formErrors = document.getElementsByClassName("errorlist");
+  if (formErrors.length) {
+    for (var field in formErrors) {
+      console.log(formErrors[field]);
+      myUl = formErrors[field];
+      items = myUl.getElementsByTagName("li");
+      for (var item in items) {
+        if (items[item].textContent !== undefined) {
+          toastr.error(items[item].textContent)
         }
       }
-    </script>
+    }
+  }
+</script>
 
 {% endblock content %}

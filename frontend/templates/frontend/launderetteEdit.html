@@ -3,136 +3,137 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      <!-- navbar-->
-      
-      {% include 'frontend/partialview/topbar.html' %}  
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item "><a href="{% url 'launderette' %}">Launderete</a></li>
-            <li class="breadcrumb-item active"><a >Edit</a></li>
-          </ul>
+
+<div class="page">
+  <!-- navbar-->
+
+  {% include 'frontend/partialview/topbar.html' %}
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item "><a href="{% url 'launderette' %}">Launderete</a></li>
+        <li class="breadcrumb-item active"><a>Edit</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container mx-4 px-4">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h1 class="display-3 text-center m-4">Launderete</h1>
+
+
+  <section class="statistics">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <h4>Launderete Form</h4>
+        </div>
+        <div class="card-body">
+          <p>You can update your Launderete information here</p>
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label>Name</label>
+              {{form.name}}
+              {{form.name.errors}}
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              {{form.location}}
+              {{form.location.errors}}
+            </div>
+
+            <div class="form-group">
+              <label>Available Time:</label>
+              {{form.available_time}}
+              {{form.available_time.errors}}
+            </div>
+
+            <div class="form-group">
+              <label>Delivery Charges Per KM:</label>
+              {{form.delivery_fee_pkm}}
+              {{form.delivery_fee_pkm.errors}}
+            </div>
+
+            <div class="form-group">
+              <label>Cover Photo</label>
+              <br>
+              {{form.cover_photo}}
+              {{form.cover_photo.errors}}
+            </div>
+
+            <div class="form-group">
+              <input type="submit" value="Update" class="btn btn-primary text-white">
+            </div>
+          </form>
         </div>
       </div>
-    <div class="container mx-4 px-4">
-      {% for message in messages %}
-        <div class="container-fluid p-0">
-          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
-          </div>
-        </div>
-      {% endfor %}
     </div>
+  </section>
 
-      <h1 class="display-3 text-center m-4">Launderete</h1>
+  <footer class="main-footer">
+    {% include 'frontend/partialview/footer_navbar.html' %}
+  </footer>
+</div>
 
+<script>
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
 
-      <section class="statistics">
-        <div class="container-fluid">
-        <div class="card">
-                <div class="card-header d-flex align-items-center">
-                  <h4>Launderete Form</h4>
-                </div>
-                <div class="card-body">
-                  <p>You can update your Launderete information here</p>
-                  <form method="POST" enctype="multipart/form-data">
-                  {% csrf_token %}
-                    <div class="form-group">
-                      <label>Name</label>
-                      {{form.name}}
-                      {{form.name.errors}}
-                    </div>
-                    <div class="form-group">
-                      <label>Location</label>
-                      {{form.location}}
-                      {{form.location.errors}}
-                    </div>
+  //Query All input fields
+  var form_fields = document.getElementsByTagName('input')
+  for (var field in form_fields) {
+    form_fields[field].className += ' form-control'
+  }
 
-                    <div class="form-group">
-                      <label>Available Time:</label>
-                      {{form.available_time}}
-                      {{form.available_time.errors}}
-                    </div>
-
-                    <div class="form-group">
-                      <label>Delivery Charges Per KM:</label>
-                      {{form.delivery_fee_pkm}}
-                      {{form.delivery_fee_pkm.errors}}
-                    </div>
-                    
-                    <div class="form-group">
-                      <label>Cover Photo</label>
-                      <br>
-                      {{form.cover_photo}}
-                      {{form.cover_photo.errors}}
-                    </div>
-
-                    <div class="form-group">       
-                      <input type="submit" value="Update" class="btn btn-primary text-white">
-                    </div>
-                  </form>
-                </div>
-              </div>
-        </div>
-      </section>
-      
-      <footer class="main-footer">
-        {% include 'frontend/partialview/footer_navbar.html' %}
-      </footer>
-    </div>
- 
-     <script>
-     
-    toastr.options = {
-                          "closeButton": true,
-                          "debug": false,
-                          "newestOnTop": true,
-                          "progressBar": true,
-                          "positionClass": "toast-top-center",
-                          "preventDuplicates": true,
-                          "onclick": null,
-                          "showDuration": "300",
-                          "hideDuration": "1000",
-                          "timeOut": "5000",
-                          "extendedTimeOut": "1000",
-                          "showEasing": "swing",
-                          "hideEasing": "linear",
-                          "showMethod": "fadeIn",
-                          "hideMethod": "fadeOut"
-                      }
-      
-      //Query All input fields
-      var form_fields = document.getElementsByTagName('input')
-      for (var field in form_fields){
-        form_fields[field].className += ' form-control'
-      }
-      
-      $(document).ready(function(){
-        if($(".errorlist").length){
-          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
-        }
+  $(document).ready(function () {
+    if ($(".errorlist").length) {
+      $(".errorlist").parent().parent().prev("a").css({
+        "color": "#dd0303"
       });
-      var formErrors = document.getElementsByClassName("errorlist");
-      if(formErrors.length){
-        for (var field in formErrors){
-          console.log(formErrors[field]);
-          myUl = formErrors[field];
-          items = myUl.getElementsByTagName("li");
-          for (var item in items){
-            if( items[item].textContent !== undefined){
-              toastr.error(items[item].textContent)
-            }
-          }
+    }
+  });
+  var formErrors = document.getElementsByClassName("errorlist");
+  if (formErrors.length) {
+    for (var field in formErrors) {
+      console.log(formErrors[field]);
+      myUl = formErrors[field];
+      items = myUl.getElementsByTagName("li");
+      for (var item in items) {
+        if (items[item].textContent !== undefined) {
+          toastr.error(items[item].textContent)
         }
       }
-    </script>
+    }
+  }
+</script>
 
 
 {% endblock content %}

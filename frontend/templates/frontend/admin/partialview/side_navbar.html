@@ -1,38 +1,39 @@
 {% load static %}
 
- <!-- Side Navbar -->
-    <nav class="side-navbar">
-      <div class="side-navbar-wrapper">
-        <!-- Sidebar Header    -->
-        <div class="sidenav-header d-flex align-items-center justify-content-center">
-          <!-- User Info-->
-            <h2 class="h5">{{admin.username}}</h2>
-          </div>
-          <!-- Small Brand information, appears on minimized sidebar-->
-          <div class="sidenav-header-logo"><a  class="brand-small text-center"> <strong>C</strong><strong class="text-primary">L</strong></a></div>
-        </div>
-        <!-- Sidebar Navigation Menus-->
-        <div class="main-menu">
-          <h5 class="sidenav-heading">Main</h5>
-          <ul id="side-main-menu" class="side-menu list-unstyled">                  
-            <li><a href="{% url 'adminDashboard' %}"> <i class="icon-form"></i>Home</a></li>
-            <li><a href="{% url 'adminLaunderers' %}"> <i class="icon-form"></i>Launderers</a></li>
-            <li class=""><a href="{% url 'adminLaunderettes' %}"> <i class="fa fa-bar-chart"></i>Launderetes</a></li>
-            <li class=""><a href="{% url 'adminClients' %}"> <i class="fa fa-bar-chart"></i>Clients</a></li>
-        </div>
-        <div class="admin-menu">
-          <h5 class="sidenav-heading">Menu 2</h5>
-          <ul id="side-admin-menu" class="side-menu list-unstyled"> 
-            <li> <a href="{% url 'adminComplaints' %}"> <i class="icon-screen"> </i>Complaints</a></li>
-            <li> <a href="{% url 'adminReviews' %}"> <i class="icon-flask"> </i>Reviews</a></li>
-            <li> <a href="{% url 'adminOrders' %}"> <i class="icon-screen"> </i>Orders</a></li>
-          </ul>
-        </div>
-        <div class="admin-menu">
-          <h5 class="sidenav-heading">Analaytics</h5>
-          <ul id="side-admin-menu" class="side-menu list-unstyled"> 
-            <li> <a href="{% url 'AdminReports' %}"> <i class="icon-screen"> </i>Perfomance Reports</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+<!-- Side Navbar -->
+<nav class="side-navbar">
+  <div class="side-navbar-wrapper">
+    <!-- Sidebar Header    -->
+    <div class="sidenav-header d-flex align-items-center justify-content-center">
+      <!-- User Info-->
+      <h2 class="h5">{{admin.username}}</h2>
+    </div>
+    <!-- Small Brand information, appears on minimized sidebar-->
+    <div class="sidenav-header-logo"><a class="brand-small text-center"> <strong>C</strong><strong
+          class="text-primary">L</strong></a></div>
+  </div>
+  <!-- Sidebar Navigation Menus-->
+  <div class="main-menu">
+    <h5 class="sidenav-heading">Main</h5>
+    <ul id="side-main-menu" class="side-menu list-unstyled">
+      <li><a href="{% url 'adminDashboard' %}"> <i class="icon-form"></i>Home</a></li>
+      <li><a href="{% url 'adminLaunderers' %}"> <i class="icon-form"></i>Launderers</a></li>
+      <li class=""><a href="{% url 'adminLaunderettes' %}"> <i class="fa fa-bar-chart"></i>Launderetes</a></li>
+      <li class=""><a href="{% url 'adminClients' %}"> <i class="fa fa-bar-chart"></i>Clients</a></li>
+  </div>
+  <div class="admin-menu">
+    <h5 class="sidenav-heading">Menu 2</h5>
+    <ul id="side-admin-menu" class="side-menu list-unstyled">
+      <li> <a href="{% url 'adminComplaints' %}"> <i class="icon-screen"> </i>Complaints</a></li>
+      <li> <a href="{% url 'adminReviews' %}"> <i class="icon-flask"> </i>Reviews</a></li>
+      <li> <a href="{% url 'adminOrders' %}"> <i class="icon-screen"> </i>Orders</a></li>
+    </ul>
+  </div>
+  <div class="admin-menu">
+    <h5 class="sidenav-heading">Analaytics</h5>
+    <ul id="side-admin-menu" class="side-menu list-unstyled">
+      <li> <a href="{% url 'AdminReports' %}"> <i class="icon-screen"> </i>Perfomance Reports</a></li>
+    </ul>
+  </div>
+  </div>
+</nav>

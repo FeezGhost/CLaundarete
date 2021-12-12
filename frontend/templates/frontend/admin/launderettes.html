@@ -3,197 +3,203 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      
-    {% include 'frontend/admin/partialview/top_navbar.html' %}
 
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a >Launderettes</a></li>
-          </ul>
-        </div>
+<div class="page">
+
+  {% include 'frontend/admin/partialview/top_navbar.html' %}
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active"><a>Launderettes</a></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="container mx-4 px-4">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
       </div>
+    </div>
+    {% endfor %}
+  </div>
 
+  <h1 class="display-3 text-center m-4">Launderettes</h1>
+  <hr>
+  <section class="statistics">
 
-    <div class="container mx-4 px-4">
-      {% for message in messages %}
-        <div class="container-fluid p-0">
-          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
+    <div class="container mt-4">
+
+      <form method="get" class="text-left">
+        <div class="filters">
+          <div class="form-group-material">
+            <label>Launderette Name</label>
+            {{launderetteFilters.form.name}}
+            {{launderetteFilters.form.name.errors}}
+            <br>
+            <label>Blocked/Unblocked</label>
+            {{launderetteFilters.form.isBlocked}}
+            {{launderetteFilters.form.isBlocked.errors}}
+          </div>
+          <a href="#price_filter" data-toggle="collapse">Location Filter</a>
+          <div id="price_filter" class="collapse">
+            <div class="form-group-material">
+              <label>Location</label>
+              {{launderetteFilters.form.location}}
+              {{launderetteFilters.form.location.errors}}
+            </div>
+          </div>
+
+          <a href="#available_time_filter" data-toggle="collapse">Time Filter</a>
+          <div id="available_time_filter" class="collapse">
+            <div class="form-group-material">
+              <label>Available Time</label>
+              {{launderetteFilters.form.available_time}}
+              {{launderetteFilters.form.available_time.errors}}
+            </div>
+          </div>
+          <a href="#date_filter" data-toggle="collapse">Date Filters</a>
+          <div id="date_filter" class="collapse">
+            <div class="form-group-material ">
+              <label>Date Range</label>
+              {{launderetteFilters.form.start_date}}
+              {{launderetteFilters.form.start_date.errors}}
+              {{launderetteFilters.form.end_date}}
+              {{launderetteFilters.form.end_date.errors}}
+            </div>
           </div>
         </div>
-      {% endfor %}
+        <div class="form-group mt-4">
+          <button class="my-btn btn btn-primary" type="submit">Search</button>
+        </div>
+      </form>
     </div>
 
-      <h1 class="display-3 text-center m-4">Launderettes</h1>
-      <hr>
-      <section class="statistics">
-      
-          <div class="container mt-4">
-            
-            <form method="get" class="text-left">
-              <div class="filters">
-                <div class="form-group-material">
-                  <label>Launderette Name</label>
-                  {{launderetteFilters.form.name}}
-                  {{launderetteFilters.form.name.errors}}
-                  <br>
-                  <label>Blocked/Unblocked</label>
-                  {{launderetteFilters.form.isBlocked}}
-                  {{launderetteFilters.form.isBlocked.errors}}
-                </div>
-                <a href="#price_filter"  data-toggle="collapse">Location Filter</a>
-                <div id="price_filter" class="collapse">
-                  <div class="form-group-material">
-                    <label>Location</label>
-                    {{launderetteFilters.form.location}}
-                    {{launderetteFilters.form.location.errors}}
-                  </div>
-                </div>
-                
-                <a href="#available_time_filter"  data-toggle="collapse">Time Filter</a>
-                <div id="available_time_filter" class="collapse">
-                  <div class="form-group-material">
-                    <label>Available Time</label>
-                    {{launderetteFilters.form.available_time}}
-                    {{launderetteFilters.form.available_time.errors}}
-                  </div>
-                </div>
-                <a href="#date_filter"  data-toggle="collapse">Date Filters</a>
-                <div id="date_filter" class="collapse">
-                  <div class="form-group-material ">
-                    <label>Date Range</label>
-                    {{launderetteFilters.form.start_date}}
-                    {{launderetteFilters.form.start_date.errors}}
-                    {{launderetteFilters.form.end_date}}
-                    {{launderetteFilters.form.end_date.errors}}
-                  </div>
-                </div>
+    <div class="container-fluid">
+      <div class="row d-flex">
+        {% for launderette in launderettes %}
+        <div class="col-lg-4">
+          <div class="card data-usage">
+            <div class="card-header d-flex align-items-center">
+              <div class="container px-4 pb-4">
+                <img src="{{launderette.cover_photo.url}}" alt="person" class="img-fluid rounded-circle">
+              </div>
+            </div>
+            <p class="text-primary">Name:</p>
+            <p>{{launderette.name}}</p>
+            <p class="text-primary">Available Time</p>
+            <p class="">{{launderette.available_time}}</p>
+            <p class="text-primary">Address:</p>
+            <p class="">{{launderette.location}}</p>
+
+            <a href="{% url 'adminLaunderetteDetail' launderette.id %}">
+              <h2 class="display h4 text-primary">Check Details</h2>
+            </a>
+            {% if launderette.isBlocked == False %}
+            <form enctype="multipart/form-data" method="POST"
+              action="{% url 'launderetteRequestProcess' launderette.id %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <input type="hidden" id="statusField1" name="statusField" value="block">
               </div>
               <div class="form-group mt-4">
-		            <button class="my-btn btn btn-primary" type="submit">Search</button>
+                <input type="submit" value="Block Launderette" class="btn btn-md btn-outline-danger px-4">
               </div>
             </form>
-          </div>
-
-        <div class="container-fluid">
-          <div class="row d-flex">
-            {% for launderette in launderettes %}
-              <div class="col-lg-4">
-                <div class="card data-usage">
-                    <div class="card-header d-flex align-items-center">
-                        <div class="container px-4 pb-4">
-                                <img src="{{launderette.cover_photo.url}}" alt="person" class="img-fluid rounded-circle">  
-                        </div>
-                    </div>
-                      <p class="text-primary">Name:</p>
-                      <p>{{launderette.name}}</p>
-                      <p class="text-primary">Available Time</p>
-                      <p class="">{{launderette.available_time}}</p>
-                      <p class="text-primary">Address:</p>
-                      <p class="">{{launderette.location}}</p>
-                      
-                    <a href="{% url 'adminLaunderetteDetail' launderette.id %}"><h2 class="display h4 text-primary">Check Details</h2></a>
-                      {% if launderette.isBlocked == False %}
-                       <form enctype="multipart/form-data" method="POST" action="{% url 'launderetteRequestProcess' launderette.id %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                 <input type="hidden" id="statusField1" name="statusField" value="block">   
-                            </div>
-                            <div class="form-group mt-4">       
-                            <input type="submit" value="Block Launderette" class="btn btn-md btn-outline-danger px-4">
-                            </div>
-                        </form>
-                      {% endif %}
-                      {% if launderette.isBlocked == True %}
-                       <form enctype="multipart/form-data" method="POST" action="{% url 'launderetteRequestProcess' launderette.id %}"  >
-                            {% csrf_token %}
-                            <div class="form-group">
-                                 <input type="hidden" id="statusField1" name="statusField" value="unblock">   
-                            </div>
-                            <div class="form-group mt-4">       
-                            <input type="submit" value="Unblock Launderette" class="btn btn-md btn-outline-danger px-4">
-                            </div>
-                        </form>
-                      {% endif %}
-                        
-                </div>
+            {% endif %}
+            {% if launderette.isBlocked == True %}
+            <form enctype="multipart/form-data" method="POST"
+              action="{% url 'launderetteRequestProcess' launderette.id %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <input type="hidden" id="statusField1" name="statusField" value="unblock">
               </div>
-            {% endfor %}
+              <div class="form-group mt-4">
+                <input type="submit" value="Unblock Launderette" class="btn btn-md btn-outline-danger px-4">
+              </div>
+            </form>
+            {% endif %}
+
           </div>
         </div>
-        
-          {% if launderettes.has_previous %}
-            <a href="{% url 'adminLaunderettes' %}?page={{launderettes.previous_page_number}}">Previous Page</a>
-          {% endif %}
-          {% if launderettes.has_next %}
-            <a href="{% url 'adminLaunderettes' %}?page={{launderettes.next_page_number}}">Next Page</a>
-          {% endif %}
-      </section>
-
-      <footer class="main-footer">
-        {% include 'frontend/partialView/footer_navbar.html' %}
-      </footer>
+        {% endfor %}
+      </div>
     </div>
- 
- 
-    <script>
-      toastr.options = {
-                            "closeButton": true,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": true,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": true,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        }
-        
-        //Query All input fields
-        var form_fields = document.getElementsByTagName('input')
-        var i = 0
-        for (var field in form_fields){
-          console.log(form_fields[field].name)
-          form_fields[field].className += ' form-control'
+
+    {% if launderettes.has_previous %}
+    <a href="{% url 'adminLaunderettes' %}?page={{launderettes.previous_page_number}}">Previous Page</a>
+    {% endif %}
+    {% if launderettes.has_next %}
+    <a href="{% url 'adminLaunderettes' %}?page={{launderettes.next_page_number}}">Next Page</a>
+    {% endif %}
+  </section>
+
+  <footer class="main-footer">
+    {% include 'frontend/partialView/footer_navbar.html' %}
+  </footer>
+</div>
+
+
+<script>
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+
+  //Query All input fields
+  var form_fields = document.getElementsByTagName('input')
+  var i = 0
+  for (var field in form_fields) {
+    console.log(form_fields[field].name)
+    form_fields[field].className += ' form-control'
+  }
+  form_fields[0].placeholder = "Enter name of launderette"
+  form_fields[1].placeholder = "Enter Address of launderette"
+  form_fields[2].placeholder = "Enter Available time for launderette"
+  form_fields[3].placeholder = "Date started (eg: 11-09-2021)"
+  form_fields[4].placeholder = "Date Ended (eg: 05-12-2021)"
+
+  $(document).ready(function () {
+    if ($(".errorlist").length) {
+      $(".errorlist").parent().parent().prev("a").css({
+        "color": "#dd0303"
+      });
+    }
+  });
+  var formErrors = document.getElementsByClassName("errorlist");
+  if (formErrors.length) {
+    for (var field in formErrors) {
+      console.log(formErrors[field]);
+      myUl = formErrors[field];
+      items = myUl.getElementsByTagName("li");
+      for (var item in items) {
+        if (items[item].textContent !== undefined) {
+          toastr.error(items[item].textContent)
         }
-        form_fields[0].placeholder = "Enter name of launderette"
-        form_fields[1].placeholder = "Enter Address of launderette"
-        form_fields[2].placeholder = "Enter Available time for launderette"
-        form_fields[3].placeholder = "Date started (eg: 11-09-2021)"
-        form_fields[4].placeholder = "Date Ended (eg: 05-12-2021)"
-        
-        $(document).ready(function(){
-          if($(".errorlist").length){
-            $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
-          }
-        });
-        var formErrors = document.getElementsByClassName("errorlist");
-        if(formErrors.length){
-          for (var field in formErrors){
-            console.log(formErrors[field]);
-            myUl = formErrors[field];
-            items = myUl.getElementsByTagName("li");
-            for (var item in items){
-              if( items[item].textContent !== undefined){
-                toastr.error(items[item].textContent)
-              }
-            }
-          }
-        }
-    </script>
+      }
+    }
+  }
+</script>
 
 {% endblock content %}

@@ -3,156 +3,153 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      <!-- navbar-->
-      
-      {% include 'frontend/partialview/topbar.html' %}  
-      
-      
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item "><a >Orders</a></li>
-            <li class="breadcrumb-item active"><a >Detail</a></li>
-          </ul>
-        </div>
+<div class="page">
+  <!-- navbar-->
+
+  {% include 'frontend/partialview/topbar.html' %}
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item "><a>Orders</a></li>
+        <li class="breadcrumb-item active"><a>Detail</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container mx-4 px-4">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
       </div>
-    <div class="container mx-4 px-4">
-      {% for message in messages %}
-        <div class="container-fluid p-0">
-          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
-          </div>
-        </div>
-      {% endfor %}
     </div>
+    {% endfor %}
+  </div>
 
+  <h1 class="h3 display-3 text-primary m-4 text-center">Order Details</h1>
 
-      <h1 class="h3 display-3 text-primary m-4 text-center">Order Details</h1>
-     
-     <section class="charts">
-        <div class="container-fluid">
-          <!-- Page Header-->
-              {% comment %} <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  
-                  <img class="card-img-top" src="{{launderette.cover_photo.url}}" alt="{{launderette.cover_photo.url}}" width="300" height="600">
-                </div>
-                <div class="card-body">
-                    
-                    <p class="lead text-primary">Name:</p>
-                    <p class="lead ">{{launderette.name}}</p>                    
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="lead text-primary">Location:</p>
-                            <p class="lead ">{{launderette.location}}</p>
-                        </div>
-                        <div class="col-6">
-                            
-                        <div class="col-6">
-                            <p class="lead text-primary">Available Time:</p>
-                            <p class="lead ">{{launderette.available_time}}</p>
-                        </div>
-                        </div>
-                    </div>
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      {% comment %} <div class="card line-chart-example">
+        <div class="card-header d-flex align-items-center">
 
-                    <a class="btn btn-lg btn-outline-primary  px-4 my-2 text-center" href="{% url 'services' %}">Services</a>
-                </div>
-                <div class="card-footer">
-                    <a class="btn  btn-outline-primary   text-center" href="{% url 'editlaunderette' %}">Update information</a>
-                </div>
-              </div> {% endcomment %}
-            <div class="card data-usage text-center p-4 mx-4">
-                <div class="container">
-                <h2 class="display h2 text-primary">Username: {{order.client}}</h2>
-                  <hr>
-                      <p class="text-primary">Description:</p>
-                      <p>{{order.description}}</p>
-                      <hr>
-                      <p class="text-primary">Services</p>
-                      <div class="row d-flex">
-                        {% for service in order.services.all %}
-                        <div class="col">
-                            <p class="">{{service.title}}</p>
-                        </div>
-                        {% endfor %}
-                      </div>
-                      <hr>
-                      <div class="row d-flex">
-                        <div class="col">
-                            <p class="text-primary">Amount of Items</p>
-                            <p class="">{{order.amount}}</p>
-                        </div>
-                        <div class="col">
-                            <p class="text-primary">Total Price</p>
-                            <p class="">{{order.price}}</p>
-                        </div>
-                        <div class="col">
-                            <p class="text-primary">Status</p>
-                            <p class="">{{order.status}}</p>
-                        </div>
-                      </div>
-                      <hr>
-                      <p class="text-primary mt-4">Date and Time:</p>
-                      <hr>
-                      <div class="row d-flex">
-                        <div class="col-lg-4">
-                            <p class="text-primary">Order recived: </p>
-                            <p class="">{{order.date_created}}</p>
-                        </div>
-                        <div class="col-lg-4">
-                            <p class="text-primary">Order Start: </p> 
-                            <p class="">{{order.date_started}}</p>
-                        </div>
-                        <div class="col-lg-4">
-                            <p class="text-primary">Order End: </p> 
-                            <p class="">{{order.date_end}}</p>
-                        </div>
-                      </div> 
-                      <hr>
-                      {% if order.status == 'ongoing' %}
-                      <h3 class=""> Change status of order:</h3> 
-                      <form enctype="multipart/form-data" method="POST">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                 <input type="hidden" id="statusField1" name="statusField" value="finished">   
-                            </div>
-                            <div class="form-group mt-4">       
-                            <input type="submit" value="Finished" class="btn btn-md btn-outline-primary  mx-4 ">
-                            </div>
-                    </form>
-                      <form enctype="multipart/form-data" method="POST">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                 <input type="hidden" id="statusField1" name="statusField" value="cancel">   
-                            </div>
-                            <div class="form-group mt-4">       
-                            <input type="submit" value="Cancel" class="btn btn-md btn-outline-danger  mx-4 ">
-                            </div>
-                      </form>
-                      {% else %}
-                        {% if haveReview %}
-                          <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4" href="{% url 'laundaretteReviewDetail' review.id %} ">Check Review</a>
-                        {% endif %}
-                      {% endif %}
-                </div>
-                  
+          <img class="card-img-top" src="{{launderette.cover_photo.url}}" alt="{{launderette.cover_photo.url}}"
+            width="300" height="600">
+        </div>
+        <div class="card-body">
+
+          <p class="lead text-primary">Name:</p>
+          <p class="lead ">{{launderette.name}}</p>
+          <div class="row">
+            <div class="col-6">
+              <p class="lead text-primary">Location:</p>
+              <p class="lead ">{{launderette.location}}</p>
             </div>
+            <div class="col-6">
+
+              <div class="col-6">
+                <p class="lead text-primary">Available Time:</p>
+                <p class="lead ">{{launderette.available_time}}</p>
+              </div>
+            </div>
+          </div>
+
+          <a class="btn btn-lg btn-outline-primary  px-4 my-2 text-center" href="{% url 'services' %}">Services</a>
         </div>
-      </section>
+        <div class="card-footer">
+          <a class="btn  btn-outline-primary   text-center" href="{% url 'editlaunderette' %}">Update information</a>
+        </div>
+      </div> {% endcomment %}
+      <div class="card data-usage text-center p-4 mx-4">
+        <div class="container">
+          <h2 class="display h2 text-primary">Username: {{order.client}}</h2>
+          <hr>
+          <p class="text-primary">Description:</p>
+          <p>{{order.description}}</p>
+          <hr>
+          <p class="text-primary">Services</p>
+          <div class="row d-flex">
+            {% for service in order.services.all %}
+            <div class="col">
+              <p class="">{{service.title}}</p>
+            </div>
+            {% endfor %}
+          </div>
+          <hr>
+          <div class="row d-flex">
+            <div class="col">
+              <p class="text-primary">Amount of Items</p>
+              <p class="">{{order.amount}}</p>
+            </div>
+            <div class="col">
+              <p class="text-primary">Total Price</p>
+              <p class="">{{order.price}}</p>
+            </div>
+            <div class="col">
+              <p class="text-primary">Status</p>
+              <p class="">{{order.status}}</p>
+            </div>
+          </div>
+          <hr>
+          <p class="text-primary mt-4">Date and Time:</p>
+          <hr>
+          <div class="row d-flex">
+            <div class="col-lg-4">
+              <p class="text-primary">Order recived: </p>
+              <p class="">{{order.date_created}}</p>
+            </div>
+            <div class="col-lg-4">
+              <p class="text-primary">Order Start: </p>
+              <p class="">{{order.date_started}}</p>
+            </div>
+            <div class="col-lg-4">
+              <p class="text-primary">Order End: </p>
+              <p class="">{{order.date_end}}</p>
+            </div>
+          </div>
+          <hr>
+          {% if order.status == 'ongoing' %}
+          <h3 class=""> Change status of order:</h3>
+          <form enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="hidden" id="statusField1" name="statusField" value="finished">
+            </div>
+            <div class="form-group mt-4">
+              <input type="submit" value="Finished" class="btn btn-md btn-outline-primary  mx-4 ">
+            </div>
+          </form>
+          <form enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="hidden" id="statusField1" name="statusField" value="cancel">
+            </div>
+            <div class="form-group mt-4">
+              <input type="submit" value="Cancel" class="btn btn-md btn-outline-danger  mx-4 ">
+            </div>
+          </form>
+          {% else %}
+          {% if haveReview %}
+          <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4"
+            href="{% url 'laundaretteReviewDetail' review.id %} ">Check Review</a>
+          {% endif %}
+          {% endif %}
+        </div>
 
-
-
-      <footer class="main-footer">
-        {% include 'frontend/partialview/footer_navbar.html' %}
-      </footer>
+      </div>
     </div>
- 
+  </section>
+
+  <footer class="main-footer">
+    {% include 'frontend/partialview/footer_navbar.html' %}
+  </footer>
+</div>
+
 
 {% endblock content %}

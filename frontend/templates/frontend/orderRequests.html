@@ -3,98 +3,100 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      <!-- navbar-->
 
-      {% include 'frontend/partialview/topbar.html' %}  
-      
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a >Orders</a></li>
-            <li class="breadcrumb-item active">Order Requests</li>
-          </ul>
-        </div>
+<div class="page">
+  <!-- navbar-->
+
+  {% include 'frontend/partialview/topbar.html' %}
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active"><a>Orders</a></li>
+        <li class="breadcrumb-item active">Order Requests</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container mx-4 px-4">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
       </div>
-      
-    <div class="container mx-4 px-4">
-      {% for message in messages %}
-        <div class="container-fluid p-0">
-          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
-          </div>
-        </div>
-      {% endfor %}
     </div>
-    
-      <h1 class="display-3 text-center m-4">Orders Request</h1>
-      <hr>
-      <section class="statistics">
-        <div class="container-fluid">
-          <div class="row d-flex">
-            {% for orderRequest in orderRequests %}
-              <div class="col-lg-4">
-                <div class="card data-usage">
-                  <h2 class="display h4 text-primary">{{orderRequest.client}}</h2>
-                      <p class="text-primary">Description:</p>
-                      <p>{{orderRequest.description}}</p>
-                      <p class="text-primary">Amount</p>
-                      <p class="">{{orderRequest.amount}}</p>
-                      <p class="text-primary">Services</p>
-                      <ul class="list-group">
-                          <li class="list-group-item">Dry Cleaning</li>
-                          <li class="list-group-item">Ironing</li>
-                          <li class="list-group-item">Washing</li>
-                      </ul>
-                      <p class="text-primary">Date:</p>
-                      <p class="">{{orderRequest.date_started}}</p>
-                      <div class="row">
-                        <div class="col-6">
-                          <form enctype="multipart/form-data" method="POST" action = "{% url 'orderRequestProcess' orderRequest.id %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                 <input type="hidden" id="statusField1" name="statusField" value="decline">   
-                            </div>
-                            <div class="form-group mt-4">       
-                            <input type="submit" value="Decline Order" class="btn btn-md px-4 btn-outline-danger">
-                            </div>
-                      </form>
-                        </div>
-                        <div class="col-6">    
-                          <form enctype="multipart/form-data" method="POST" action = "{% url 'orderRequestProcess' orderRequest.id %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <input type="hidden" id="statusField1" name="statusField" value="accept">   
-                            </div>
-                            <div class="form-group mt-4">       
-                            <input type="submit" value="Accept Order" class="btn btn-md btn-outline-primary px-4">
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-          {% if orderRequests.has_previous %}
-            <a href="{% url 'ordersRequest' %}?page={{orderRequests.previous_page_number}}">Previous Page</a>
-          {% endif %}
-          {% if orderRequests.has_next %}
-            <a href="{% url 'ordersRequest' %}?page={{orderRequests.next_page_number}}">Next Page</a>
-          {% endif %}
-        </div>
-      </section>
+    {% endfor %}
+  </div>
 
-      <footer class="main-footer">
-        {% include 'frontend/partialview/footer_navbar.html' %}
-      </footer>
+  <h1 class="display-3 text-center m-4">Orders Request</h1>
+  <hr>
+  <section class="statistics">
+    <div class="container-fluid">
+      <div class="row d-flex">
+        {% for orderRequest in orderRequests %}
+        <div class="col-lg-4">
+          <div class="card data-usage">
+            <h2 class="display h4 text-primary">{{orderRequest.client}}</h2>
+            <p class="text-primary">Description:</p>
+            <p>{{orderRequest.description}}</p>
+            <p class="text-primary">Amount</p>
+            <p class="">{{orderRequest.amount}}</p>
+            <p class="text-primary">Services</p>
+            <ul class="list-group">
+              <li class="list-group-item">Dry Cleaning</li>
+              <li class="list-group-item">Ironing</li>
+              <li class="list-group-item">Washing</li>
+            </ul>
+            <p class="text-primary">Date:</p>
+            <p class="">{{orderRequest.date_started}}</p>
+            <div class="row">
+              <div class="col-6">
+                <form enctype="multipart/form-data" method="POST"
+                  action="{% url 'orderRequestProcess' orderRequest.id %}">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <input type="hidden" id="statusField1" name="statusField" value="decline">
+                  </div>
+                  <div class="form-group mt-4">
+                    <input type="submit" value="Decline Order" class="btn btn-md px-4 btn-outline-danger">
+                  </div>
+                </form>
+              </div>
+              <div class="col-6">
+                <form enctype="multipart/form-data" method="POST"
+                  action="{% url 'orderRequestProcess' orderRequest.id %}">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <input type="hidden" id="statusField1" name="statusField" value="accept">
+                  </div>
+                  <div class="form-group mt-4">
+                    <input type="submit" value="Accept Order" class="btn btn-md btn-outline-primary px-4">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% if orderRequests.has_previous %}
+      <a href="{% url 'ordersRequest' %}?page={{orderRequests.previous_page_number}}">Previous Page</a>
+      {% endif %}
+      {% if orderRequests.has_next %}
+      <a href="{% url 'ordersRequest' %}?page={{orderRequests.next_page_number}}">Next Page</a>
+      {% endif %}
     </div>
- 
+  </section>
+
+  <footer class="main-footer">
+    {% include 'frontend/partialview/footer_navbar.html' %}
+  </footer>
+</div>
+
 
 {% endblock content %}

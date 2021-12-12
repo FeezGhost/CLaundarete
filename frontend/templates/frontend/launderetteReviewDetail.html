@@ -3,170 +3,172 @@
 
 {% block content %}
 
-   
-    <div class="page">
-      <!-- navbar-->
-      
-      {% include 'frontend/partialview/topbar.html' %}  
-      
-      
-      <!-- Breadcrumb-->
-      <div class="breadcrumb-holder">
-        <div class="container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a >Launderete</a></li>
-            <li class="breadcrumb-item"><a >Reviews</a></li>
-            <li class="breadcrumb-item active"><a >Details</a></li>
-          </ul>
+
+<div class="page">
+  <!-- navbar-->
+
+  {% include 'frontend/partialview/topbar.html' %}
+
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a>Launderete</a></li>
+        <li class="breadcrumb-item"><a>Reviews</a></li>
+        <li class="breadcrumb-item active"><a>Details</a></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <h1 class="h3 display-4 text-primary m-4 text-center">Launderete Review </h1>
+
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      <div class="card line-chart-example">
+        <div class="card-header d-flex align-items-center">
+          <h4>Review</h4>
+        </div>
+        <div class="card-body">
+
+          <p class="lead text-primary">By:</p>
+          <p class="lead ">{{review.client}}</p>
+
+          <p class="lead text-primary">Review:</p>
+          <p class="lead">{{review.review}}</p>
+
+
+          <div class="row">
+            <div class="col-6">
+              <p class="lead text-primary">Rating:</p>
+              <p class="lead ">{{review.rating}}</p>
+            </div>
+            <div class="col-6">
+
+              <div class="col-6">
+                <p class="lead text-primary">Sent Time:</p>
+                <p class="lead ">{{review.date}}</p>
+              </div>
+            </div>
+          </div>
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="comment">Comment:</label>
+              <br>
+              {{commentForm.comment}}
+              {{commentForm.comment.errors}}
+            </div>
+            <div class="form-group">
+              <input type="submit" value="Post" class="btn btn-primary">
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+    <h4 class="display-4  m-4 text-center text-primary">Review Response</h4>
+
+    {% for comment in comments %}
+    <div class="container-fluid">
+      <div class="card line-chart-example">
+        <div class="card-header d-flex align-items-center">
+
+        </div>
+        <div class="card-body">
+
+          <p class="lead text-primary">By:</p>
+          {% if comment.client == None %}
+          <p class="lead ">{{comment.launderette}}</p>
+          {% else %}
+          <p class="lead ">{{comment.client}}</p>
+          {% endif %}
+
+          <p class="lead text-primary">Comment:</p>
+          <p class="lead">{{comment.comment}}</p>
+
+
+          <div class="row">
+
+            <div class="col-6">
+              <p class="lead text-primary">Sent Time:</p>
+              <p class="lead ">{{comment.date}}</p>
+            </div>
+          </div>
+          {% if comment.client == None %}
+          <form method="POST" , action="{% url 'deleteComment' comment.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="submit" value="Delete" class="btn btn-outline-danger">
+            </div>
+          </form>
+          {% endif %}
         </div>
       </div>
 
 
-      <h1 class="h3 display-4 text-primary m-4 text-center">Launderete    Review        </h1>
-     
-     <section class="charts">
-        <div class="container-fluid">
-          <!-- Page Header-->
-              <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  <h4>Review</h4>
-                </div>
-                <div class="card-body">
-                    
-                    <p class="lead text-primary">By:</p>
-                    <p class="lead ">{{review.client}}</p>
 
-                    <p class="lead text-primary">Review:</p>
-                    <p class="lead">{{review.review}}</p>
-
-                    
-                    <div class="row">
-                        <div class="col-6">
-                            <p class="lead text-primary">Rating:</p>
-                            <p class="lead ">{{review.rating}}</p>
-                        </div>
-                        <div class="col-6">
-                            
-                        <div class="col-6">
-                            <p class="lead text-primary">Sent Time:</p>
-                            <p class="lead ">{{review.date}}</p>
-                        </div>
-                        </div>
-                    </div>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="comment">Comment:</label>
-                            <br>
-                            {{commentForm.comment}}
-                            {{commentForm.comment.errors}}
-                        </div>
-                        <div class="form-group">       
-                        <input type="submit" value="Post" class="btn btn-primary">
-                        </div>
-                    </form>
-                </div>
-              </div>
-            
-        </div>
-        <h4  class="display-4  m-4 text-center text-primary">Review Response</h4>
-
-        {% for comment in comments %}
-        <div class="container-fluid">
-              <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  
-                </div>
-                  <div class="card-body">
-                      
-                      <p class="lead text-primary">By:</p>
-                      {% if comment.client == None %}
-                        <p class="lead ">{{comment.launderette}}</p>
-                      {% else %}
-                      <p class="lead ">{{comment.client}}</p>
-                      {% endif %}
-
-                      <p class="lead text-primary">Comment:</p>
-                      <p class="lead">{{comment.comment}}</p>
-
-                      
-                      <div class="row">
-                          
-                          <div class="col-6">
-                              <p class="lead text-primary">Sent Time:</p>
-                              <p class="lead ">{{comment.date}}</p>
-                          </div>
-                      </div>
-                      {% if comment.client == None %}
-                        <form method="POST",  action="{% url 'deleteComment' comment.id %}">
-                            {% csrf_token %}
-                            <div class="form-group">       
-                            <input type="submit" value="Delete" class="btn btn-outline-danger">
-                            </div>
-                        </form>
-                      {% endif %}
-                  </div>
-              </div>
-              
-                
-            
-        </div>
-        
-                  {% endfor %}
-      </section>
-
-
-
-      <footer class="main-footer">
-        {% include 'frontend/partialview/footer_navbar.html' %}
-      </footer>
     </div>
-    
-    
-    <script>
-      toastr.options = {
-                          "closeButton": true,
-                          "debug": false,
-                          "newestOnTop": true,
-                          "progressBar": true,
-                          "positionClass": "toast-top-center",
-                          "preventDuplicates": true,
-                          "onclick": null,
-                          "showDuration": "300",
-                          "hideDuration": "1000",
-                          "timeOut": "5000",
-                          "extendedTimeOut": "1000",
-                          "showEasing": "swing",
-                          "hideEasing": "linear",
-                          "showMethod": "fadeIn",
-                          "hideMethod": "fadeOut"
-                      }
-      //Query All input fields
-      var form_fields = document.getElementsByTagName('textarea')
-      for (var field in form_fields){
-        form_fields[field].className += ' input-material'
-        form_fields[0].placeholder = "Enter what you would like to say to client"
-      }
-      $(document).ready(function(){
-        if($(".errorlist").length){
-          $(".errorlist").parent().parent().prev("a").css({"color": "#dd0303"});
-        }
+
+    {% endfor %}
+  </section>
+
+
+
+  <footer class="main-footer">
+    {% include 'frontend/partialview/footer_navbar.html' %}
+  </footer>
+</div>
+
+
+<script>
+  toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+  //Query All input fields
+  var form_fields = document.getElementsByTagName('textarea')
+  for (var field in form_fields) {
+    form_fields[field].className += ' input-material'
+    form_fields[0].placeholder = "Enter what you would like to say to client"
+  }
+  $(document).ready(function () {
+    if ($(".errorlist").length) {
+      $(".errorlist").parent().parent().prev("a").css({
+        "color": "#dd0303"
       });
-      var formErrors = document.getElementsByClassName("errorlist");
-      if(formErrors.length){
-        for (var field in formErrors){
-          console.log(formErrors[field]);
-          myUl = formErrors[field];
-          items = myUl.getElementsByTagName("li");
-          for (var item in items){
-            if( items[item].textContent !== undefined){
-              toastr.error(items[item].textContent)
-            }
-          }
+    }
+  });
+  var formErrors = document.getElementsByClassName("errorlist");
+  if (formErrors.length) {
+    for (var field in formErrors) {
+      console.log(formErrors[field]);
+      myUl = formErrors[field];
+      items = myUl.getElementsByTagName("li");
+      for (var item in items) {
+        if (items[item].textContent !== undefined) {
+          toastr.error(items[item].textContent)
         }
       }
-    </script>
- 
+    }
+  }
+</script>
+
 
 {% endblock content %}
