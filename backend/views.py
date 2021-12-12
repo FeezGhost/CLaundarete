@@ -1,9 +1,7 @@
-from typing import Tuple
 from django.contrib.messages.api import success
-from django.http.request import QueryDict
 from django.shortcuts import render, redirect
 from .forms import *
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from .models import *
 from django.contrib.auth.models import User
@@ -14,16 +12,14 @@ from django.contrib.auth.models import Group
 from .filters import *
 from django.core.paginator import Paginator, EmptyPage
 import datetime
-
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str, force_text, DjangoUnicodeDecodeError
+from django.utils.encoding import force_bytes, force_text
 from .utils import generateToken
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMessage
 from django.conf import settings
 import threading
-
 from django.shortcuts import get_object_or_404
 
 
@@ -39,7 +35,6 @@ class EmailThread(threading.Thread):
 def send_activation_email(request, user):
     cuurent_site = get_current_site(request)
     email_subject = "Activate Your Account"
-    print(user)
     email_body = render_to_string("frontend/authentication/activate.html",{
         'user': user,
         'domain': cuurent_site,
@@ -132,7 +127,6 @@ def RegisterView(request):
 def activate_user(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
-        print('user id', uid)
         user = User.objects.get(pk=uid)
         launderer = user.launderer
     
@@ -328,11 +322,9 @@ def ReportView(request):
             reviewbar_accept_data = tuple(zip(positiveReviewsList, positiveReviewsList))
             reviewbar_decline_data = tuple(zip(negativeReviewsList, negativeReviewsList))
 
-            print(avgReviewsList)
             reviewRatio_accept_data = tuple(zip(positiveReviewsRatioList, positiveReviewsRatioList))
             reviewRatio_decline_data = tuple(zip(negativeReviewsRatioList, negativeReviewsRatioList))
             reviewRatio_average_data = tuple(zip(avgReviewsList, avgReviewsList))
-            print(reviewRatio_average_data)
 
             positiveReviews = positiveReviews.count()
             negativeReviews = negativeReviews.count()
@@ -430,9 +422,7 @@ def ordersHistory(request):
                 service_title = request.POST.get('service_title')
                 service_id = request.POST.get('service_id')
                 service = Services.objects.get(id = int(service_id))
-                print(service)
                 finished = finished.filter(services = service)
-                print(finished)
             ordersfliter = OrderFilter2(request.GET, queryset=finished)
             finished = ordersfliter.qs
             p  = Paginator(finished, 20)
@@ -491,7 +481,6 @@ def orderDetails(request, pk_id):
     tLaunderette = launder.launderette_set.all()
     order = Order.objects.get(id = pk_id)
     services = order.services.all()
-    print(services)
     haveReview = order.review_set.all().exists()
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
@@ -572,7 +561,6 @@ def servicesNew(request):
                     price = pr,
             )
             messages.success(request, "Service added sucessfully")
-            print(serviceObject)
             return redirect("services")
 
     messages.error(request, "Service couldn't be added")          
@@ -638,7 +626,6 @@ def launderette(request):
             if form.is_valid():
                 nam = form.cleaned_data.get('name')
                 cphoto = form.cleaned_data.get('cover_photo')
-                print(cphoto)
                 loc = form.cleaned_data.get('location')
                 avTime = form.cleaned_data.get('available_time')
                 delivery = form.cleaned_data.get('delivery_fee_pkm')
@@ -650,7 +637,6 @@ def launderette(request):
                     available_time = avTime,
                     delivery_fee_pkm = delivery
                 )
-                print(launderetteObject)
                 return redirect("launderette")
                 
         return render(request,"frontend/newLaunderette.html",context)
@@ -868,7 +854,6 @@ def laundererRequestProcess(request, pk_id):
     launderer = Launderer.objects.get(id = pk_id)
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
-        print(req_status)
         if req_status == 'block':
             launderer.isBlocked = True
             launderer.user.is_active = False
@@ -904,7 +889,6 @@ def launderetteRequestProcess(request, pk_id):
     launderette = Launderette.objects.get(id = pk_id)
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
-        print(req_status)
         if req_status == 'block':
             launderette.isBlocked = True
             launderetteObj = launderette.save()
@@ -955,7 +939,6 @@ def clientRequestProcess(request, pk_id):
     client = Client.objects.get(id = pk_id)
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
-        print(req_status)
         if req_status == 'block':
             client.isBlocked = True
             client.user.is_active = False
@@ -1172,11 +1155,9 @@ def AdminLaunderetePerfomanceView(request, pk_id):
         reviewbar_accept_data = tuple(zip(positiveReviewsList, positiveReviewsList))
         reviewbar_decline_data = tuple(zip(negativeReviewsList, negativeReviewsList))
 
-        print(avgReviewsList)
         reviewRatio_accept_data = tuple(zip(positiveReviewsRatioList, positiveReviewsRatioList))
         reviewRatio_decline_data = tuple(zip(negativeReviewsRatioList, negativeReviewsRatioList))
         reviewRatio_average_data = tuple(zip(avgReviewsList, avgReviewsList))
-        print(reviewRatio_average_data)
 
         positiveReviews = positiveReviews.count()
         negativeReviews = negativeReviews.count()
@@ -1294,20 +1275,19 @@ def AdminReportView(request):
         client = clients.filter(date_joined__month__gte=i, date_joined__month__lt=(i+1)).count()
         if client < 1 or client == None:
             client = 0
-        # client = str(client)
-        print('client',client)
+            
         clientsList.append(client)
         
         launderer = launderers.filter(date_joined__month__gte=i, date_joined__month__lt=(i+1)).count()
         if launderer < 1 or launderer == None:
             launderer = 0
-        # launderer = str(launderer)
+            
         launderersList.append(launderer)
 
         launderette = launderettes.filter(date_joined__month__gte=i, date_joined__month__lt=(i+1)).count()
         if launderette < 1 or launderette == None:
             launderette = 0
-        # launderette = str(launderette)
+            
         launderettesList.append(launderette)
 
         month = datetime.date(1900, i, 1).strftime('%B')

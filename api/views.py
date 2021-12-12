@@ -1,15 +1,4 @@
-# from django.db.models import query
-# from django.http import request
-# from django.shortcuts import get_object_or_404
-# from rest_framework.decorators import api_view
-# from rest_framework.mixins import ListModelMixin
-# from rest_framework.views import APIView
-# from rest_framework import mixins
-# from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from re import search
-from django_filters import filters, filterset
 from rest_framework.viewsets import ModelViewSet
-# from rest_framework import status
 from backend.models import *
 from .serializers import *
 from backend.filters import *
@@ -17,7 +6,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.parsers import MultiPartParser, FormParser
 from .permissions import IsCreatorOrIsAdmin, IsCreatorLaunderetteOrIsAdmin
 
 class ComplaintViewSet(ModelViewSet):

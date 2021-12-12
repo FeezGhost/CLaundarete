@@ -32,14 +32,6 @@ def get_launderrette(request):
 
 class OrderFilter2(django_filters.FilterSet):
     
-    # def get_services(self):
-    #     print(self.request.user)
-    #     launderer = self.request.user.launderer
-    #     print(launderer)
-    #     launderette = launderer.launderette_set.all()[0]
-    #     print(launderette)
-    #     return launderette.services_set.all()
-
     start_date = DateFilter(field_name="date_started", lookup_expr='gte')
     end_date = DateFilter(field_name="date_end", lookup_expr='lte')
     start_price = NumberFilter(field_name="price", lookup_expr='gte')
@@ -47,27 +39,14 @@ class OrderFilter2(django_filters.FilterSet):
     start_amount = NumberFilter(field_name="amount", lookup_expr='gte')
     end_amount = NumberFilter(field_name="amount", lookup_expr='lte')
     client_name = CharFilter(field_name='client__name', lookup_expr='icontains')
-    # service_title = django_filters.ModelChoiceFilter(queryset = get_services)
     status = ChoiceFilter(choices=FILTER_CHOICES, )
-    # print(self.request.user)
+    
     class Meta:
         model = Order
         exclude = '__all__'
         fields = ['start_date', 'end_date', 'start_price','start_amount','end_amount', 'client_name','status',
-        # 'service_title',
         'services'
         ]
-
-    # def get_queryset(self):
-    #     print(self.request.user)
-    #     launderer = self.request.user.launderer
-    #     print(launderer)
-    #     launderette = launderer.launderette_set.all()[0]
-    #     print(launderette)
-    #     queryset = super().get_queryset().filter(launderette=launderette)
-    #     return queryset
-    
-    
 
 class ReviewFilter(django_filters.FilterSet):
     start_date = DateFilter(field_name="date", lookup_expr='gte')
