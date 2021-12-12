@@ -13,7 +13,7 @@ class CreatUserForm(UserCreationForm):
     city = forms.CharField(max_length=30, required=True, help_text='Your city name.', label='City')
     class Meta:
         model =  User
-        fields =  ['username', 'name','city', 'address', 'email','password1', 'password2']
+        fields =  ['username', 'name', 'city', 'address', 'email', 'password1', 'password2']
 
 class ServicesForm(ModelForm):
     # des=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":10, "style": "resize: none"}))
@@ -67,4 +67,4 @@ class ComplaintForm(ModelForm):
 
     class Meta:
         model = Complaint
-        fields = "__all__"
+        fields = ["complain", "response"]

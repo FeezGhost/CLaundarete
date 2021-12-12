@@ -36,7 +36,6 @@ class EmailThread(threading.Thread):
     def run(self):
         self.email.send()
 
-
 def send_activation_email(request, user):
     cuurent_site = get_current_site(request)
     email_subject = "Activate Your Account"
@@ -53,7 +52,8 @@ def send_activation_email(request, user):
         from_email = settings.EMAIL_HOST_USER,
         to = [user.email],
     )
-    EmailThread(email).start()
+    if not settings.TESTING:
+        EmailThread(email).start()
 
 @unauthenticated_user
 def loginView(request):
@@ -75,8 +75,11 @@ def loginView(request):
                     messages.error(request, 'Your account is inactive or blocked please contact admin')
             else:
                 messages.error(request, 'Email is not verified, please check your email inbox')
+                return render(request,"frontend/login.html", status=409)
         else:
             messages.error(request, 'Username or Password is incorrect!')
+            return render(request,"frontend/login.html", status=409)
+
     return render(request,"frontend/login.html")
 
 @login_required(login_url="loginPage")
@@ -120,6 +123,8 @@ def RegisterView(request):
 
         else:
             messages.error(request, "Couldn't create account. Please provide correct information!")
+            context = {'form': form}
+            return render(request,"frontend/register.html",context, status=409)
 
     context = {'form': form}
     return render(request,"frontend/register.html",context)
@@ -386,7 +391,6 @@ def ReportView(request):
     
     return render(request,"frontend/perfomanceReport.html",context)
 
-
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
 def OngoingOrder(request):
@@ -467,10 +471,8 @@ def ordersRequests(request):
 @allowed_users(allowed_roles=['launderer'])
 def orderRequestProcess(request, pk_id):
     order = Order.objects.get(id = pk_id)
-    print(11)
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
-        print(req_status)
         if req_status == 'accept':
             order.status='ongoing'
             orderObj = order.save()
@@ -639,12 +641,14 @@ def launderette(request):
                 print(cphoto)
                 loc = form.cleaned_data.get('location')
                 avTime = form.cleaned_data.get('available_time')
+                delivery = form.cleaned_data.get('delivery_fee_pkm')
                 launderetteObject = Launderette.objects.create(
                     launderer = launder,
                     name = nam,
                     cover_photo = cphoto,
                     location = loc,
                     available_time = avTime,
+                    delivery_fee_pkm = delivery
                 )
                 print(launderetteObject)
                 return redirect("launderette")
@@ -676,7 +680,7 @@ def launderetteEdit(request):
 def launderetteReviews(request):
     launderer = request.user.launderer
     if launderer.launderette_set.all().count() > 0:
-        launderette = launderer.launderette_set.all().order_by('-date_joined')
+        launderette = launderer.launderette_set.all()
         reviews = launderette[0].review_set.all().order_by('-date')
         if reviews.count() > 0:
             reviewsFilters = ReviewFilter(request.GET, queryset=reviews)
@@ -793,11 +797,12 @@ def adminLoginView(request):
         username = request.POST.get('username')
         password =request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if user is not None and user.is_staff:
             login(request, user)
             return redirect('adminDashboard')
         else:
             messages.info(request, 'Username OR password is incorrect')
+            return render(request,"frontend/admin/login.html", status=409)
     return render(request,"frontend/admin/login.html")
 
 @login_required(login_url="adminLoginPage")
