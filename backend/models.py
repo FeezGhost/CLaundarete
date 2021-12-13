@@ -78,9 +78,9 @@ class Order(models.Model):
     amount = models.FloatField(default=0)
     services = models.ManyToManyField(Services)
     status =models.CharField(max_length=50, blank=True, null=True, choices=StatusChoice1.choices,default=StatusChoice1.PENDING)
-    date_started = models.DateTimeField(null=True, blank=True)
+    date_started = models.DateField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-    date_end = models.DateTimeField(null=True,  blank=True)
+    date_end = models.DateField(null=True,  blank=True)
     isFinished = models.BooleanField(default=False)
     def __str__(self):
         return str(self.client.user.username)
