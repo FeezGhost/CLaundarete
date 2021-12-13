@@ -21,6 +21,8 @@
 
   <!-- Template Main CSS File -->
   <link href="{% static 'css/landing-style.css' %}" rel="stylesheet">
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <style>
   #hero {
     width: 100%;
@@ -39,6 +41,7 @@
 </head>
 
 <body>
+  
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top d-flex align-items-center header-transparent">
@@ -71,6 +74,11 @@
   <section id="hero">
 
     <div class="hero-text" data-aos="zoom-out">
+      
+      {% for message in messages %}
+      <h2> {{ message }} </h2>
+      <hr>
+      {% endfor %}
       <h2>Welcome to CLaunderette</h2>
       <p>Automating The Laundry Work For You</p>
       <a href="#about" class="btn-get-started scrollto">Get Started</a>
@@ -411,7 +419,8 @@
 
           <div class="col-lg-5 col-md-8">
             <div class="form">
-              <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+              <form  method="POST" role="form" class="php-email-form">
+                {% csrf_token %}
                 <div class="row">
                   <div class="form-group col-lg-6">
                     <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
@@ -470,10 +479,17 @@
   <script src="{% static 'vendor/aos/aos.js' %}"></script>
   <script src="{% static 'vendor/landing-bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
-  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
 
   <!-- Template Main JS File -->
   <script src="{% static 'js/landing-main.js' %}"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+    integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+    integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
 </body>
 

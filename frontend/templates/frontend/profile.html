@@ -22,7 +22,7 @@
     <div class="container-fluid">
       <div class="row d-flex align-items-md-stretch ">
         <div class="col-lg-2 mr-4 pr-4"></div>
-        <div class="col-lg-2 col-md-6 mr-4 pr-4">
+        <div class="col-lg-2 col-md-6 mr-2 pr-2">
           <div class="card to-do">
 
             <!-- User Info-->
@@ -47,13 +47,19 @@
                 <p>{{launderer.user.username}} </p>
               </div>
             </div>
-          </div>
-          <div class="row mt-4">
-
+            
             <div class="col-lg-4 col-md-4">
               <div class="card project-progress">
                 <h2 class="display h4 text-primary">Email:</h2>
                 <p>{{launderer.user.email}} </p>
+              </div>
+          </div>
+          <div class="row mt-4 ">
+
+            <div class="col-lg-4 col-md-4">
+              <div class="card project-progress">
+                <h2 class="display h4 text-primary">City:</h2>
+                <p>{{launderer.city}} </p>
               </div>
             </div>
             <div class="col-lg-4 col-md-4">
@@ -61,6 +67,13 @@
 
                 <h2 class="display h4 text-primary">Address:</h2>
                 <p class='text-muted'>{{launderer.address}}</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="card project-progress">
+
+                <h2 class="display h4 text-primary">Latitude & Longitude:</h2>
+                <p class='text-muted'>{{launderer.lat}} {{launderer.lon}}</p>
               </div>
             </div>
           </div>
@@ -141,6 +154,11 @@
               {{form.name.errors}}
             </div>
 
+            <div class="form-group">
+              <label>City</label>
+              {{form.city}}
+              {{form.city.errors}}
+            </div>
 
             <div class="form-group">
               <label>Address</label>
@@ -171,7 +189,7 @@
           <form enctype="multipart/form-data" method="POST" , action="{% url 'profilepic' %}">
             {% csrf_token %}
             <div class="container px-4">
-              <img src="{{launderer.profile_pic.url}}" alt="person" class="img-fluid my-pfp rounded-circle">
+              <img src="{{launderer.profile_pic.url}}" alt="person" id = "form-pfp" class="img-fluid my-pfp rounded-circle">
               <hr>
             </div>
             <div class="form-group ml-4">
@@ -288,7 +306,7 @@
   var i = 0
   for (var field in form_fields) {
     console.log(form_fields[field].name)
-    if (i > 0 && i <= 3 || i == 10) {
+    if (i > 0 && i <= 4 || i == 10) {
       form_fields[field].className += ' input-material'
     }
     if (i > 10 && i <= 15 && i != 11) {

@@ -38,21 +38,28 @@
   <section class="statistics">
     <div class="container-fluid">
       <div class="row d-flex">
+        {% if hasOrders %}
         {% for orderRequest in orderRequests %}
         <div class="col-lg-4">
           <div class="card data-usage">
             <h2 class="display h4 text-primary">{{orderRequest.client}}</h2>
             <p class="text-primary">Description:</p>
             <p>{{orderRequest.description}}</p>
-            <p class="text-primary">Amount</p>
-            <p class="">{{orderRequest.amount}}</p>
             <p class="text-primary">Services</p>
             <ul class="list-group">
-              <li class="list-group-item">Dry Cleaning</li>
-              <li class="list-group-item">Ironing</li>
-              <li class="list-group-item">Washing</li>
+              {% for service in orderRequest.services.all %}
+              <li class="list-group-item">{{service.title}}</li>
+              {% endfor %}
             </ul>
-            <p class="text-primary">Date:</p>
+            <p class="text-primary">Amount</p>
+            <p class="">{{orderRequest.amount}}</p>
+            <p class="text-primary">Price</p>
+            <p class="">{{orderRequest.price}}</p>
+            <p class="text-primary">Starting Date</p>
+            <p class="">{{orderRequest.date_started}}</p>
+            <p class="text-primary">Ending Date</p>
+            <p class="">{{orderRequest.date_end}}</p>
+            <p class="text-primary">Date Of order:</p>
             <p class="">{{orderRequest.date_started}}</p>
             <div class="row">
               <div class="col-6">
@@ -83,6 +90,9 @@
           </div>
         </div>
         {% endfor %}
+        {% else %}
+        <h1>You Don't Have Any New Order Requests</h1>
+        {% endif %}
       </div>
       {% if orderRequests.has_previous %}
       <a href="{% url 'ordersRequest' %}?page={{orderRequests.previous_page_number}}">Previous Page</a>

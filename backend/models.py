@@ -65,6 +65,7 @@ class Services(models.Model):
 class StatusChoice1(models.TextChoices):
     PENDING = 'pending', 'Pending'
     FINISHED = 'finished', 'Finished'
+    PREFINISHED = 'pre-finished', 'Pre-Finished'
     ONGOING = 'ongoing', 'Ongoing'
     DECLINED = 'declined', 'Declined'
     Canceled = 'canceled', 'Canceled'
@@ -80,6 +81,7 @@ class Order(models.Model):
     date_started = models.DateTimeField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     date_end = models.DateTimeField(null=True,  blank=True)
+    isFinished = models.BooleanField(default=False)
     def __str__(self):
         return str(self.client.user.username)
 

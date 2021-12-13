@@ -3,173 +3,188 @@
 
 {% block content %}
 
+   
+    <div class="page">
+      
+    {% include 'frontend/admin/partialview/top_navbar.html' %}
 
-<div class="page">
-
-  {% include 'frontend/admin/partialview/top_navbar.html' %}
-
-  <!-- Breadcrumb-->
-  <div class="breadcrumb-holder">
-    <div class="container-fluid">
-      <ul class="breadcrumb">
-        <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
-        <li class="breadcrumb-item "><a href="{% url 'adminLaunderettes' %}">Launderette</a></li>
-        <li class="breadcrumb-item active"><a>Details</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <h1 class="display-3 text-center m-4">Launderette</h1>
-  <hr>
-
-  <section class="charts">
-    <div class="container-fluid">
-      <!-- Page Header-->
-      <div class="card line-chart-example">
-        <div class="card-header d-flex align-items-center">
-
-          <img class="card-img-top" src="{{launderette.cover_photo.url}}" alt="{{launderette.cover_photo.url}}"
-            width="300" height="600">
+      <!-- Breadcrumb-->
+      <div class="breadcrumb-holder">
+        <div class="container-fluid">
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'adminDashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item "><a href="{% url 'adminLaunderettes' %}" >Launderette</a></li>
+            <li class="breadcrumb-item active"><a >Details</a></li>
+          </ul>
         </div>
-        <div class="card-body">
+      </div>
 
-          <p class="lead text-primary">Name:</p>
-          <p class="lead ">{{launderette.name}}</p>
-          <div class="row">
-            <div class="col-6">
-              <p class="lead text-primary">Location:</p>
-              <p class="lead ">{{launderette.location}}</p>
-            </div>
-            <div class="col-6">
+      <h1 class="display-3 text-center m-4">Launderette</h1>
+      <hr>
+      {% comment %} <section class="statistics">
+        <div class="container-fluid">
+          <div class="row d-flex">
+              <div class="col-lg-4">
+                <div class="card data-usage">
+                    <div class="card-header d-flex align-items-center">
+                        <div class="container px-4 pb-4">
+                                <img src="{{client.profile_pic.url}}" alt="person" class="img-fluid rounded-circle">  
+                        </div>
+                    </div>
+                  <h2 class="display h4 text-primary">{{client.user.username}}</h2>
+                      <p class="text-primary">Name:</p>
+                      <p>{{client.name}}</p>
+                      <p class="text-primary">Email</p>
+                      <p class="">{{client.user.email}}</p>
+                      <p class="text-primary">Address:</p>
+                      <p class="">{{client.address}}</p>
+                </div>
+              </div>
+          </div>
+        </div>
+      </section> {% endcomment %}
+      
+     <section class="charts">
+        <div class="container-fluid">
+          <!-- Page Header-->
+              <div class="card line-chart-example">
+                <div class="card-header d-flex align-items-center">
+                  
+                  <img class="card-img-top" src="{{launderette.cover_photo.url}}" alt="{{launderette.cover_photo.url}}" width="300" height="600">
+                </div>
+                <div class="card-body">
+                    
+                    <p class="lead text-primary">Name:</p>
+                    <p class="lead ">{{launderette.name}}</p>                    
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="lead text-primary">Location:</p>
+                            <p class="lead ">{{launderette.location}}</p>
+                        </div>
+                        <div class="col-6">
+                            
+                        <div class="col-6">
+                            <p class="lead text-primary">Available Time:</p>
+                            <p class="lead ">{{launderette.available_time}}</p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                
+                    <p class="lead text-primary">Date Joined:</p>
+                    <p class="lead ">{{launderette.date_joined}}</p>
+                    {% if launderette.isBlocked == False %}
+                       <form enctype="multipart/form-data" method="POST" action="{% url 'launderetteRequestProcess' launderette.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                 <input type="hidden" id="statusField1" name="statusField" value="block">   
+                            </div>
+                            <div class="form-group mt-4">       
+                            <input type="submit" value="Block Launderette" class="btn btn-md btn-outline-danger px-4">
+                            </div>
+                        </form>
+                      {% endif %}
+                      {% if launderette.isBlocked == True %}
+                       <form enctype="multipart/form-data" method="POST" action="{% url 'launderetteRequestProcess' launderette.id %}"  >
+                            {% csrf_token %}
+                            <div class="form-group">
+                                 <input type="hidden" id="statusField1" name="statusField" value="unblock">   
+                            </div>
+                            <div class="form-group mt-4">       
+                            <input type="submit" value="Unblock Launderette" class="btn btn-md btn-outline-danger px-4">
+                            </div>
+                        </form>
+                      {% endif %}
+                </div>
+              </div>
+            
+        </div>
+    </section>
 
-              <div class="col-6">
-                <p class="lead text-primary">Available Time:</p>
-                <p class="lead ">{{launderette.available_time}}</p>
+    
+    <section class="statistics">
+      <div class="container-fluid">
+        <div class="row d-flex">
+          
+          <div class="col-lg-6">
+            <div class="card line-chart-example">
+              <div class="card-header d-flex align-items-center">
+                <h4>Reviews Ratio</h4>
+              </div>
+              <div class="card-body">
+                <canvas id="lineChartExample2"></canvas>
               </div>
             </div>
           </div>
-        </div>
-        <div class="card-footer">
-
-          <p class="lead text-primary">Date Joined:</p>
-          <p class="lead ">{{launderette.date_joined}}</p>
-          {% if launderette.isBlocked == False %}
-          <form enctype="multipart/form-data" method="POST"
-            action="{% url 'launderetteRequestProcess' launderette.id %}">
-            {% csrf_token %}
-            <div class="form-group">
-              <input type="hidden" id="statusField1" name="statusField" value="block">
-            </div>
-            <div class="form-group mt-4">
-              <input type="submit" value="Block Launderette" class="btn btn-md btn-outline-danger px-4">
-            </div>
-          </form>
-          {% endif %}
-          {% if launderette.isBlocked == True %}
-          <form enctype="multipart/form-data" method="POST"
-            action="{% url 'launderetteRequestProcess' launderette.id %}">
-            {% csrf_token %}
-            <div class="form-group">
-              <input type="hidden" id="statusField1" name="statusField" value="unblock">
-            </div>
-            <div class="form-group mt-4">
-              <input type="submit" value="Unblock Launderette" class="btn btn-md btn-outline-danger px-4">
-            </div>
-          </form>
-          {% endif %}
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-
-  <section class="statistics">
-    <div class="container-fluid">
-      <div class="row d-flex">
-
-        <div class="col-lg-6">
-          <div class="card line-chart-example">
-            <div class="card-header d-flex align-items-center">
-              <h4>Reviews Ratio</h4>
-            </div>
-            <div class="card-body">
-              <canvas id="lineChartExample2"></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <!-- User Actibity-->
-          <div class="card user-activity">
-            <h2 class="display h4">Launderete Rating</h2>
-            <div class="number">{{reviewsRatio|floatformat:1}}</div>
-            <h3 class="h4 display">Total Reviews</h3>
-            <div class="number">{{totalreviews}}</div>
-            <div class="progress">
-              <div role="progressbar" style="width: {{reviewsRatio}}%" aria-valuenow="{{positiveReviews}}"
-                aria-valuemin="0" aria-valuemax="{{totalreviews}}" class="progress-bar progress-bar bg-primary"></div>
-            </div>
-            <div class="page-statistics d-flex justify-content-between">
-              <div class="page-statistics-left"><span>Positive Reviews</span><strong>{{positiveReviews}}</strong></div>
-              <div class="page-statistics-right"><span>Negative Reviews</span><strong>{{negativeReviews}}</strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="charts mt-4">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card bar-chart-example">
-            <div class="card-header d-flex align-items-center">
-              <h4>Orders By Months</h4>
-            </div>
-            <div class="card-body">
-              <canvas id="barChartExample"></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="card bar-chart-example">
-            <div class="card-header d-flex align-items-center">
-              <h4>Reviews by months</h4>
-            </div>
-            <div class="card-body">
-              <canvas id="barChartExample2"></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="card polar-chart-example">
-            <div class="card-header d-flex align-items-center">
-              <h4>Total Orders Details</h4>
-            </div>
-            <div class="card-body">
-              <div class="chart-container">
-                <canvas id="polarChartExample"></canvas>
+          <div class="col-lg-6">
+            <!-- User Actibity-->
+            <div class="card user-activity">
+              <h2 class="display h4">Launderete Rating</h2>
+              <div class="number">{{reviewsRatio|floatformat:1}}</div>
+              <h3 class="h4 display">Total Reviews</h3>
+              <div class="number">{{totalreviews}}</div>
+              <div class="progress">
+                <div role="progressbar" style="width: {{reviewsRatio}}%" aria-valuenow="{{positiveReviews}}" aria-valuemin="0" aria-valuemax="{{totalreviews}}" class="progress-bar progress-bar bg-primary"></div>
+              </div>
+              <div class="page-statistics d-flex justify-content-between">
+                <div class="page-statistics-left"><span>Positive Reviews</span><strong>{{positiveReviews}}</strong></div>
+                <div class="page-statistics-right"><span>Negative Reviews</span><strong>{{negativeReviews}}</strong></div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+   
+   <section class="charts mt-4">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card bar-chart-example">
+              <div class="card-header d-flex align-items-center">
+                <h4>Orders By Months</h4>
+              </div>
+              <div class="card-body">
+                <canvas id="barChartExample"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card bar-chart-example">
+              <div class="card-header d-flex align-items-center">
+                <h4>Reviews by months</h4>
+              </div>
+              <div class="card-body">
+                <canvas id="barChartExample2"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card polar-chart-example">
+              <div class="card-header d-flex align-items-center">
+                <h4>Total Orders Details</h4>
+              </div>
+              <div class="card-body">
+                <div class="chart-container">
+                  <canvas id="polarChartExample"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
   </section>
 
-
-  <footer class="main-footer">
-    {% include 'frontend/partialView/footer_navbar.html' %}
-  </footer>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-  integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-  integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  
+      <footer class="main-footer">
+        {% include 'frontend/partialView/footer_navbar.html' %}
+      </footer>
+    </div>
+ 
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 <script src="{% static '/js/grasp_mobile_progress_circle-1.0.0.min.js'%}"></script>
 <script src="{% static '/vendor/jquery.cookie/jquery.cookie.js'%}"> </script>
@@ -180,360 +195,246 @@
 <!-- Main File-->
 <script src="{% static '/js/front.js'%}"></script>
 
-<script>
-  $(document).ready(function () {
-    console.log($(".progress-circle").html())
-    $(".gmpc-percent-text").html("<b>{{acceptedOrdersRatio}}</b>")
+    <script>
+      $(document).ready(function(){
+        console.log($(".progress-circle").html())
+        $(".gmpc-percent-text").html("<b>{{acceptedOrdersRatio}}</b>")
 
     'use strict';
 
     var brandPrimary = 'rgba(51, 179, 90, 1)';
-
-
-    LINECHARTEXMPLE = $('#barChartExample')
-
+        
+        
+        LINECHARTEXMPLE   = $('#barChartExample')
+        
     var lineChartExample = new Chart(LINECHARTEXMPLE, {
-      type: 'line',
-      data: {
-        labels: [{
-            %
-            for data in bar_month_data %
-          }
-          '{{data}}', {
-            % endfor %
-          }
-        ],
-        datasets: [{
-            label: "Total",
-            fill: false,
-            lineTension: 0.3,
-            backgroundColor: "rgba(75,192,192,1)",
-            borderColor: 'rgba(75,192,192,1)',
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            borderWidth: 2,
-            pointBorderColor: brandPrimary,
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: brandPrimary,
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [{
-                %
-                for data in bar_total_data %
-              }
-              '{{data.1}}', {
-                % endfor %
-              }
-            ],
-            spanGaps: false
-          },
-          {
-            label: "Accepted",
-            fill: false,
-            lineTension: 0.3,
-            backgroundColor: "rgba(51, 179, 90, 0.38)",
-            borderColor: brandPrimary,
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            borderWidth: 2,
-            pointBorderColor: brandPrimary,
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: brandPrimary,
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [{
-                %
-                for data in bar_accept_data %
-              }
-              '{{data.1}}', {
-                % endfor %
-              }
-            ],
-            spanGaps: false
-          },
-          {
-            label: "Declined",
-            fill: false,
-            lineTension: 0.3,
-            backgroundColor: "#ff6385c9",
-            borderColor: "#FF6384",
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            borderWidth: 2,
-            pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [{
-                %
-                for data in bar_decline_data %
-              }
-              '{{data.1}}', {
-                % endfor %
-              }
-            ],
-            spanGaps: false
-          }
-        ]
-      }
+        type: 'line',
+        data: {
+            labels: [{% for data in bar_month_data %} '{{data}}',{% endfor %}],
+            datasets: [
+                {
+                    label: "Total",
+                    fill: false,
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(75,192,192,1)",
+                    borderColor: 'rgba(75,192,192,1)',
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    borderWidth: 2,
+                    pointBorderColor: brandPrimary,
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: brandPrimary,
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [{% for data in bar_total_data %} '{{data.1}}',{% endfor %}],
+                    spanGaps: false
+                },
+                {
+                    label: "Accepted",
+                    fill: false,
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(51, 179, 90, 0.38)",
+                    borderColor: brandPrimary,
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    borderWidth: 2,
+                    pointBorderColor: brandPrimary,
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: brandPrimary,
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [{% for data in bar_accept_data %} '{{data.1}}',{% endfor %}],
+                    spanGaps: false
+                },
+                {
+                    label: "Declined",
+                    fill: false,
+                    lineTension: 0.3,
+                    backgroundColor: "#ff6385c9",
+                    borderColor: "#FF6384",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    borderWidth: 2,
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [{% for data in bar_decline_data %} '{{data.1}}',{% endfor %}],
+                    spanGaps: false
+                }
+            ]
+        }
     });
 
-    BARCHARTEXMPLE2 = $('#barChartExample2'),
-      console.log(BARCHARTEXMPLE2)
-
-    var barChartExample2 = new Chart(BARCHARTEXMPLE2, {
-      type: 'bar',
-      data: {
-        labels: [{
-            %
-            for data in bar_month_data %
-          }
-          '{{data}}', {
-            % endfor %
-          }
-        ],
-        datasets: [{
-            label: "Positive Reviews",
-            backgroundColor: [{
-                %
-                for data in bar_month_data %
-              }
-              'rgba(51, 179, 90, 0.6)', {
-                % endfor %
-              }
-            ],
-            borderColor: [{
-                %
-                for data in bar_month_data %
-              }
-              'rgba(51, 179, 90, 1)', {
-                % endfor %
-              }
-            ],
-            borderWidth: 1,
-            data: [{
-                %
-                for data in reviewbar_accept_data %
-              }
-              '{{data.1}}', {
-                % endfor %
-              }
-            ],
-          },
-          {
-            label: "Negative Reviews",
-            backgroundColor: [{
-                %
-                for data in bar_month_data %
-              }
-              '#ff6385c9', {
-                % endfor %
-              }
-            ],
-            borderColor: [{
-                %
-                for data in bar_month_data %
-              }
-              '#FF6384', {
-                % endfor %
-              }
-            ],
-            borderWidth: 1,
-            data: [{
-                %
-                for data in reviewbar_decline_data %
-              }
-              '{{data.1}}', {
-                % endfor %
-              }
-            ],
-          },
-          {
-            label: 'Total Reviews',
-            data: [{
-                %
-                for data in bar_total_data %
-              }
-              '{{data.1}}', {
-                % endfor %
-              }
-            ],
-            type: 'line',
-            fill: true,
-            // this dataset is drawn on top
-            order: 2
-          }
-        ]
-      }
-    });
-    LINECHARTEXMPLE2 = $('#lineChartExample2')
-
+    BARCHARTEXMPLE2    = $('#barChartExample2'),
+        console.log(BARCHARTEXMPLE2)
+        
+        var barChartExample2 = new Chart(BARCHARTEXMPLE2, {
+            type: 'bar',
+            data: {
+                labels: [{% for data in bar_month_data %} '{{data}}',{% endfor %}
+                ],
+                datasets: [
+                    {
+                        label: "Positive Reviews",
+                        backgroundColor: [{% for data in bar_month_data %} 'rgba(51, 179, 90, 0.6)',{% endfor %}
+                        ],
+                        borderColor: [{% for data in bar_month_data %} 'rgba(51, 179, 90, 1)',{% endfor %}
+                        ],
+                        borderWidth: 1,
+                        data: [{% for data in reviewbar_accept_data %} '{{data.1}}',{% endfor %}],
+                    },
+                    {
+                        label: "Negative Reviews",
+                        backgroundColor: [{% for data in bar_month_data %} '#ff6385c9',{% endfor %}
+                        ],
+                        borderColor: [{% for data in bar_month_data %} '#FF6384',{% endfor %}
+                        ],
+                        borderWidth: 1,
+                        data: [{% for data in reviewbar_decline_data %} '{{data.1}}',{% endfor %}],
+                    },
+                    {
+                      label: 'Total Reviews',
+                      data: [{%for data in bar_total_data %} '{{data.1}}', {% endfor %}],
+                      type: 'line',
+                      fill: true,
+                      // this dataset is drawn on top
+                      order: 2
+                  }
+                ]
+            }
+        });
+        LINECHARTEXMPLE2   = $('#lineChartExample2')
+        
     var lineChartExample2 = new Chart(LINECHARTEXMPLE2, {
-      type: 'line',
-      data: {
-        labels: [{
-            %
-            for data in bar_month_data %
-          }
-          '{{data}}', {
-            % endfor %
-          }
-        ],
-        datasets: [{
-            label: "Positive Reviews",
-            fill: true,
-            lineTension: 0.3,
-            backgroundColor: "rgba(51, 179, 90, 0.38)",
-            borderColor: brandPrimary,
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            borderWidth: 1,
-            pointBorderColor: brandPrimary,
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: brandPrimary,
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [{
-                %
-                for data in reviewRatio_accept_data %
-              }
-              '{{data.1}}', {
-                % endfor %
-              }
-            ],
-            spanGaps: false
-          },
-          {
-            label: "Negative Reviews",
-            fill: true,
-            lineTension: 0.3,
-            backgroundColor: "#ff6385c9",
-            borderColor: "#FF6384",
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            borderWidth: 1,
-            pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [{
-                %
-                for data in reviewRatio_decline_data %
-              }
-              '-{{data.1}}', {
-                % endfor %
-              }
-            ],
-            spanGaps: false
-          },
-          {
-            label: "Average",
-            fill: false,
-            lineTension: 0.3,
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            borderWidth: 1,
-            pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [{
-                %
-                for data in reviewRatio_average_data %
-              }
-              '{{data.1|floatformat:2}}', {
-                % endfor %
-              }
-            ],
-            spanGaps: false
-          }
-        ]
-      }
+        type: 'line',
+        data: {
+            labels: [{% for data in bar_month_data %} '{{data}}',{% endfor %}],
+            datasets: [
+                {
+                    label: "Positive Reviews",
+                    fill: true,
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(51, 179, 90, 0.38)",
+                    borderColor: brandPrimary,
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    borderWidth: 1,
+                    pointBorderColor: brandPrimary,
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: brandPrimary,
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [{% for data in reviewRatio_accept_data %} '{{data.1}}',{% endfor %}],
+                    spanGaps: false
+                },
+                {
+                    label: "Negative Reviews",
+                    fill: true,
+                    lineTension: 0.3,
+                    backgroundColor: "#ff6385c9",
+                    borderColor: "#FF6384",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    borderWidth: 1,
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [{% for data in reviewRatio_decline_data %} '-{{data.1}}',{% endfor %}],
+                    spanGaps: false
+                },
+                {
+                    label: "Average",
+                    fill: false,
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(75,192,192,0.4)",
+                    borderColor: "rgba(75,192,192,1)",
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    borderWidth: 1,
+                    pointBorderColor: "rgba(75,192,192,1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 10,
+                    data: [{% for data in reviewRatio_average_data %} '{{data.1|floatformat:2}}',{% endfor %}],
+                    spanGaps: false
+                }
+            ]
+        }
     });
 
-    POLARCHARTEXMPLE = $('#polarChartExample');
-
+    POLARCHARTEXMPLE  = $('#polarChartExample');
+    
     var polarChartExample = new Chart(POLARCHARTEXMPLE, {
-      type: 'polarArea',
-      data: {
-        datasets: [{
-          data: [{
-              {
-                totalFinished
-              }
-            },
-            {
-              {
-                totalOngoingOrders
-              }
-            },
-            {
-              {
-                totalDeclined
-              }
-            },
-          ],
-          backgroundColor: [
-            "rgba(51, 179, 90, 1)",
-            "#4BC0C0",
-            "#FF6384"
-          ],
-          label: 'My dataset' // for legend
-        }],
-        labels: [
-          "Finished",
-          "Ongoing",
-          "Declined",
-        ]
-      }
+        type: 'polarArea',
+        data: {
+            datasets: [{
+                data: [
+                    {{totalFinished}},
+                    {{totalOngoingOrders}},
+                    {{totalDeclined}},
+                ],
+                backgroundColor: [
+                    "rgba(51, 179, 90, 1)",
+                    "#4BC0C0",
+                    "#FF6384"
+                ],
+                label: 'My dataset' // for legend
+            }],
+            labels: [
+                "Finished",
+                "Ongoing",
+                "Declined",
+            ]
+        }
     });
 
     var polarChartExample = {
-      responsive: true
+        responsive: true
     };
-  });
-</script>
+      });
+      
+    </script>
 
 
 {% endblock content %}

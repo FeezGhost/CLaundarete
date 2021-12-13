@@ -17,7 +17,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from .utils import generateToken
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, message
 from django.conf import settings
 import threading
 from django.shortcuts import get_object_or_404
@@ -53,27 +53,22 @@ def send_activation_email(request, user):
 @unauthenticated_user
 def landingpageView(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password =request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user.is_staff:
-            messages.error(request, "Admins can't access launderer dashboard")
-            return redirect("adminLoginPage")
-        if user is not None:
-            if user.launderer.is_email_verified:
-                if user.is_active:
-                    login(request, user)
-                    greet = "Welcome to the CL Dashboard "+request.user.username
-                    messages.info(request, greet)
-                    return redirect('dashboard')
-                else:
-                    messages.error(request, 'Your account is inactive or blocked please contact admin')
-            else:
-                messages.error(request, 'Email is not verified, please check your email inbox')
-                return render(request,"frontend/login.html", status=409)
-        else:
-            messages.error(request, 'Username or Password is incorrect!')
-            return render(request,"frontend/login.html", status=409)
+        name = request.POST.get('name')
+        email =request.POST.get('email')
+        subject =request.POST.get('subject')
+        msg =request.POST.get('message')
+        email_body =f"Name: {name}, \nEmail: {email}, \nMessage: {msg}"
+        # email_body = "Name: ", name , "\nMessage:\n", msg, "\nUser Email: ", email
+        
+        email = EmailMessage(
+            subject = subject,
+            body = email_body,
+            from_email = settings.EMAIL_HOST_USER,
+            to = [settings.EMAIL_HOST_USER],
+        )
+
+        email.send()
+        messages.info(request, "Thank You! You email has been delivered")
 
     return render(request,"frontend/landing-page.html")
 
@@ -85,11 +80,11 @@ def loginView(request):
         username = request.POST.get('username')
         password =request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-        if user.is_staff:
-            messages.error(request, "Admins can't access launderer dashboard")
-            return redirect("adminLoginPage")
         if user is not None:
-            if user.launderer.is_email_verified:
+            if user.is_staff:
+                messages.error(request, "Admins can't access launderer dashboard")
+                return redirect("adminLoginPage")
+            elif user.launderer.is_email_verified:
                 if user.is_active:
                     login(request, user)
                     greet = "Welcome to the CL Dashboard "+request.user.username
@@ -469,21 +464,23 @@ def ordersHistory(request):
 @allowed_users(allowed_roles=['launderer'])
 def ordersRequests(request):
     launder = request.user.launderer
+    hasOrders =False
     if launder.launderette_set.all().count()>0:
         tLaunderette = launder.launderette_set.all()
         orders = tLaunderette[0].order_set.all().order_by('-date_started')
         if orders.count() > 0:
             orderequests = orders.filter(status='pending')
+            hasOrders = bool(orderequests.count() > 0)
             p  = Paginator(orderequests, 10)
             page_num = request.GET.get('page', 1)
             try:
                 page = p.page(page_num)
             except EmptyPage:
                 page = p.page(1)
-            context = {"launderer": launder, 'orderRequests' : page}
+            context = {"launderer": launder, 'orderRequests' : page, 'hasOrders': hasOrders}
             return render(request,"frontend/orderRequests.html",context)
 
-    context = {"launderer": launder}
+    context = {"launderer": launder, 'hasOrders': hasOrders}
     return render(request,"frontend/orderRequests.html",context)
 
 @login_required(login_url="loginPage")
@@ -514,9 +511,9 @@ def orderDetails(request, pk_id):
     if request.method == 'POST' :
         req_status = request.POST.get('statusField')
         if req_status == 'finished':
-            order.status='finished'
+            order.status='pre-finished'
             orderObj = order.save()
-            messages.info(request, "Orders has been Finished! you can find this order in orders history.")
+            messages.info(request, "Orders is now in Pre Finished State. Wait for CLient to verify it. You can find this order in orders history.")
             return redirect('ongoingOrders')
         else:
             order.status='cancel'
@@ -801,6 +798,10 @@ def changeEmail(request):
         form = LaundererEmailForm(request.POST, instance= curr_user)
         if form.is_valid():
             form.save()
+            
+            send_activation_email(request, curr_user)
+            messages.info(request, 'We sent verification email to your account please check it out!')
+            return redirect('logout')
                 
     return redirect("myAccount")
 

@@ -4,7 +4,10 @@
     width: 100% !important;
     height: 250px !important;
 }
-
+#form-pfp{
+    width: 250px !important;
+    height: 310px !important;
+}
 body{
     font-family: 'Playfair Display', serif !important;
 }
