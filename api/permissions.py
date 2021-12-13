@@ -39,19 +39,22 @@ class IsCreatorLaunderetteOrIsAdmin(permissions.BasePermission):
         
         if request.method in permissions.SAFE_METHODS:
             return True
-        
-        user = request.user
-        if user.groups.filter(name='launderer').exists():
-            appUser = user.launderer
-            if appUser.launderette_set.all().count() > 0:
-                launderette = appUser.launderette_set.all()[0]
-                return bool(obj.launderette.id == launderette.id)
+        if request.user.is_anonymous == False:
+            user = request.user
+            if user.groups.filter(name='launderer').exists():
+                appUser = user.launderer
+                if appUser.launderette_set.all().count() > 0:
+                    launderette = appUser.launderette_set.all()[0]
+                    return bool(obj.launderette.id == launderette.id)
+                
+                return False
             
-            return False
-        
-        elif user.user.is_staff:
-            return bool(user and user.is_staff)
-        
+            elif user.user.is_staff:
+                return bool(user and user.is_staff)
+            
+            elif user.exists():
+                appUser = user.client
+                return bool(appUser and obj.client.id == appUser.id)
+            
         else:
-            appUser = user.client
-            return bool(appUser and obj.client.id == appUser.id)
+            return bool(False)
