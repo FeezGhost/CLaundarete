@@ -24,39 +24,21 @@
 
   <section class="charts">
     <div class="container-fluid">
-      <!-- Page Header-->
-      {% comment %} <div class="card line-chart-example">
-        <div class="card-header d-flex align-items-center">
-
-          <img class="card-img-top" src="{{launderette.cover_photo.url}}" alt="{{launderette.cover_photo.url}}"
-            width="300" height="600">
-        </div>
-        <div class="card-body">
-
-          <p class="lead text-primary">Name:</p>
-          <p class="lead ">{{launderette.name}}</p>
-          <div class="row">
-            <div class="col-6">
-              <p class="lead text-primary">Location:</p>
-              <p class="lead ">{{launderette.location}}</p>
-            </div>
-            <div class="col-6">
-
-              <div class="col-6">
-                <p class="lead text-primary">Available Time:</p>
-                <p class="lead ">{{launderette.available_time}}</p>
-              </div>
-            </div>
-          </div>
-
-          <a class="btn btn-lg btn-outline-primary  px-4 my-2 text-center" href="{% url 'services' %}">Services</a>
-        </div>
-        <div class="card-footer">
-          <a class="btn  btn-outline-primary   text-center" href="{% url 'editlaunderette' %}">Update information</a>
-        </div>
-      </div> {% endcomment %}
       <div class="card data-usage text-center p-4 mx-4">
         <div class="container">
+          
+  <div class="container mx-4 px-4">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
           <div class="row d-flex">
             <div class="col-lg-6">
               <h2 class="display h4 text-primary">Client</h2>
@@ -116,7 +98,7 @@
             </div>
           </div>
           <hr>
-          {% if order.status != 'finished' %}
+          {% if order.status != 'finished' and order.status != 'pending' and order.status != 'declined' %}
           <h3 class=""> Change status of order:</h3>
           <form enctype="multipart/form-data" method="POST">
             {% csrf_token %}

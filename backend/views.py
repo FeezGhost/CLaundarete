@@ -1026,9 +1026,10 @@ def adminReviewsView(request):
 @login_required(login_url="adminLoginPage")
 @allowed_users(allowed_roles=['admin'])
 def adminReviewDetail(request, pk_id):
+    admin = request.user
     review = Review.objects.get(id=pk_id)
     comments = review.reviewcomment_set.all()
-    context = {'review':review, 'comments': comments}
+    context = {"admin": admin, 'review':review, 'comments': comments}
     return render(request,"frontend/admin/review_details.html",context)
 
 @login_required(login_url="adminLoginPage")
@@ -1051,13 +1052,25 @@ def adminOrdersView(request):
 @login_required(login_url="adminLoginPage")
 @allowed_users(allowed_roles=['admin'])
 def adminOrderDetails(request, pk_id):
+    admin = request.user
     order = Order.objects.get(id = pk_id)
     haveReview = order.review_set.all().exists()
+    if request.method == 'POST' :
+        req_status = request.POST.get('statusField')
+        if req_status == 'finished':
+            order.status='finished'
+            orderObj = order.save()
+            messages.info(request, "Orders is has been Finished. You can find this order in orders history.")
+        else:
+            order.status='cancel'
+            orderObj = order.save()
+            messages.warning(request, "Orders has been Canceled! you can find this order in orders history.")
+    
     if haveReview:
         review = order.review_set.all()[0]
-        context = {'order' : order, "review": review, "haveReview": haveReview}
+        context = {"admin": admin, 'order' : order, "review": review, "haveReview": haveReview}
     else:
-        context = {'order' : order, "haveReview": haveReview}
+        context = {"admin": admin, 'order' : order, "haveReview": haveReview}
     return render(request,"frontend/admin/order_detail.html",context)
 
 @login_required(login_url="adminLoginPage")
@@ -1079,6 +1092,7 @@ def adminComplaintsView(request):
 @login_required(login_url="adminLoginPage")
 @allowed_users(allowed_roles=['admin'])
 def adminComplaintsDetailView(request, pk_id):
+    admin = request.user
     complaint = Complaint.objects.get(id=pk_id)
     form = ComplaintForm(instance= complaint)
     if request.method == 'POST':
@@ -1088,12 +1102,13 @@ def adminComplaintsDetailView(request, pk_id):
         complaint.save()
         messages.success(request, "Complaint has been Responded!")
         return  redirect("adminComplaints")
-    context = {'complaint':complaint, 'form': form}
+    context = {"admin": admin, 'complaint':complaint, 'form': form}
     return render(request,"frontend/admin/complaintDetail.html",context)
 
 @login_required(login_url="adminLoginPage")
 @allowed_users(allowed_roles=['admin'])
 def AdminLaunderetePerfomanceView(request, pk_id):
+    admin = request.user
     launderette = get_object_or_404(Launderette, id=pk_id)
     totalreviews = 0
     positiveReviews = 0
@@ -1229,7 +1244,7 @@ def AdminLaunderetePerfomanceView(request, pk_id):
         totalCanceledOrders = canceledOrders.count()
         if totalCanceledOrders > 0 :
             acceptedOrdersRatio = 100 - float((totalCanceledOrders/totalOrders)*100)
-        context = {
+        context = {"admin": admin, 
             'launderette' : launderette,
             'totalreviews' : totalreviews,
             'positiveReviews' : positiveReviews,
@@ -1258,7 +1273,7 @@ def AdminLaunderetePerfomanceView(request, pk_id):
             'bar_total_data':bar_total_data,
         }
     else:
-        context = {
+        context = {"admin": admin, 
             'launderette' : launderette,
         }
 
@@ -1267,6 +1282,7 @@ def AdminLaunderetePerfomanceView(request, pk_id):
 @login_required(login_url="adminLoginPage")
 @allowed_users(allowed_roles=['admin'])
 def AdminReportView(request):
+    admin = request.user
     users = User.objects.all()
     launderers = Launderer.objects.all()
     clients = Client.objects.all()
@@ -1363,7 +1379,7 @@ def AdminReportView(request):
     bar_complaints_resolved_data = tuple(zip(dummyList, complaintsResolvedList))
     bar_complaints_unresolved_data = tuple(zip(dummyList, complaintsUnresolvedList))
     
-    context = {
+    context = {"admin": admin,
         'line_clients_data': line_clients_data,
         'line_month_data': line_month_data,
         'line_launderettes_data': line_launderettes_data,
