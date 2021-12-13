@@ -3,9 +3,10 @@ from . import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    path('', views.landingpageView, name="homepage"),
 
     # Launderer Dashboard urls
-    path('', views.loginView, name="loginPage"),
+    path('login/', views.loginView, name="loginPage"),
     path('register/', views.RegisterView, name="registerPage"),
     path('activate-user/<uidb64>/<token>', views.activate_user, name='activate'),
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="frontend/authentication/password_reset.html"),name="reset_password"),

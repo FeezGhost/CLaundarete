@@ -51,6 +51,35 @@ def send_activation_email(request, user):
         EmailThread(email).start()
 
 @unauthenticated_user
+def landingpageView(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password =request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user.is_staff:
+            messages.error(request, "Admins can't access launderer dashboard")
+            return redirect("adminLoginPage")
+        if user is not None:
+            if user.launderer.is_email_verified:
+                if user.is_active:
+                    login(request, user)
+                    greet = "Welcome to the CL Dashboard "+request.user.username
+                    messages.info(request, greet)
+                    return redirect('dashboard')
+                else:
+                    messages.error(request, 'Your account is inactive or blocked please contact admin')
+            else:
+                messages.error(request, 'Email is not verified, please check your email inbox')
+                return render(request,"frontend/login.html", status=409)
+        else:
+            messages.error(request, 'Username or Password is incorrect!')
+            return render(request,"frontend/login.html", status=409)
+
+    return render(request,"frontend/landing-page.html")
+
+
+
+@unauthenticated_user
 def loginView(request):
     if request.method == 'POST':
         username = request.POST.get('username')

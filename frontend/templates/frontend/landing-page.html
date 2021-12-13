@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>CLaunderette</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700|Open+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/landing-bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/landing-bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/landing-style.css' %}" rel="stylesheet">
+<style>
+  #hero {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(45deg, rgba(29, 224, 153, 0.8), rgba(29, 200, 205, 0.8)), url("static/images/dry.jpg") center top no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+  #call-to-action {
+    overflow: hidden;
+    background: linear-gradient(rgba(29, 200, 205, 0.65), rgba(29, 205, 89, 0.2)), url(static/images/call-to-action-bg.jpg) fixed center center;
+    background-size: cover;
+    padding: 80px 0;
+  }
+</style>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center header-transparent">
+    <div class="container d-flex justify-content-between align-items-center">
+
+      <div id="logo">
+        <h1><a href="index.html">CLaunderette</a></h1>
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="#about">About</a></li>
+          <li><a class="nav-link scrollto" href="#features">Features</a></li>
+          <li><a class="nav-link scrollto" href="#gallery">App UI</a></li>
+          <li class="dropdown"><a href="#"><span>SignIn</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="{% url 'loginPage' %}">Launderer Dashboard</a></li>
+              <li><a href="{% url 'adminLoginPage' %}">Admin Dashboard</a></li>
+            </ul>
+          </li>
+          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero">
+
+    <div class="hero-text" data-aos="zoom-out">
+      <h2>Welcome to CLaunderette</h2>
+      <p>Automating The Laundry Work For You</p>
+      <a href="#about" class="btn-get-started scrollto">Get Started</a>
+    </div>
+
+    <div class="product-screens">
+
+      <div class="product-screen-1" data-aos="fade-up" data-aos-delay="400">
+        <img src="{% static 'images/ss4-small.png' %}" alt="">
+      </div>
+
+      <div class="product-screen-2" data-aos="fade-up" data-aos-delay="200">
+        <img src="{% static 'images/ss7-small.jpg' %}" alt="">
+      </div>
+
+      <div class="product-screen-3" data-aos="fade-up">
+        <img src="{% static 'images/ss2.-small.jpg' %}" alt="">
+      </div>
+
+    </div>
+
+  </section><!-- End Hero Section -->
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="section-bg">
+      <div class="container-fluid" data-aos="fade-up">
+        <div class="section-header">
+          <h3 class="section-title">About Us</h3>
+          <span class="section-divider"></span>
+          <p class="section-description">
+            Now you don't need to go to launderette or do your laundry yourself!<br>
+            Cloud Launderette provides a platform for both clients and Launderers
+          </p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6 about-img" data-aos="fade-right" dat-aos-delay="100">
+            <img src="{% static 'images/land2.jpg' %}" alt="">
+          </div>
+
+          <div class="col-lg-6 content" data-aos="fade-left" dat-aos-delay="100">
+            <h2>The user interactive platform for online laundry cleaning service</h2>
+            <h3>CL provides people with services such as washing, ironing and dry cleaning.</h3>
+            <p> These services will be provided by experienced professionals. All the latest technology will be used to provide the laundry services.
+            </p>
+
+            <ul>
+              <li><i class="bi bi-check-circle"></i> The laundry  will be done in a most affordable and convenient way possible.</li>
+              <li><i class="bi bi-check-circle"></i> The picking and delivery of laundry will be cost-free making for affordable.</li>
+              <li><i class="bi bi-check-circle"></i> UEfficient, fast, reliable and smooth experience will be delivered to diverse set of mobile devices and web.</li>
+            </ul>
+
+            <p>
+              Some people are too careful about the clothes and do not want them damaged so they are looking for professionals who can get all these services done with their expertise. This platform will solve all their problems related to the laundry giving them more leisure or work time.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+    <!-- ======= Featuress Section ======= -->
+    <section id="features">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+          <div class="col-lg-8 offset-lg-4">
+            <div class="section-header">
+              <h3 class="section-title">CL Featuress</h3>
+              <span class="section-divider"></span>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-5 features-img">
+            <img src="{% static 'images/sss7-mid.png' %}" alt="" data-aos="fade-right">
+          </div>
+
+          <div class="col-lg-8 col-md-7 ">
+
+            <div class="row">
+
+              <div class="col-lg-6 col-md-6 box" data-aos="fade-up">
+                <div class="icon"><i class="bi bi-briefcase"></i></div>
+                <h4 class="title"><a href="">All Laundry Services</a></h4>
+                <p class="description">We provide all laundry services like washing, ironing and dry cleaning.</p>
+              </div>
+              <div class="col-lg-6 col-md-6 box" data-aos="fade-up">
+                <div class="icon"><i class="bi bi-card-checklist"></i></div>
+                <h4 class="title"><a href="">Payment Solutions</a></h4>
+                <p class="description">We have multiple payments options for you and you can always chose cash on delivery.</p>
+              </div>
+              <div class="col-lg-6 col-md-6 box" data-aos="fade-up" dat-aos-delay="100">
+                <div class="icon"><i class="bi bi-binoculars"></i></div>
+                <h4 class="title"><a href="">Multiple Cities</a></h4>
+                <p class="description">Our services are accessible for multiple cities of Pakistan. CL service will be provided 24/7.</p>
+              </div>
+              <div class="col-lg-6 col-md-6 box" data-aos="fade-up" data-aos-delay="100">
+                <div class="icon"><i class="bi bi-brightness-high"></i></div>
+                <h4 class="title"><a href="">Feedback & Reviews</a></h4>
+                <p class="description">You will be able to use reviews to provide your feedback on laundry service you were provided.</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- End Featuress Section -->
+
+    <!-- ======= Advanced Featuress Section ======= -->
+    <section id="advanced-features">
+
+      <div class="features-row section-bg" data-aos="fade-up">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <img class="advanced-feature-img-right wow fadeInRight" src="{% static 'images/land1.jpg' %}" alt="">
+              <div>
+                <h2>There is no need to waste time washing clothes in the bathroom...</h2>
+                <h3>Technology has revolutionized almost every aspect of humans. It has the very ability to  automate daily routine tasks.</h3>
+                <p>Often people do not find time to get their laundry done as they are too busy in their daily life routines and they face many problems in continuing their daily routines.</p>
+                <p>The first thing is their time is so much wasted in doing their laundry. Secondly, many people do not know how wash or take good care of their clothes often resulting in damaging the fabric of their clothes.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="features-row" data-aos="fade-up">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <img class="advanced-feature-img-left" src="{% static 'images/advanced-feature-2.jpg' %}" alt="">
+              <div>
+                <h2>This platform is also a home for launderers as is for customers</h2>
+                <i class="bi bi-calendar4-week"></i>
+                <p>CL hasss provided us to come up with the idea of submerging all launderettes or laundry shops under the same roof, helping in forging social media of launders.</p>
+                <i class="bi bi-bar-chart"></i>
+                <p>Launderers can create their online launderette here and connect with their customers. CLaunderette provides a broder exposure for it's launderers.</p>
+                <i class="bi bi-brightness-high"></i>
+                <p>Launderers will be able to get more customers and better organise their orders. CL provides 24/7 support for any kind of help.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="features-row section-bg" data-aos="fade-up">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <img class="advanced-feature-img-right wow fadeInRight" src="{% static 'images/advanced-feature-3.jpg' %}" alt="">
+              <div>
+                <h2>Launderer Dashboard with rich features!</h2>
+                <h3>CLaunderette provides all the tools to help launderers grow his launderette.</h3>
+                <p>Launderers will be able to recieve orders online, they will also have the ability to  accept it or decline it. They can optionally provide delivery service.</p>
+                <i class="bi bi-binoculars"></i>
+                <p>Launderers will be able to check their online launderette perfomance. Cloud Launderette provides interactive perfomance reports, friendly and easy to understand charts which provides a good visualization of launderette perfomance. Launderer won't feel the to do any calculation their self, cloud launderette does it all for you!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Advanced Featuress Section -->
+
+    <!-- ======= Call To Action Section ======= -->
+    <section id="call-to-action">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-9 text-center text-lg-start">
+            <h3 class="cta-title">Create Your Online Launderette</h3>
+            <p class="cta-text"> Let's get started with your first launderette because if you are a launderer who doesn't use cloud launderette then you missing some great opertunities.</p>
+          </div>
+          <div class="col-lg-3 cta-btn-container text-center">
+            <a class="cta-btn align-middle" href="{% url 'registerPage' %}">Create Account</a>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Call To Action Section -->
+
+    <!-- ======= More Features Section ======= -->
+    <section id="more-features" class="section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h3 class="section-title">More Features</h3>
+          <span class="section-divider"></span>
+          <p class="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
+        </div>
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6">
+            <div class="box">
+              <div class="icon"><i class="bi bi-briefcase"></i></div>
+              <h4 class="title"><a href="">Pick && Delivery</a></h4>
+              <p class="description">Pickup and delivery services at your doorstep provides convenience.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="box">
+              <div class="icon"><i class="bi bi-card-checklist"></i></div>
+              <h4 class="title"><a href="">Complaints System</a></h4>
+              <p class="description">If someone is exploiting the system or abusing it you can use our complaint system to report it. You can also submit complaint about anything about the system.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="box">
+              <div class="icon"><i class="bi bi-bar-chart"></i></div>
+              <h4 class="title"><a href="">Geolocation Integeration</a></h4>
+              <p class="description">CL provides geolocation option for clients and launderers alike. They can use these feature to find user in close proximity.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="box">
+              <div class="icon"><i class="bi bi-binoculars"></i></div>
+              <h4 class="title"><a href="">Multiple Searching Filters</a></h4>
+              <p class="description">Client can search launderertte on multiple filters like location, rating and so on. Launderer can also use filters to organise their orders serivices and clients.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section><!-- End More Features Section -->
+
+    <!-- ======= Gallery Section ======= -->
+    <section id="gallery">
+      <div class="container-fluid" data-aos="fade-up">
+        <div class="section-header">
+          <h3 class="section-title">Mobile App Interface</h3>
+          <span class="section-divider"></span>
+          <p class="section-description">We provide friendly and attractive UI with ease of access in mind.</p>
+        </div>
+
+        <div class="row no-gutters">
+
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <a data-gall="portfolioGallery" class="gallery-lightbox">
+                <img src="{% static 'images/ss2.jpg' %}" alt="">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <a data-gall="portfolioGallery" class="gallery-lightbox">
+                <img src="{% static 'images/ss4.jpg' %}" alt="">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <a data-gall="portfolioGallery" class="gallery-lightbox">
+                <img src="{% static 'images/ss5.jpg' %}" alt="">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <a  data-gall="portfolioGallery" class="gallery-lightbox">
+                <img src="{% static 'images/ss6.jpg' %}" alt="">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <a  data-gall="portfolioGallery" class="gallery-lightbox">
+                <img src="{% static 'images/ss10.jpg' %}" alt="">
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <a  data-gall="portfolioGallery" class="gallery-lightbox">
+                <img src="{% static 'images/ss3.jpg' %}" alt="">
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Gallery Section -->
+    <br>
+    <br>
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact">
+      <div class="container" data-aos="fade-up">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-4">
+            <div class="contact-about">
+              <h3>CLaunderette</h3>
+              <p>A Laundry web application and mobile application with rich features providing a great deal of effort in automating the laundry services.</p>
+              <div class="social-links">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-4">
+            <div class="info">
+              <div>
+                <i class="bi bi-geo-alt"></i>
+                <p>Lane 10 Royal Avenue<br>Islamabad, Pakistan</p>
+              </div>
+
+              <div>
+                <i class="bi bi-envelope"></i>
+                <p>cloudlaunderette@gmail.com</p>
+              </div>
+
+              <div>
+                <i class="bi bi-phone"></i>
+                <p>+92 311 596644</p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-5 col-md-8">
+            <div class="form">
+              <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+                <div class="row">
+                  <div class="form-group col-lg-6">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                  </div>
+                  <div class="form-group col-lg-6 mt-3 mt-lg-0">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
+                  </div>
+                </div>
+                <div class="form-group mt-3">
+                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject">
+                </div>
+                <div class="form-group mt-3">
+                  <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                </div>
+                <div class="my-3">
+                  <div class="loading">Loading</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+                </div>
+                <div class="text-center"><button type="submit" title="Send Message">Send Message</button></div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 text-lg-start text-center">
+          <div class="copyright">
+            Download <strong>CLaunderette Mobile App</strong>. For clients side
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+            <a href="#intro" class="scrollto">Home</a>
+            <a href="#about" class="scrollto">About</a>
+            <a href="{% url 'loginPage' %}">Signin</a>
+            <a href="{% url 'registerPage' %}">Signup</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer><!-- End  Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-chevron-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/landing-bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'js/landing-main.js' %}"></script>
+
+</body>
+
+</html>
