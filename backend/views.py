@@ -411,11 +411,18 @@ def ReportView(request):
 @allowed_users(allowed_roles=['launderer'])
 def OngoingOrder(request):
     launder = request.user.launderer
+    serv = ""
     if launder.launderette_set.all().count()>0:
         tLaunderette = launder.launderette_set.all()
         orders = tLaunderette[0].order_set.all().order_by('-date_started')
         if orders.count() > 0:
+            if tLaunderette[0].services_set.all():
+                serv = tLaunderette[0].services_set.all()
             onGoing = orders.filter(status='ongoing')
+            if request.method == 'POST':
+                service_id = request.POST.get('service_id')
+                service = Services.objects.get(id = int(service_id))
+                onGoing = onGoing.filter(services = service)
             ordersfliter = OrderFilter(request.GET, queryset=onGoing)
             onGoing = ordersfliter.qs
             p  = Paginator(onGoing, 20)
@@ -424,7 +431,7 @@ def OngoingOrder(request):
                 page = p.page(page_num)
             except EmptyPage:
                 page = p.page(1)
-            context = {"launderer": launder, 'onGoingOrders' : page, 'ordersfilter':ordersfliter}
+            context = {"launderer": launder, 'onGoingOrders' : page, 'ordersfilter':ordersfliter,'services': serv}
             return render(request,"frontend/ongoingOrders.html",context)
     context = {"launderer": launder, }
     return render(request,"frontend/ongoingOrders.html",context)
@@ -623,6 +630,7 @@ def complaintNew(request):
     complaintForm = ComplaintForm()
     if request.method == 'POST':
         complaintForm = ComplaintForm(request.POST)
+        print(complaintForm)
         if complaintForm.is_valid():
             sbj = complaintForm.cleaned_data.get('subject')
             comp = complaintForm.cleaned_data.get('complain')
@@ -813,9 +821,14 @@ def adminLoginView(request):
         username = request.POST.get('username')
         password =request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-        if user is not None and user.is_staff:
-            login(request, user)
-            return redirect('adminDashboard')
+        if user is not None:
+            if user.is_staff:
+                login(request, user)
+                messages.info(request, 'Welcome to the Admin Dashboard!')
+                return redirect('adminDashboard')
+            else:
+                messages.info(request, 'Only Admins can login here')
+                return render(request,"frontend/admin/login.html", status=409)
         else:
             messages.info(request, 'Username OR password is incorrect')
             return render(request,"frontend/admin/login.html", status=409)
@@ -889,12 +902,16 @@ def laundererRequestProcess(request, pk_id):
             launderer.user.is_active = False
             launderer.user.save()
             laundererObj = launderer.save()
+            msg = launderer.name, ' has been blocked'
+            messages.warning(request, msg)
             return redirect('adminLaunderers')
         else:
             launderer.isBlocked= False
             launderer.user.is_active = True
             launderer.user.save()
             laundererObj = launderer.save()
+            msg = launderer.name, ' has been unblocked'
+            messages.warning(request, msg)
             return redirect('adminLaunderers')
 
 @login_required(login_url="adminLoginPage")
@@ -922,10 +939,14 @@ def launderetteRequestProcess(request, pk_id):
         if req_status == 'block':
             launderette.isBlocked = True
             launderetteObj = launderette.save()
+            msg = launderette.name, '  has been unblocked!'
+            messages.warning(request, msg)
             return redirect('adminLaunderettes')
         else:
             launderette.isBlocked= False
             launderetteObj = launderette.save()
+            msg = launderette.name, '  has been unblocked!'
+            messages.warning(request, msg)
             return redirect('adminLaunderettes')
 
 @login_required(login_url="adminLoginPage")
@@ -974,12 +995,16 @@ def clientRequestProcess(request, pk_id):
             client.user.is_active = False
             client.user.save()
             clientObj = client.save()
+            msg = client.name, ' has been blocked'
+            messages.warning(request, msg)
             return redirect('adminClients')
         else:
             client.isBlocked= False
             client.user.is_active = True
             client.user.save()
             clientObj = client.save()
+            msg = client.name, ' has been unblocked'
+            messages.warning(request, msg)
             return redirect('adminClients')
 
 @login_required(login_url="adminLoginPage")

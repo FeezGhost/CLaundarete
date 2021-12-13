@@ -7,6 +7,19 @@
 <div class="page">
 
   {% include 'frontend/admin/partialview/top_navbar.html' %}
+  
+  <div class="container mx-4 px-4">
+    {% for message in messages %}
+      <div class="container-fluid p-0">
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ message }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
   <!-- Counts Section -->
   <section class="dashboard-counts section-padding">
     <div class="container-fluid">

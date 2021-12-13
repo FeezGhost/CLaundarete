@@ -62,7 +62,7 @@ class LaundererEmailForm(ModelForm):
 
 class ComplaintForm(ModelForm):
     complain=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":50}))
-    response=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":50}))
+    response=forms.CharField(widget=forms.Textarea(attrs={"rows":5, "cols":50}), required=False)
 
     class Meta:
         model = Complaint

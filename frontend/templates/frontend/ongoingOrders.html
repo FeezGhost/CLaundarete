@@ -38,7 +38,26 @@
       <header>
         <h1 class="h3 display-3  text-primary text-center">Ongoing Orders </h1>
       </header>
+<div class="row">
+  <div class="col-2 jumbotron">
+    <h3>Serivces Filter</h3>
+    <ul class="nav nav-pills">
+      {% for service in services %}
 
+      <form class="my-4" id="{{service.id}}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="service_title" value="{{service.title}}">
+        <input type="hidden" name="service_id" value="{{service.id}}">
+        <li>
+          <a class="btn btn-info text-light"
+            onclick="document.getElementById('{{service.id}}').submit();">{{service.title}}</a>
+        </li>
+      </form>
+
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col">
       <div class="card">
         <div class="container mt-4">
 
@@ -135,6 +154,7 @@
         <a href="{% url 'ongoingOrders' %}?page={{onGoingOrders.next_page_number}}">Next Page</a>
         {% endif %}
       </div>
+</div></div>
     </div>
   </section>
 

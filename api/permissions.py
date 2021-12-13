@@ -49,9 +49,9 @@ class IsCreatorLaunderetteOrIsAdmin(permissions.BasePermission):
             
             return False
         
-        elif user.groups.filter(name='client').exists():
-            appUser = user.client
-            return bool(appUser and obj.client.id == appUser.id)
+        elif user.user.is_staff:
+            return bool(user and user.is_staff)
         
         else:
-            return bool(user and user.is_staff)
+            appUser = user.client
+            return bool(appUser and obj.client.id == appUser.id)

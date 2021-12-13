@@ -21,29 +21,6 @@
 
   <h1 class="display-3 text-center m-4">Launderer</h1>
   <hr>
-  {% comment %} <section class="statistics">
-    <div class="container-fluid">
-      <div class="row d-flex">
-        <div class="col-lg-4">
-          <div class="card data-usage">
-            <div class="card-header d-flex align-items-center">
-              <div class="container px-4 pb-4">
-                <img src="{{client.profile_pic.url}}" alt="person" class="img-fluid rounded-circle">
-              </div>
-            </div>
-            <h2 class="display h4 text-primary">{{client.user.username}}</h2>
-            <p class="text-primary">Name:</p>
-            <p>{{client.name}}</p>
-            <p class="text-primary">Email</p>
-            <p class="">{{client.user.email}}</p>
-            <p class="text-primary">Address:</p>
-            <p class="">{{client.address}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section> {% endcomment %}
-
   <section class="charts">
     <div class="container-fluid">
       <!-- Page Header-->
@@ -72,8 +49,22 @@
             </div>
 
             <div class="col">
+              <p class="lead text-primary">City:</p>
+              <p class="lead ">{{launderer.city}}</p>
+            </div>
+
+            <div class="col">
               <p class="lead text-primary">Address:</p>
               <p class="lead ">{{launderer.address}}</p>
+            </div>
+            
+            <div class="col">
+              <p class="lead text-primary">Latitude:</p>
+              <p class="lead ">{{launderer.lat}}</p>
+            </div>
+            <div class="col">
+              <p class="lead text-primary">Longitude:</p>
+              <p class="lead ">{{launderer.lon}}</p>
             </div>
           </div>
 
@@ -113,7 +104,7 @@
 
   <section class="charts">
     <div class="container-fluid">
-      <h1>Launderer's Launderette</h1>
+      <h1> <a href="{% url 'adminLaundererDetail' launderette.id %}"> Launderer's Launderette </a></h1>
       <!-- Page Header-->
       <div class="card line-chart-example">
         <div class="card-header d-flex align-items-center">

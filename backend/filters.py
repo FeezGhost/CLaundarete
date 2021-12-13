@@ -72,6 +72,7 @@ class LaundererFilter(django_filters.FilterSet):
     start_date = DateFilter(field_name="date_joined", lookup_expr='gte')
     end_date = DateFilter(field_name="date_joined", lookup_expr='lte')
     name = CharFilter(field_name='name', lookup_expr='icontains')
+    city = CharFilter(field_name='city', lookup_expr='icontains')
 
     class Meta:
         model = Launderer
