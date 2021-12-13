@@ -49,7 +49,7 @@ class IsCreatorLaunderetteOrIsAdmin(permissions.BasePermission):
                 
                 return False
             
-            elif user.user.is_staff:
+            elif user.is_staff:
                 return bool(user and user.is_staff)
             
             elif user.exists():
