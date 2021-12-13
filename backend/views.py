@@ -122,6 +122,7 @@ def RegisterView(request):
             addres = form.cleaned_data.get('address')
             latitude = float(request.POST.get('lat'))
             longitude = float(request.POST.get('logn'))
+            easyp = float(request.POST.get('easypaisa_account'))
             launderer=Launderer.objects.create(
                user=user,
                name=fname,
@@ -129,6 +130,7 @@ def RegisterView(request):
                address=addres,
                lat= latitude,
                lon = longitude,
+               easypaisa_account= easyp
             )
             user = User.objects.get(username=form.cleaned_data.get('username'))
             my_group= Group.objects.get(name='launderer')

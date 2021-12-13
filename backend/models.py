@@ -18,6 +18,9 @@ class Client(models.Model):
     
     def __str__(self):
         return str(self.user)
+    
+    class Meta:
+        ordering = ['-date_joined']
 
 class Launderer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -30,9 +33,13 @@ class Launderer(models.Model):
     isBlocked = models.BooleanField(default=False)
     is_email_verified = models.BooleanField(default=False)
     date_joined =models.DateTimeField(auto_now_add=True)
+    easypaisa_account = models.CharField(max_length=200, null=True, blank=True)
     
     def __str__(self):
         return str(self.user)
+    
+    class Meta:
+        ordering = ['-date_joined']
 
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -53,6 +60,9 @@ class Launderette(models.Model):
     
     def __str__(self):
         return str(self.name)
+    
+    class Meta:
+        ordering = ['-date_joined']
 
 class Services(models.Model):
     launderette = models.ForeignKey(Launderette, null=True, on_delete= models.SET_NULL)
@@ -84,6 +94,9 @@ class Order(models.Model):
     isFinished = models.BooleanField(default=False)
     def __str__(self):
         return str(self.client.user.username)
+    
+    class Meta:
+        ordering = ['-date_created']
 
 class StatusChoice2(models.TextChoices):
     PENDING = 'pending', 'Pending'
@@ -100,6 +113,9 @@ class Delivery(models.Model):
     
     def __str__(self):
         return str(self.client.name)
+    
+    class Meta:
+        ordering = ['-date']
 
 class Transactions(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete= models.SET_NULL)
@@ -111,6 +127,9 @@ class Transactions(models.Model):
     
     def __str__(self):
         return str(self.client.name)
+    
+    class Meta:
+        ordering = ['-date']
 
 class Review(models.Model):
     launderette = models.ForeignKey(Launderette, null=True, on_delete= models.SET_NULL)
@@ -122,6 +141,9 @@ class Review(models.Model):
     
     def __str__(self):
         return str(self.client.name)
+    
+    class Meta:
+        ordering = ['-date']
 
 class ReviewComment(models.Model):
     review = models.ForeignKey(Review, null=True, on_delete= models.SET_NULL)
@@ -129,6 +151,9 @@ class ReviewComment(models.Model):
     launderette = models.ForeignKey(Launderette, null=True, blank=True, on_delete= models.SET_NULL)
     comment = models.TextField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True, null=True)
+    
+    class Meta:
+        ordering = ['-date']
 
 class StatusChoice3(models.TextChoices):
     UNRESOLVED = 'unresolved', 'Unresolved'
@@ -146,4 +171,7 @@ class Complaint(models.Model):
     
     def __str__(self):
         return str(self.subject)
+    
+    class Meta:
+        ordering = ['-date']
 

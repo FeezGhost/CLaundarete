@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{% static '/css/custom.css'%}">
   </head>
   <body>
+    
     <div class="page login-page">
       <div class="container">
         <div class="container mx-4 px-4">
@@ -40,8 +41,11 @@
             </div>
           {% endfor %}
         </div>
+        </div>
+        
         <div class="form-outer text-center d-flex align-items-center">
           <div class="form-inner">
+            
             <div class="logo text-uppercase"><span>Admin </span>  <strong class="text-primary">Dashboard</strong></div>
             <p>Double check your username and password.</p>
             <form method="POST" class="text-left form-validate">
@@ -60,10 +64,15 @@
                 <input id="register" type="submit" value="Login" class="btn btn-primary text-white">
               </div>
             </form>
-            <a href="#" class="forgot-pass">Forgot Password?</a><small>Do not have an account? </small><a href="{% url 'registerPage' %}" class="signup">Signup</a>
+            <a href="{% url 'reset_password' %} class="forgot-pass">Forgot Password?</a>
+            <br>
+            <a href="{% url 'homepage' %}">Go To Homepage</a> 
           </div>
+          
         </div>
+        
       </div>
+      
     </div>
     <!-- JavaScript files-->
     <script src="vendor/jquery/jquery.min.js"></script>

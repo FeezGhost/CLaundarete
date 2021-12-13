@@ -104,32 +104,13 @@
       </header>
       <div class="row">
         <div class="col-lg-6">
-          <div class="card line-chart-example">
-            <div class="card-header d-flex align-items-center">
-              <h4>Default</h4>
-            </div>
-            <div class="card-body">
-              <p class="lead">Select Defaut Payment Here.</p>
-              <form>
-                <div class="radio">
-                  <label><input type="radio" name="optradio" checked>Cash On Delivery</label>
-                </div>
-                <div class="radio">
-                  <a class="btn  btn-outline-primary" href="">Update </a>
-                </div>
-              </form>
-
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
           <div class="card bar-chart-example">
             <div class="card-header d-flex align-items-center">
-              <h4>Add Payment Account</h4>
+              <h4>Payment Account</h4>
             </div>
             <div class="card-body">
-              <p class="lead">Add New Payment Method Here.</p>
-              <a class="btn btn-lg btn-outline-primary my-3" href="">Add</a>
+              <p class="lead">{{launderer.easypaisa_account}}</p>
+              <a class="btn btn-lg btn-outline-primary my-3" data-toggle="modal" data-target="#generalModal" href="">Change</a>
             </div>
           </div>
         </div>
@@ -164,6 +145,13 @@
               <label>Address</label>
               {{form.address}}
               {{form.address.errors}}
+            </div>
+
+            
+            <div class="form-group">
+              <label>Easypaisa Account</label>
+              {{form.easypaisa_account}}
+              {{form.easypaisa_account.errors}}
             </div>
 
 
