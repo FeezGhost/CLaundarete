@@ -285,6 +285,7 @@ def ReportView(request):
             declinedOrderRatioList = []
             positiveReviewsRatioList = []
             negativeReviewsRatioList = []
+            totalReviewsList = []
             monthsList = []
             while i <= end:
                 fullDate =str(1)+"-"+str(i)+"-"+end_dateYear
@@ -310,6 +311,7 @@ def ReportView(request):
                                         date__month__lt=(i+1)).count()
                 reviewsavg = reviews.filter(date__month__gte=i,
                                         date__month__lt=(i+1))
+                totalReviewsList.append(reviewsavg.count())
                 positiveReviewsList.append(reviewsPos) 
                 negativeReviewsList.append(reviewsneg)
                 if totalreviews>0:
@@ -319,7 +321,7 @@ def ReportView(request):
                     for review in reviewsavg:
                         reviews_sum += review.rating
                         reviews_counter +=1
-                    reviews_average = (reviews_sum/reviews_counter)*10
+                    reviews_average = 100-(reviews_sum/reviews_counter)*10
                     avgReviewsList.append(reviews_average)
                     reviewRatio_average_data = dict(zip(avgReviewsList, avgReviewsList))
                 else:
@@ -340,6 +342,7 @@ def ReportView(request):
             bar_accept_data = tuple(zip(acceptedOrdersList, acceptedOrdersList))
             bar_decline_data = tuple(zip(declinedOrdersList, declinedOrdersList))
             bar_total_data = tuple(zip(totalOrdersList,totalOrdersList))
+            bar_total_data2 = tuple(zip(totalReviewsList,totalReviewsList))
             line_accept_data = tuple(zip(acceptedOrderRatioList, acceptedOrderRatioList))
             line_decline_data = tuple(zip(declinedOrderRatioList, declinedOrderRatioList))
             totalDeclined = ordersDeclined.count()
@@ -395,6 +398,7 @@ def ReportView(request):
                 'reviewRatio_decline_data': reviewRatio_decline_data,
                 'reviewRatio_average_data':  reviewRatio_average_data,
                 'bar_total_data':bar_total_data,
+                'bar_total_data2':bar_total_data2,
             }
         else:
             context = {
@@ -1198,7 +1202,7 @@ def AdminLaunderetePerfomanceView(request, pk_id):
                 for review in reviewsavg:
                     reviews_sum += review.rating
                     reviews_counter +=1
-                reviews_average = (reviews_sum/reviews_counter)*10
+                reviews_average =100- (reviews_sum/reviews_counter)*10
                 avgReviewsList.append(reviews_average)
                 reviewRatio_average_data = dict(zip(avgReviewsList, avgReviewsList))
             else:
