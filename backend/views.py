@@ -26,15 +26,6 @@ from math import sin, cos, radians, degrees, acos
 
 mapbox_access_token = 'pk.eyJ1IjoiZmVlemdob3N0IiwiYSI6ImNreDZneHB5cTFiMzEybm54amxnZjNkemcifQ.VtgUGNvaWKdYMf1wRnq1bA'
 
-def calc_dist(lat_a, long_a, lat_b, long_b):
-    lat_a = radians(lat_a)
-    lat_b = radians(lat_b)
-    long_diff = radians(long_a - long_b)
-    distance = (sin(lat_a) * sin(lat_b) +
-                cos(lat_a) * cos(lat_b) * cos(long_diff))
-    resToMile = degrees(acos(distance)) * 69.09
-    resToMt = resToMile / 0.00062137119223733
-    return resToMt
 
 class EmailThread(threading.Thread):
 
@@ -492,8 +483,6 @@ def LaunderretteClients(request):
 def LaunderretteClientDetail(request, pk_id):
     launder = request.user.launderer
     client = Client.objects.get(id = pk_id)
-    distnac = calc_dist(launder.lat, launder.lon, client.lat, client.lon)
-    print(distnac)
     orders =client.order_set.all().order_by('-date_created')
     laun = launder.launderette_set.all()[0]
     orders = orders.filter(launderette = laun)
@@ -815,6 +804,10 @@ def launderetteReviewDetail(request, pk_id):
                 review = review,
                 launderette = launderette[0]
             )
+        else:
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, error)
     context = {'launderer':launderer, 'review':review, 'comments': comments, 'commentForm': commentForm }
     return render(request,"frontend/launderetteReviewDetail.html",context)
 
@@ -848,7 +841,23 @@ def changeGeneralInfo(request):
     if request.method == 'POST':
         form = LaundererForm(request.POST, request.FILES, instance=launderer)
         if form.is_valid():
+            pos_value = request.POST.get('latlong')
+            latitude = float(request.POST.get('latitude'))
+            longitude = float(request.POST.get('longitude'))
+            address = form.cleaned_data.get('address')
             form.save()
+            if pos_value == 'current_pos':
+                launderer.lat = float(latitude)
+                launderer.lon = float(longitude)
+            elif pos_value == 'address_geo':
+                g = geocoder.mapbox(address, key=mapbox_access_token)
+                g = g.latlng
+                launderer.lat = g[0]
+                launderer.lon = g[1]
+            else:
+                launderer.lat = float(form.cleaned_data.get('lat'))
+                launderer.lon = float(form.cleaned_data.get('lon'))
+            launderer.save()
                 
     return redirect("myAccount")
 
@@ -893,6 +902,18 @@ def changeEmail(request):
                 
     return redirect("myAccount")
 
+@login_required(login_url="loginPage")
+@allowed_users(allowed_roles=['launderer'])
+def changeAddress(request):
+    launderer = request.user.launderer
+    if request.method == 'POST':
+        form = LaundererForm(request.POST, request.FILES, instance=launderer)
+        if form.is_valid():
+            lat = form.cleaned_data.get('latlong')
+            print(lat)
+            form.save()
+                
+    return redirect("myAccount")
 
 # Admin Dashboard
 

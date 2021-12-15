@@ -140,18 +140,54 @@
               {{form.city}}
               {{form.city.errors}}
             </div>
-
-            <div class="form-group">
-              <label>Address</label>
-              {{form.address}}
-              {{form.address.errors}}
-            </div>
-
             
             <div class="form-group">
               <label>Easypaisa Account</label>
               {{form.easypaisa_account}}
               {{form.easypaisa_account.errors}}
+            </div>
+            
+            <div class="form-group">
+              <label>Address</label>
+              {{form.address}}
+              {{form.address.errors}}
+            </div>
+            <div class="form-group">
+              <label>Latitude</label>
+              {{form.lat}}
+              {{form.lat.errors}}
+            </div>
+            <div class="form-group">
+              <label>Longitude</label>
+              {{form.lon}}
+              {{form.lon.errors}}
+            </div>
+            
+            <div class="form-group">
+              <label>Latitude Longitude Method</label>
+              <div class="form-check">
+                <input class="form-check-input form-check-inline" type="radio" name="latlong" id="address_geo" value="address_geo">
+                <label class="form-check-label" for="address_geo">
+                  Address
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input form-check-inline" type="radio" name="latlong" id="current_pos" value="current_pos" checked>
+                <label class="form-check-label" for="current_pos">
+                  Current Position
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input form-check-inline" type="radio" name="latlong" id="manual_pos" value = "manual_pos">
+                <label class="form-check-label" for="manual_pos">
+                  Manual
+                </label>
+              </div>
+            </div>
+            
+            <div class="form-group-material">
+              <input type="hidden" name="latitude" id="latitude">
+              <input type="hidden" name="longitude" id="longitude">
             </div>
 
 
@@ -270,6 +306,26 @@
 </div>
 
 
+<script>
+  const sucessCallback = (position) => {
+    console.log(position);
+    console.log(position.coords.latitude);
+    console.log(position.coords.longitude);
+    const lat = document.getElementById('latitude');
+    const long = document.getElementById('longitude');
+    lat.value = position.coords.latitude;
+    long.value = position.coords.longitude;
+    console.log(lat);
+    console.log(long);
+  };
+  const errorCallback = (error) => {
+    console.log(error);
+  };
+  navigator.geolocation.getCurrentPosition(sucessCallback, errorCallback, {
+    enableHighAccuracy: true,
+    timeout: 5000
+  });
+</script>
 
 <script>
   toastr.options = {
@@ -294,10 +350,10 @@
   var i = 0
   for (var field in form_fields) {
     console.log(form_fields[field].name)
-    if (i > 0 && i <= 4 || i == 10) {
+    if (i > 0 && i <= 6 || i == 10) {
       form_fields[field].className += ' input-material'
     }
-    if (i > 10 && i <= 15 && i != 11) {
+    if (i > 15 && i <= 22 && i != 18) {
       form_fields[field].className += ' input-material'
     }
     console.log(i)

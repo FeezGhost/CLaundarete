@@ -101,7 +101,6 @@ class LaundererForm(ModelForm):
         return self.cleaned_data
 
 
-
 class LaunderetteForm(ModelForm):
     
     class Meta:
