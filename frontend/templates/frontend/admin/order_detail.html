@@ -41,12 +41,12 @@
   </div>
           <div class="row d-flex">
             <div class="col-lg-6">
-              <h2 class="display h4 text-primary">Client</h2>
-              <h2 class="display h4 ">{{order.client}}</h2>
+              <h2 class="display h4 ">Client</h2>
+              <h2 class="display h4 "><a href="{% url 'adminClientDetail' order.client.id %}">{{order.client}}</a></h2>
             </div>
             <div class="col-lg-6">
-              <h2 class="display h4 text-primary">Launderete</h2>
-              <h2 class="display h4 ">{{order.launderette}}</h2>
+              <h2 class="display h4 ">Launderete</h2>
+              <h2 class="display h4 "><a href="{% url 'adminLaunderetteDetail' order.launderette.id %}" >{{order.launderette}}</a></h2>
             </div>
           </div>
           <hr>
@@ -106,7 +106,7 @@
               <input type="hidden" id="statusField1" name="statusField" value="finished">
             </div>
             <div class="form-group mt-4">
-              <input type="submit" value="Finished" class="btn btn-md btn-outline-primary  mx-4 ">
+              <input type="submit" value="Finished" onclick="return confirm('Are you sure you want to finish this order?')" class="btn btn-md btn-outline-primary  mx-4 ">
             </div>
           </form>
           <form enctype="multipart/form-data" method="POST">
@@ -115,7 +115,7 @@
               <input type="hidden" id="statusField1" name="statusField" value="cancel">
             </div>
             <div class="form-group mt-4">
-              <input type="submit" value="Cancel" class="btn btn-md btn-outline-danger  mx-4 ">
+              <input type="submit" value="Cancel" onclick="return confirm('Are you sure you want to cancel this order?')" class="btn btn-md btn-outline-danger  mx-4 ">
             </div>
           </form>
           {% else %}
@@ -133,7 +133,7 @@
   </section>
 
   <footer class="main-footer">
-    {% include 'frontend/partialView/footer_navbar.html' %}
+    {% include 'frontend/admin/partialview/footer_navbar.html' %}
   </footer>
 </div>
 

@@ -86,7 +86,7 @@
     <div class="container-fluid">
       <div class="row d-flex">
         {% for launderette in launderettes %}
-        <div class="col-lg-4">
+        <div class="col-lg-4 mb-4">
           <div class="card data-usage">
             <div class="card-header d-flex align-items-center">
               <div class="container px-4 pb-4">
@@ -111,7 +111,7 @@
                 <input type="hidden" id="statusField1" name="statusField" value="block">
               </div>
               <div class="form-group mt-4">
-                <input type="submit" value="Block Launderette" class="btn btn-md btn-outline-danger px-4">
+                <input type="submit" value="Block Launderette" onclick="return confirm('Are you sure you want to block this user?')" class="btn btn-md btn-outline-danger px-4">
               </div>
             </form>
             {% endif %}
@@ -123,7 +123,7 @@
                 <input type="hidden" id="statusField1" name="statusField" value="unblock">
               </div>
               <div class="form-group mt-4">
-                <input type="submit" value="Unblock Launderette" class="btn btn-md btn-outline-danger px-4">
+                <input type="submit" value="Unblock Launderette" onclick="return confirm('Are you sure you want to unblock this user?')" class="btn btn-md btn-outline-success px-4">
               </div>
             </form>
             {% endif %}
@@ -143,7 +143,7 @@
   </section>
 
   <footer class="main-footer">
-    {% include 'frontend/partialView/footer_navbar.html' %}
+    {% include 'frontend/admin/partialview/footer_navbar.html' %}
   </footer>
 </div>
 

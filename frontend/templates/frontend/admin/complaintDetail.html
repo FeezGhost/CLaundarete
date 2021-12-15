@@ -49,9 +49,9 @@
             <div class="col-6">
               <p class="lead text-primary">By:</p>
               {% if complaint.client == None %}
-              <p class="lead ">{{complaint.launderer}}</p>
+              <p class="lead "><a href="{% url 'adminLaundererDetail' complaint.launderer.id %}">{{complaint.launderer}}</a></p>
               {% else %}
-              <p class="lead ">{{complaint.client}}</p>
+              <p class="lead "><a href="{% url 'adminClientDetail' complaint.client.id %}">{{complaint.client}}</a></p>
               {% endif %}
             </div>
             <div class="col-6">
@@ -104,7 +104,7 @@
 
 
   <footer class="main-footer">
-    {% include 'frontend/partialView/footer_navbar.html' %}
+    {% include 'frontend/admin/partialview/footer_navbar.html' %}
   </footer>
 </div>
 

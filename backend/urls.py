@@ -48,7 +48,6 @@ urlpatterns = [
     path('dashboard/account/generalinfo/', views.changeGeneralInfo, name="generalInfo"),
     path('dashboard/account/profilepic/', views.changeProfilepic, name="profilepic"),
     path('dashboard/account/changepass/', views.changePassword, name="changepass"),
-    path('dashboard/account/changeaddress/', views.changeAddress, name="changeaddress"),
     
     path('logout/', views.logoutView, name="logout"),
 

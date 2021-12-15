@@ -805,7 +805,7 @@ def launderetteReviewDetail(request, pk_id):
                 launderette = launderette[0]
             )
         else:
-            for field in form:
+            for field in commentForm:
                 for error in field.errors:
                     messages.error(request, error)
     context = {'launderer':launderer, 'review':review, 'comments': comments, 'commentForm': commentForm }
@@ -858,6 +858,10 @@ def changeGeneralInfo(request):
                 launderer.lat = float(form.cleaned_data.get('lat'))
                 launderer.lon = float(form.cleaned_data.get('lon'))
             launderer.save()
+        else:
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, error)
                 
     return redirect("myAccount")
 
@@ -869,6 +873,10 @@ def changeProfilepic(request):
         form = LaundererProfilePicForm(request.POST, request.FILES, instance=launderer)
         if form.is_valid():
             form.save()
+        else:
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, error)
                 
     return redirect("myAccount")
 
@@ -882,6 +890,9 @@ def changePassword(request):
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Your password was successfully updated!')
         else:
+            for field in passwordform:
+                for error in field.errors:
+                    messages.error(request, error)
             messages.error(request, 'Please correct the error below.')
   
     
@@ -895,25 +906,15 @@ def changeEmail(request):
         form = LaundererEmailForm(request.POST, instance= curr_user)
         if form.is_valid():
             form.save()
-            
             send_activation_email(request, curr_user)
             messages.info(request, 'We sent verification email to your account please check it out!')
             return redirect('logout')
-                
+        else:
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, error)
     return redirect("myAccount")
 
-@login_required(login_url="loginPage")
-@allowed_users(allowed_roles=['launderer'])
-def changeAddress(request):
-    launderer = request.user.launderer
-    if request.method == 'POST':
-        form = LaundererForm(request.POST, request.FILES, instance=launderer)
-        if form.is_valid():
-            lat = form.cleaned_data.get('latlong')
-            print(lat)
-            form.save()
-                
-    return redirect("myAccount")
 
 # Admin Dashboard
 

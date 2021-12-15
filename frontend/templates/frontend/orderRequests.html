@@ -40,7 +40,7 @@
       <div class="row d-flex">
         {% if hasOrders %}
         {% for orderRequest in orderRequests %}
-        <div class="col-lg-4">
+        <div class="col-lg-4 mb-4">
           <div class="card data-usage">
             <h2 class="display h4 text-primary">{{orderRequest.client}}</h2>
             <p class="text-primary">Description:</p>
@@ -70,7 +70,7 @@
                     <input type="hidden" id="statusField1" name="statusField" value="decline">
                   </div>
                   <div class="form-group mt-4">
-                    <input type="submit" value="Decline Order" class="btn btn-md px-4 btn-outline-danger">
+                    <input type="submit" onclick="return confirm('Are you sure you want to decline this order?')" value="Decline Order" class="btn btn-md px-4 btn-outline-danger">
                   </div>
                 </form>
               </div>

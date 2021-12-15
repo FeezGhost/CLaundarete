@@ -75,35 +75,12 @@
       </div>
     </div>
   </section>
-  <section class="statistics">
-    <div class="container-fluid">
-      <div class="row d-flex">
-        <div class="col-lg-6">
-          <!-- User Actibity-->
-          <div class="card user-activity">
-            <h2 class="display h4">Launderete Rating</h2>
-            <div class="number">{{reviewsRatio|floatformat:1}}</div>
-            <h3 class="h4 display">Total Reviews</h3>
-            <div class="number">{{totalreviews}}</div>
-            <div class="progress">
-              <div role="progressbar" style="width: {{reviewsRatio}}%" aria-valuenow="{{positiveReviews}}"
-                aria-valuemin="0" aria-valuemax="{{totalreviews}}" class="progress-bar progress-bar bg-primary"></div>
-            </div>
-            <div class="page-statistics d-flex justify-content-between">
-              <div class="page-statistics-left"><span>Positive Reviews</span><strong>{{positiveReviews}}</strong></div>
-              <div class="page-statistics-right"><span>Negative Reviews</span><strong>{{negativeReviews}}</strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <section class="charts">
     <div class="container-fluid">
       <!-- Page Header-->
       <header>
-        <h1 class="h3 display">Orders </h1>
+        <h1 class="h3 display">Users Data </h1>
       </header>
       <div class="row">
 
@@ -156,7 +133,7 @@
 
 
 <footer class="main-footer">
-  {% include 'frontend/partialView/footer_navbar.html' %}
+  {% include 'frontend/admin/partialview/footer_navbar.html' %}
 </footer>
 </div>
 

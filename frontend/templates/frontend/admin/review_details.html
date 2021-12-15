@@ -33,12 +33,12 @@
 
           <div class="row">
             <div class="col-6">
-              <p class="lead text-primary">By:</p>
-              <p class="lead ">{{review.client}}</p>
+              <p class="lead ">By:</p>
+              <p class="lead "><a href="{% url 'adminClientDetail' review.client.id %}">{{review.client}}</a></p>
             </div>
             <div class="col-6">
-              <p class="lead text-primary">To:</p>
-              <p class="lead ">{{review.launderette}}</p>
+              <p class="lead ">To:</p>
+              <p class="lead "><a href="{% url 'adminLaunderetteDetail' review.launderette.id %}">{{review.launderette}}</a></p>
             </div>
           </div>
           <p class="lead text-primary">Review:</p>
@@ -99,7 +99,7 @@
   </section>
 
   <footer class="main-footer">
-    {% include 'frontend/partialView/footer_navbar.html' %}
+    {% include 'frontend/admin/partialview/footer_navbar.html' %}
   </footer>
 </div>
 
