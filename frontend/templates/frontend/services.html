@@ -48,7 +48,7 @@
             <p class="text-primary">{{service.price}}$</p>
             <a class="my-btn btn btn-md btn-outline-primary  mx-4 mb-2 mt-4"
               href="{% url 'editServices' service.id %}">Edit Service</a>
-            <a class="my-btn btn btn-md btn-outline-danger  mx-4 mb-2 mt-4"
+            <a class="my-btn btn btn-md btn-outline-danger  mx-4 mb-2 mt-4" onclick="return confirm('Are you sure you want to delete this?')"
               href="{% url 'deleteServices' service.id %}">Delete Service</a>
           </div>
         </div>

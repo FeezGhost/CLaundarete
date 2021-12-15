@@ -1,0 +1,139 @@
+{%  extends 'frontend/partialview/base_template.html' %}
+{% load static %}
+
+
+{% block head_scripts %}
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+<style>
+  #map { position: absolute; top: 20; bottom: 0; width: 100%; }
+  </style>
+{% endblock head_scripts %}
+
+
+{% block content %}
+
+
+<div class="page">
+  <!-- navbar-->
+
+  {% include 'frontend/partialview/topbar.html' %}
+
+  <!-- Breadcrumb-->
+  <div class="breadcrumb-holder">
+    <div class="container-fluid">
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item "><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active"><a>Clients</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <h1 class="display-3 text-center m-4">Clients</h1>
+  <hr>
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      <div class="card line-chart-example">
+        <div class="card-header d-flex align-items-center">
+
+          <img src="{{client.profile_pic.url}}" alt="person" class="img-fluid rounded-circle" width="300">
+        </div>
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col">
+              <p class="lead text-primary">Name:</p>
+              <p class="lead ">{{client.name}}</p>
+            </div>
+
+            <div class="col">
+              <p class="lead text-primary">Username:</p>
+              <p class="lead ">{{client.user.username}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p class="lead text-primary">Email:</p>
+              <p class="lead ">{{client.user.email}}</p>
+            </div>
+
+            <div class="col">
+              <p class="lead text-primary">Address:</p>
+              <p class="lead ">{{client.address}}</p>
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer">
+          <p class="lead text-primary">Date Joined:</p>
+          <p class="lead ">{{client.date_joined}}</p>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="charts">
+    <div class="container-fluid">
+      <!-- Page Header-->
+      <header>
+        <h1 class="h3 display">Orders </h1>
+      </header>
+
+      <div class="card">
+
+        <div class="card-header">
+
+          Ongoing Orders
+
+        </div>
+
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Date & Time Started</th>
+                  <th>Launderette</th>
+                  <th>Status</th>
+                  <th>Price</th>
+                  <th>Amount</th>
+                  <th>Delivery Time</th>
+                  <th>Change status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for orders in orders %}
+                <tr>
+                  <td>{{orders.date_started}}</td>
+                  <td>{{orders.launderette}}</td>
+                  <td>{{orders.status}}</td>
+                  <td>{{orders.price}}</td>
+                  <td>{{orders.amount}}</td>
+                  <td>{{orders.date_end}}</td>
+                  <td><a class="btn btn-md btn-outline-primary"
+                      href="{% url 'adminOrderDetails' orders.id %}">Details</a></td>
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </section>
+
+  <footer class="main-footer">
+    {% include 'frontend/partialview/footer_navbar.html' %}
+  </footer>
+</div>
+
+{% endblock content %}

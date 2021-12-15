@@ -21,7 +21,20 @@ from django.core.mail import EmailMessage, message
 from django.conf import settings
 import threading
 from django.shortcuts import get_object_or_404
+import geocoder
+from math import sin, cos, radians, degrees, acos
 
+mapbox_access_token = 'pk.eyJ1IjoiZmVlemdob3N0IiwiYSI6ImNreDZneHB5cTFiMzEybm54amxnZjNkemcifQ.VtgUGNvaWKdYMf1wRnq1bA'
+
+def calc_dist(lat_a, long_a, lat_b, long_b):
+    lat_a = radians(lat_a)
+    lat_b = radians(lat_b)
+    long_diff = radians(long_a - long_b)
+    distance = (sin(lat_a) * sin(lat_b) +
+                cos(lat_a) * cos(lat_b) * cos(long_diff))
+    resToMile = degrees(acos(distance)) * 69.09
+    resToMt = resToMile / 0.00062137119223733
+    return resToMt
 
 class EmailThread(threading.Thread):
 
@@ -71,8 +84,6 @@ def landingpageView(request):
         messages.info(request, "Thank You! You email has been delivered")
 
     return render(request,"frontend/landing-page.html")
-
-
 
 @unauthenticated_user
 def loginView(request):
@@ -444,6 +455,61 @@ def OngoingOrder(request):
 
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
+def LaunderretteClients(request):
+    launder = request.user.launderer
+    if request.method == 'POST':
+        address = request.POST.get('address')
+        g = geocoder.mapbox(address, key=mapbox_access_token)
+        g = g.latlng
+        print(g)
+    if launder.launderette_set.all().count()>0:
+        tLaunderette = launder.launderette_set.all()
+        orders = tLaunderette[0].order_set.all().order_by('-date_started')
+        if orders.count() > 0:
+            client_in_orders=[]
+            for order in orders:
+                client_in_orders.append(order.client)
+            client_dict = dict(zip(client_in_orders,client_in_orders))
+            client_in_orders=[]
+            for key in client_dict:
+                client_in_orders.append(key.id)
+            clients = Client.objects.filter(pk__in=client_in_orders)
+            clientFilters = ClientFilter(request.GET, queryset=clients)
+            clients = clientFilters.qs
+            p  = Paginator(clients, 6)
+            page_num = request.GET.get('page', 1)
+            try:
+                page = p.page(page_num)
+            except EmptyPage:
+                page = p.page(1)
+            context = {"launderer": launder, 'clients': page }
+            return render(request,"frontend/launderetteclientmap.html",context)
+    context = {"launderer": launder, }
+    return render(request,"frontend/launderetteclientmap.html",context)
+
+@login_required(login_url="loginPage")
+@allowed_users(allowed_roles=['launderer'])
+def LaunderretteClientDetail(request, pk_id):
+    launder = request.user.launderer
+    client = Client.objects.get(id = pk_id)
+    distnac = calc_dist(launder.lat, launder.lon, client.lat, client.lon)
+    print(distnac)
+    orders =client.order_set.all().order_by('-date_created')
+    laun = launder.launderette_set.all()[0]
+    orders = orders.filter(launderette = laun)
+    context = {"launderer": launder,'client': client,  "orders": orders}
+    return render(request,"frontend/launderette_client_details.html",context)
+
+@login_required(login_url="loginPage")
+@allowed_users(allowed_roles=['launderer'])
+def ordersDetailMap(request, pk_id):
+    launder = request.user.launderer
+    order = Order.objects.get(id = pk_id)
+    context = {"launderer": launder, "order": order}
+    return render(request,"frontend/orderDetailMap.html",context)
+
+@login_required(login_url="loginPage")
+@allowed_users(allowed_roles=['launderer'])
 def ordersHistory(request):
     launder = request.user.launderer
     serv = ""
@@ -572,6 +638,9 @@ def servicesEdit(request, pk_id):
             messages.success(request, "Service Edited sucessfully")
             return redirect("services")
         else:
+            for field in serviceForm:
+                for error in field.errors:
+                    messages.error(request, error)
             messages.error(request, "Service Couldn't be edited")
     return render(request,"frontend/servicesEdit.html",context)
 
@@ -601,7 +670,9 @@ def servicesNew(request):
             )
             messages.success(request, "Service added sucessfully")
             return redirect("services")
-
+        for field in serviceForm:
+            for error in field.errors:
+                messages.error(request, error)
     messages.error(request, "Service couldn't be added")          
     return redirect("services")
 
@@ -697,6 +768,9 @@ def launderetteEdit(request):
             messages.success(request, "Launderette Information updated!.")
             return redirect("launderette")
         else:
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, error)
             messages.error(request, "Launderette Information couldn't be updated!.")
     context = { 'form': form, 'launderer': launder }
     return render(request,"frontend/launderetteEdit.html",context)

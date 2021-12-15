@@ -23,6 +23,7 @@ urlpatterns = [
     path('dashboard/orders/requests/', views.ordersRequests, name="ordersRequest"),
     path('dashboard/orders/requests/<str:pk_id>/', views.orderRequestProcess, name="orderRequestProcess"),
     path('dashboard/orders/detail/<str:pk_id>/', views.orderDetails, name="orderDetail"),
+    path('dashboard/orders/detailmap/<str:pk_id>/', views.ordersDetailMap, name="orderMap"),
 
     path('dashboard/services/', views.services, name="services"),
     path('dashboard/services/edit/<str:pk_id>/', views.servicesEdit, name="editServices"),
@@ -32,6 +33,8 @@ urlpatterns = [
     path('dashboard/launderette/', views.launderette, name="launderette"),
     path('dashboard/launderette/edit/', views.launderetteEdit, name="editlaunderette"),
     path('dashboard/launderette/reviews/', views.launderetteReviews, name="laundaretteReviews"),
+    path('dashboard/launderette/clients/', views.LaunderretteClients, name="laundaretteClients"),
+    path('dashboard/launderette/clients/<str:pk_id>/', views.LaunderretteClientDetail, name="laundaretteClientsDetail"),
 
     path('dashboard/complaints/', views.complaints, name="complaints"),
     path('dashboard/complaints/new/', views.complaintNew, name="newComplaint"),

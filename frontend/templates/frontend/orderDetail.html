@@ -37,7 +37,9 @@
     <div class="container-fluid">
       <div class="card data-usage text-center p-4 mx-4">
         <div class="container">
-          <h2 class="display h2 text-primary">Username: {{order.client}}</h2>
+          <a href="{% url 'laundaretteClientsDetail' order.client.id %}">
+            <h2 class="display h2 text-primary">Username: {{order.client}}</h2>
+          </a>
           <hr>
           <p class="text-primary">Description:</p>
           <p>{{order.description}}</p>
@@ -94,6 +96,8 @@
               <input type="submit" value="Request Finished" class="btn btn-md btn-outline-primary  mx-4 ">
             </div>
           </form>
+          
+          <a class="my-4" href="{% url 'orderMap' order.id %}">Check Map for Client Destination</a>
           {% else %}
           {% if haveReview %}
           <a class="btn btn-md btn-outline-primary  mx-4 mb-2 mt-4"

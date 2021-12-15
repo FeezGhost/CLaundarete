@@ -1,12 +1,15 @@
 # from django.http import request
+from django.forms.widgets import DateInput
 import django_filters
-from django_filters import DateFilter, CharFilter, NumberFilter, ChoiceFilter
+from django_filters import DateFilter, CharFilter, NumberFilter, ChoiceFilter, DateFromToRangeFilter
 from django_filters.filters import MultipleChoiceFilter
 from .models import *
+from tempus_dominus.widgets import DateTimePicker, DatePicker
+from django_filters.widgets import RangeWidget
 
 class OrderFilter(django_filters.FilterSet):
-    start_date = DateFilter(field_name="date_started", lookup_expr='gte')
-    end_date = DateFilter(field_name="date_end", lookup_expr='lte')
+    start_date = DateFromToRangeFilter(field_name="date_started", widget=RangeWidget(attrs={'type': 'date'}), label='Date_Started')
+    end_date = DateFromToRangeFilter(field_name="date_end", widget=RangeWidget(attrs={'type': 'date'}), label='Date_Ended')
     start_price = NumberFilter(field_name="price", lookup_expr='gte')
     end_price = NumberFilter(field_name="price", lookup_expr='lte')
     start_amount = NumberFilter(field_name="amount", lookup_expr='gte')
@@ -31,9 +34,8 @@ def get_launderrette(request):
 
 
 class OrderFilter2(django_filters.FilterSet):
-    
-    start_date = DateFilter(field_name="date_started", lookup_expr='gte')
-    end_date = DateFilter(field_name="date_end", lookup_expr='lte')
+    start_date = DateFromToRangeFilter(field_name="date_started", widget=RangeWidget(attrs={'type': 'date'}), label='Date_Started')
+    end_date = DateFromToRangeFilter(field_name="date_end", widget=RangeWidget(attrs={'type': 'date'}), label='Date_Ended')
     start_price = NumberFilter(field_name="price", lookup_expr='gte')
     end_price = NumberFilter(field_name="price", lookup_expr='lte')
     start_amount = NumberFilter(field_name="amount", lookup_expr='gte')
@@ -49,8 +51,7 @@ class OrderFilter2(django_filters.FilterSet):
         ]
 
 class ReviewFilter(django_filters.FilterSet):
-    start_date = DateFilter(field_name="date", lookup_expr='gte')
-    end_date = DateFilter(field_name="date", lookup_expr='lte')
+    start_date = DateFromToRangeFilter(field_name="date", widget=RangeWidget(attrs={'type': 'date'}), label='Date_Started')
     start_rating = NumberFilter(field_name="rating", lookup_expr='gte')
     end_rating = NumberFilter(field_name="rating", lookup_expr='lte')
     client_name = CharFilter(field_name='client__name', lookup_expr='icontains')
@@ -58,19 +59,17 @@ class ReviewFilter(django_filters.FilterSet):
     class Meta:
         model = Review
         exclude = '__all__'
-        fields = ['start_date', 'end_date', 'start_rating', 'end_rating', 'client_name']
+        fields = ['start_date', 'start_rating', 'end_rating', 'client_name']
 
 class ComplaintFilter(django_filters.FilterSet):
-    start_date = DateFilter(field_name="date", lookup_expr='gte')
-    end_date = DateFilter(field_name="date", lookup_expr='lte')
+    start_date = DateFromToRangeFilter(field_name="date", widget=RangeWidget(attrs={'type': 'date'}), label='Date_Started')
     subject = CharFilter(field_name='subject', lookup_expr='icontains')
     class Meta:
         model = Complaint
         fields = '__all__'
 
 class LaundererFilter(django_filters.FilterSet):
-    start_date = DateFilter(field_name="date_joined", lookup_expr='gte')
-    end_date = DateFilter(field_name="date_joined", lookup_expr='lte')
+    start_date = DateFromToRangeFilter(field_name="date_joined", widget=RangeWidget(attrs={'type': 'date'}), label='Date_Started')
     name = CharFilter(field_name='name', lookup_expr='icontains')
     city = CharFilter(field_name='city', lookup_expr='icontains')
 
@@ -80,8 +79,7 @@ class LaundererFilter(django_filters.FilterSet):
         exclude = ["profile_pic"]
 
 class ClientFilter(django_filters.FilterSet):
-    start_date = DateFilter(field_name="date_joined", lookup_expr='gte')
-    end_date = DateFilter(field_name="date_joined", lookup_expr='lte')
+    start_date = DateFromToRangeFilter(field_name="date_joined", widget=RangeWidget(attrs={'type': 'date'}), label='Date_Started')
     name = CharFilter(field_name='name', lookup_expr='icontains')
 
     class Meta:
@@ -90,8 +88,7 @@ class ClientFilter(django_filters.FilterSet):
         exclude = ["profile_pic"]
 
 class LaunderetteFilter(django_filters.FilterSet):
-    start_date = DateFilter(field_name="date_joined", lookup_expr='gte')
-    end_date = DateFilter(field_name="date_joined", lookup_expr='lte')
+    start_date = DateFromToRangeFilter(field_name="date_joined", widget=RangeWidget(attrs={'type': 'date'}), label='Date_Started')
     name = CharFilter(field_name='name', lookup_expr='icontains')
     location = CharFilter(field_name='location', lookup_expr='icontains')
     available_time = CharFilter(field_name='available_time', lookup_expr='icontains')
