@@ -38,6 +38,7 @@ https://bootstrapious.com/p/bootstrap-4-dashboard
   line-height: 2;
 }
 
+
 a {
   display: inline-block;
   text-decoration: none;
@@ -132,8 +133,6 @@ h2 {
 
 .card {
   margin-bottom: 30px;
-  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .card-header h1,

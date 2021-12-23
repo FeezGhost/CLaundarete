@@ -84,6 +84,8 @@ class LaundererForm(ModelForm):
         address = self.cleaned_data.get('address')
         city = self.cleaned_data.get('city')
         easypaisa_account = self.cleaned_data.get('easypaisa_account')
+        latitude = self.cleaned_data.get('lat')
+        longitude = self.cleaned_data.get('lon')
  
         if len(city) < 5:
             self._errors['city'] = self.error_class([
@@ -97,7 +99,19 @@ class LaundererForm(ModelForm):
         if len(easypaisa_account) != 11:
             self._errors['easypaisa_account'] = self.error_class([
                 'Easypaisa account number should be 11'])
+        if latitude > -90 and latitude < 90:
+            pass
+        else:
+            self._errors['lat'] = self.error_class([
+                'Latitude must be greater than -90 and less than  90'])
+        
+        if longitude > -180 and longitude < 180:
+            pass
+        else:
+            self._errors['lon'] = self.error_class([
+                'Longitude must be greater than -180 and less than 180'])
  
+
         return self.cleaned_data
 
 

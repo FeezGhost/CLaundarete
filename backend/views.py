@@ -412,8 +412,13 @@ def ReportView(request):
             "launderer" : launderer, 
         }
             
-    
     return render(request,"frontend/perfomanceReport.html",context)
+
+def moodBot(request):
+    context = { }
+    return render(request,"frontend/chatbot.html",context)
+
+
 
 @login_required(login_url="loginPage")
 @allowed_users(allowed_roles=['launderer'])
@@ -844,20 +849,27 @@ def changeGeneralInfo(request):
             pos_value = request.POST.get('latlong')
             latitude = float(request.POST.get('latitude'))
             longitude = float(request.POST.get('longitude'))
-            address = form.cleaned_data.get('address')
-            form.save()
-            if pos_value == 'current_pos':
-                launderer.lat = float(latitude)
-                launderer.lon = float(longitude)
-            elif pos_value == 'address_geo':
-                g = geocoder.mapbox(address, key=mapbox_access_token)
-                g = g.latlng
-                launderer.lat = g[0]
-                launderer.lon = g[1]
+            if latitude > -90 and latitude < 90:
+                if longitude > -180 and longitude < 180:
+                    address = form.cleaned_data.get('address')
+                    form.save()
+                    if pos_value == 'current_pos':
+                        launderer.lat = float(latitude)
+                        launderer.lon = float(longitude)
+                    elif pos_value == 'address_geo':
+                        g = geocoder.mapbox(address, key=mapbox_access_token)
+                        g = g.latlng
+                        launderer.lat = g[0]
+                        launderer.lon = g[1]
+                    else:
+                        launderer.lat = float(form.cleaned_data.get('lat'))
+                        launderer.lon = float(form.cleaned_data.get('lon'))
+
+                    launderer.save()
+                else:
+                    messages.error(request, "longitude error must be between -180 and 180")
             else:
-                launderer.lat = float(form.cleaned_data.get('lat'))
-                launderer.lon = float(form.cleaned_data.get('lon'))
-            launderer.save()
+                messages.error(request, "lat error must be between -90 and 90")
         else:
             for field in form:
                 for error in field.errors:

@@ -8,6 +8,7 @@ urlpatterns = [
     # Launderer Dashboard urls
     path('login/', views.loginView, name="loginPage"),
     path('register/', views.RegisterView, name="registerPage"),
+    path('chatbot/', views.moodBot, name="moodBot"),
     path('activate-user/<uidb64>/<token>', views.activate_user, name='activate'),
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="frontend/authentication/password_reset.html"),name="reset_password"),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="frontend/authentication/password_reset_sent.html"), name="password_reset_done"),
