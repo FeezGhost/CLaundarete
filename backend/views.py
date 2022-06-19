@@ -258,7 +258,7 @@ def ReportView(request):
             i=1
         else:
             i=int(start_date)
-
+        i=int(start_date)
         launderette = launderer.launderette_set.all()[0]
 
         orders = launderette.order_set.all()
@@ -289,7 +289,7 @@ def ReportView(request):
             negativeReviewsRatioList = []
             totalReviewsList = []
             monthsList = []
-            while i <= end:
+            while i <= 12:
                 fullDate =str(1)+"-"+str(i)+"-"+end_dateYear
                 ordersA = ordersAccepted.filter(date_started__month__gte=i,
                                         date_started__month__lt=(i+1)).count()
@@ -540,9 +540,9 @@ def ordersRequests(request):
     hasOrders =False
     if launder.launderette_set.all().count()>0:
         tLaunderette = launder.launderette_set.all()
-        orders = tLaunderette[0].order_set.all().order_by('-date_started')
+        orders = tLaunderette[0].order_set.all()
         if orders.count() > 0:
-            orderequests = orders.filter(status='pending')
+            orderequests = orders.filter(status='pending').order_by('-date_started')
             hasOrders = bool(orderequests.count() > 0)
             p  = Paginator(orderequests, 10)
             page_num = request.GET.get('page', 1)
@@ -1249,7 +1249,7 @@ def AdminLaunderetePerfomanceView(request, pk_id):
     else:
         i=int(start_date)
 
-
+    i=int(start_date)
     orders = launderette.order_set.all()
     totalOrders = orders.count()
     if totalOrders > 0:
@@ -1277,7 +1277,7 @@ def AdminLaunderetePerfomanceView(request, pk_id):
         positiveReviewsRatioList = []
         negativeReviewsRatioList = []
         monthsList = []
-        while i <= end:
+        while i <= 12:
             fullDate =str(1)+"-"+str(i)+"-"+end_dateYear
             ordersA = ordersAccepted.filter(date_started__month__gte=i,
                                     date_started__month__lt=(i+1)).count()
@@ -1438,8 +1438,8 @@ def AdminReportView(request):
         i=1
     else:
         i=int(start_date)
-
-    while i<=end:
+    i=int(start_date)
+    while 8<=12:
         order = orders.filter(date_started__month__gte=i, date_started__month__lt=(i+1)).count()
         ordersList.append(order)
 
